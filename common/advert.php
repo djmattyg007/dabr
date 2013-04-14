@@ -7,38 +7,33 @@ function show_advert() {
 
 	// InMobi Adverts
 	// http://inmobi.com/
-	if (file_exists("common/MkhojAd.php"))
-	{
+	if (file_exists("common/MkhojAd.php")) {
 		$ad = inmobi_ad();
-		if ($ad)
-		{
+		if ($ad) {
 			return $ad;
 		}
 	}
 
 	// Admob Adverts
 	// http://admob.com/
-	if (file_exists("common/admob.php"))
-	{
+	if (file_exists("common/admob.php")) {
 		$ad = admob_ad();
-		if ($ad)
-		{
+		if ($ad) {
 			return $ad;
 		}
 	}
 
 	// Google Adverts
 	// https://google.com/adsense
-	if (file_exists('common/googlead.php'))
-	{
+	if (file_exists('common/googlead.php')) {
 		google_ad();
 	}
 
 	//	No advert found
-	return	'';
+	return '';
 }
 
-function inmobi_ad()	{
+function inmobi_ad() {
 	require_once ("common/MkhojAd.php");
 	// Create an object of mkhoj_class
 	// Use your own InMobi key here
@@ -49,21 +44,20 @@ function inmobi_ad()	{
 	$base->set_ad_placements(array("top"));
 	//$base->set_test_mode(true);
 
-	if($base->request_ads())
-	{
+	if($base->request_ads()) {
 		return $base->fetch_ad("top");
 	}
 
 	return false;
 }
 
-function admob_ad()	{
+function admob_ad() {
 	require_once('common/admob.php');
 	return "Admob:".admob_request($admob_params);
 
 }
 
-function google_ad()	{
+function google_ad() {
 	require_once('common/googlead.php');
 }
 
