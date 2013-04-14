@@ -17,14 +17,17 @@ function menu_execute_active_handler() {
 		die('404 - Page not found.');
 	}
 
-	if ($page['security'])
-	user_ensure_authenticated();
+	if ($page['security']) {
+		user_ensure_authenticated();
+	}
 
-	if (function_exists('config_log_request'))
-	config_log_request();
+	if (function_exists('config_log_request')) {
+		config_log_request();
+	}
 
-	if (function_exists($page['callback']))
-	return call_user_func($page['callback'], $query);
+	if (function_exists($page['callback'])) {
+		return call_user_func($page['callback'], $query);
+	}
 
 	return false;
 }
@@ -38,8 +41,12 @@ function menu_visible_items() {
 	if (!isset($items)) {
 		$items = array();
 		foreach ($GLOBALS['menu_registry'] as $url => $page) {
-			if ($page['security'] && !user_is_authenticated()) continue;
-			if ($page['hidden']) continue;
+			if ($page['security'] && !user_is_authenticated()) {
+				continue;
+			}
+			if ($page['hidden']) {
+				continue;
+			}
 			$items[$url] = $page;
 		}
 	}
@@ -59,7 +66,10 @@ function theme_menu_both($menu) {
 	foreach (menu_visible_items() as $url => $page) {
 		$title = $url ? $url : 'home';
 		$title = str_replace("-", " ", $title);
-		if (!$url) $url = BASE_URL; // Shouldn't be required, due to <base> element but some browsers are stupid.
+		if (!$url) {
+			$url = BASE_URL; // Shouldn't be required, due to <base> element but some browsers are stupid.
+		}
+
 		if ($menu == 'bottom' && isset($page['accesskey'])) {
 			$links[] = "<a href='$url' accesskey='{$page['accesskey']}'>$title</a> {$page['accesskey']}";
 		} else {

@@ -11,8 +11,6 @@ $GLOBALS['colour_schemes'] = array(
 	0 => 'Pretty In Pink|c06,fcd,623,c8a,fee,fde,ffa,dd9,c06,fee,fee',
 	1 => 'Ugly Orange|b50,ddd,111,555,fff,eee,ffa,dd9,e81,c40,fff',
 	2 => 'Touch Blue|138,ddd,111,555,fff,eee,ffa,dd9,138,fff,fff',
-	3 => 'Sickly Green|293C03,ccc,000,555,fff,eee,CCE691,ACC671,495C23,919C35,fff',
-	4 => 'Kris\' Purple|d5d,000,ddd,999,222,111,202,101,909,222,000,000',
 	5 => '#red|d12,ddd,111,555,fff,eee,ffa,dd9,c12,fff,fff',
 );
 
@@ -91,14 +89,12 @@ function settings_page($args) {
 	);
 	
 	$perPage = array(
-		  '5'		=>   '5 Tweets Per Page',
 		 '10'		=>  '10 Tweets Per Page',
 		 '20'		=>  '20 Tweets Per Page',
 		 '30'		=>  '30 Tweets Per Page',
 		 '40'		=>  '40 Tweets Per Page',
 		 '50'		=>  '50 Tweets Per Page',
 		'100' 	=> '100 Tweets Per Page',
-		'150' 	=> '150 Tweets Per Page',
 		'200' 	=> '200 Tweets Per Page',
 	);
 

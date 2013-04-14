@@ -130,7 +130,7 @@ function theme_page($title, $content) {
 	$body = theme('menu_top');
 	$body .= $content;
 	$body .= theme('menu_bottom');
-	$body .= theme('google_analytics');
+	//$body .= theme('google_analytics');
 	if (DEBUG_MODE == 'ON') {
 		global $dabr_start, $api_time, $services_time, $rate_limit;
 		$time = microtime(1) - $dabr_start;
@@ -152,7 +152,7 @@ function theme_page($title, $content) {
 						'.$meta.theme('css').'
 					</head>
 					<body id="thepage">';
-	echo 				"<div id=\"advert\">" . show_advert() . "</div>";
+	//echo 				"<div id=\"advert\">" . show_advert() . "</div>";
 	echo 				$body;
 	if (setting_fetch('colours') == null)
 	{
