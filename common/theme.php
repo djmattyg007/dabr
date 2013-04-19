@@ -3,7 +3,8 @@ require_once ("common/advert.php");
 
 $current_theme = false;
 
-function theme() {
+function theme()
+{
 	global $current_theme;
 	$args = func_get_args();
 	$function = array_shift($args);
@@ -14,13 +15,15 @@ function theme() {
 		if (function_exists($custom_function))
 		$function = $custom_function;
 	} else {
-		if (!function_exists($function))
-		return "<p>Error: theme function <b>$function</b> not found.</p>";
+		if (!function_exists($function)) {
+			return "<p>Error: theme function <b>$function</b> not found.</p>";
+		}
 	}
 	return call_user_func_array($function, $args);
 }
 
-function theme_csv($headers, $rows) {
+function theme_csv($headers, $rows)
+{
 	$out = implode(',', $headers)."\n";
 	foreach ($rows as $row) {
 		$out .= implode(',', $row)."\n";
@@ -28,7 +31,8 @@ function theme_csv($headers, $rows) {
 	return $out;
 }
 
-function theme_list($items, $attributes) {
+function theme_list($items, $attributes)
+{
 	if (!is_array($items) || count($items) == 0) {
 		return '';
 	}
@@ -40,7 +44,8 @@ function theme_list($items, $attributes) {
 	return $output;
 }
 
-function theme_options($options, $selected = NULL) {
+function theme_options($options, $selected = NULL)
+{
 	if (count($options) == 0) return '';
 	$output = '';
 	foreach($options as $value => $name) {
@@ -55,7 +60,8 @@ function theme_options($options, $selected = NULL) {
 	return $output;
 }
 
-function theme_info($info) {
+function theme_info($info)
+{
 	$rows = array();
 	foreach ($info as $name => $value) {
 		$rows[] = array($name, $value);
@@ -63,7 +69,8 @@ function theme_info($info) {
 	return theme('table', array(), $rows);
 }
 
-function theme_table($headers, $rows, $attributes = NULL) {
+function theme_table($headers, $rows, $attributes = NULL)
+{
 	$out = '<div'.theme_attributes($attributes).'>';
 	if (count($headers) > 0) {
 		$out .= '<thead><tr>';
@@ -79,7 +86,8 @@ function theme_table($headers, $rows, $attributes = NULL) {
 	return $out;
 }
 
-function theme_table_rows($rows) {
+function theme_table_rows($rows)
+{
 	$i = 0;
 	foreach ($rows as $row) {
 		if ($row['data']) {
@@ -100,7 +108,8 @@ function theme_table_rows($rows) {
 	return $out;
 }
 
-function theme_attributes($attributes) {
+function theme_attributes($attributes)
+{
 	if (!$attributes) return;
 	foreach ($attributes as $name => $value) {
 		$out .= " $name=\"$value\"";
@@ -108,7 +117,8 @@ function theme_attributes($attributes) {
 	return $out;
 }
 
-function theme_table_cell($contents, $header = FALSE) {
+function theme_table_cell($contents, $header = FALSE)
+{
 	$celltype = $header ? 'th' : 'td';
 	if (is_array($contents)) {
 		$value = $contents['data'];
@@ -122,11 +132,13 @@ function theme_table_cell($contents, $header = FALSE) {
 }
 
 
-function theme_error($message) {
+function theme_error($message)
+{
 	theme_page('Error', $message);
 }
 
-function theme_page($title, $content) {
+function theme_page($title, $content)
+{
 	$body = theme('menu_top');
 	$body .= $content;
 	$body .= theme('menu_bottom');
@@ -164,26 +176,28 @@ function theme_page($title, $content) {
 	exit();
 }
 
-function theme_colours() {
+function theme_colours()
+{
 	$info = $GLOBALS['colour_schemes'][setting_fetch('colours', 0)];
 	list($name, $bits) = explode('|', $info);
 	$colours = explode(',', $bits);
 	return (object) array(
 		'links'		=> $colours[0],
-		'bodybg'		=> $colours[1],
+		'bodybg'	=> $colours[1],
 		'bodyt'		=> $colours[2],
 		'small'		=> $colours[3],
-		'odd'			=> $colours[4],
+		'odd'		=> $colours[4],
 		'even'		=> $colours[5],
 		'replyodd'	=> $colours[6],
 		'replyeven'	=> $colours[7],
-		'menubg'		=> $colours[8],
+		'menubg'	=> $colours[8],
 		'menut'		=> $colours[9],
 		'menua'		=> $colours[10],
 	);
 }
 
-function theme_css() {
+function theme_css()
+{
 	$c = theme('colours');
 	return "<style type='text/css'>
 	a{color:#{$c->links}}
@@ -211,7 +225,8 @@ function theme_css() {
 </style>";
 }
 
-function theme_google_analytics() {
+function theme_google_analytics()
+{
 	global $GA_ACCOUNT;
 	if (!$GA_ACCOUNT) return '';
 	$googleAnalyticsImageUrl = googleAnalyticsGetImageUrl();
