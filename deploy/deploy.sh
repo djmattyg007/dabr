@@ -16,5 +16,5 @@ if [[ $# -eq 1 ]]; then
 	fi
 fi
 
-echo $RSYNC $DRYRUN --itemize-changes --delete -rtv $EXCLUDE $SOURCE $DEST
+echo $RSYNC $DRYRUN --itemize-changes --delete -rtv $FILTER $SOURCE $DEST
 $RSYNC $DRYRUN --itemize-changes --delete -rtv $FILTER $SOURCE $DEST
