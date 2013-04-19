@@ -89,13 +89,13 @@ function settings_page($args) {
 	);
 	
 	$perPage = array(
-		 '10'		=>  '10 Tweets Per Page',
-		 '20'		=>  '20 Tweets Per Page',
-		 '30'		=>  '30 Tweets Per Page',
-		 '40'		=>  '40 Tweets Per Page',
-		 '50'		=>  '50 Tweets Per Page',
-		'100' 	=> '100 Tweets Per Page',
-		'200' 	=> '200 Tweets Per Page',
+		 '10'		=>  '10 Tweets pp',
+		 '20'		=>  '20 Tweets pp',
+		 '30'		=>  '30 Tweets pp',
+		 '40'		=>  '40 Tweets pp',
+		 '50'		=>  '50 Tweets pp',
+		'100' 	=> '100 Tweets pp',
+		'200' 	=> '200 Tweets pp',
 	);
 
 	$gwt = array(
@@ -147,7 +147,7 @@ function settings_page($args) {
 	$content .= '<p><label><input type="checkbox" name="reverse" value="yes" '. (setting_fetch('reverse') == 'yes' ? ' checked="checked" ' : '') .' /> Attempt to reverse the conversation thread view.</label></p>';
 	$content .= '<p><label><input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' /> Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago</label></p>';
 	$content .= '<p><label><input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' /> Hide inline media (eg TwitPic thumbnails)</label></p>';
-	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />It is worth adjusting this value if the time appears to be wrong.</label></p>';
+	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />Adjust this value if the time appears to be wrong.</label></p>';
 
 	
 	// Allow users to choose a Dabr password if accounts are enabled
