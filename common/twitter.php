@@ -1198,9 +1198,10 @@ function theme_directs_menu()
 
 function theme_directs_form($to)
 {
+	$html_to = "";
 	if ($to) {
 		if (friendship_exists($to) != 1) {
-			$html_to = "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :-(<br/>";
+			$html_to .= "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :(<br/>";
 		}
 		$html_to .= "Sending direct message to <b>$to</b><input name='to' value='$to' type='hidden'>";
 	} else {
