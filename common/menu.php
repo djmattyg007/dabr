@@ -2,13 +2,15 @@
 
 $menu_registry = array();
 
-function menu_register($items) {
+function menu_register($items)
+{
 	foreach ($items as $url => $item) {
 		$GLOBALS['menu_registry'][$url] = $item;
 	}
 }
 
-function menu_execute_active_handler() {
+function menu_execute_active_handler()
+{
 	$query = (array) explode('/', $_GET['q']);
 	$GLOBALS['page'] = $query[0];
 	$page = $GLOBALS['menu_registry'][$GLOBALS['page']];
@@ -32,11 +34,13 @@ function menu_execute_active_handler() {
 	return false;
 }
 
-function menu_current_page() {
+function menu_current_page()
+{
 	return $GLOBALS['page'];
 }
 
-function menu_visible_items() {
+function menu_visible_items()
+{
 	static $items;
 	if (!isset($items)) {
 		$items = array();
@@ -53,15 +57,18 @@ function menu_visible_items() {
 	return $items;
 }
 
-function theme_menu_top() {
+function theme_menu_top()
+{
 	return theme('menu_both', 'top');
 }
 
-function theme_menu_bottom() {
+function theme_menu_bottom()
+{
 	return theme('menu_both', 'bottom');
 }
 
-function theme_menu_both($menu) {
+function theme_menu_both($menu)
+{
 	$links = array();
 	foreach (menu_visible_items() as $url => $page) {
 		$title = $url ? $url : 'home';
