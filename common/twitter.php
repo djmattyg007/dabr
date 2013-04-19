@@ -1764,7 +1764,7 @@ function theme_timeline($feed, $paginate = true) {
 		unset($row);
 		$class = 'status';
 		
-		if ($page != 'user' && $avatar)	{
+		if ($page != 'user' && $avatar) {
 			$row[] = array('data' => $avatar, 'class' => 'avatar');
 			$class .= ' shift';
 		}
@@ -1781,14 +1781,14 @@ function theme_timeline($feed, $paginate = true) {
 	}
 	$content = theme('table', array(), $rows, array('class' => 'timeline'));
 
-	if(!$hide_pagination) {
-		if($paginate) {
-			if($page == 'some-unknown-method-which-doesnt-take-max_id') {
+	if (!$hide_pagination) {
+		if ($paginate) {
+			if ($page == 'some-unknown-method-which-doesnt-take-max_id') {
 				$content .= theme('pagination');
 			}
 			//if ($page == '' || $page == 'user' || $page == 'search' || $page == 'hash' || $page == 'tofrom' || $page == 'replies' || $page == 'directs') {
 			else {
-				if(is_64bit()) $max_id = intval($max_id) - 1; //stops last tweet appearing as first tweet on next page
+				if (is_64bit()) $max_id = intval($max_id) - 1; //stops last tweet appearing as first tweet on next page
 				$content .= theme('pagination', $max_id);				
 			}
 		}
@@ -1804,16 +1804,12 @@ function twitter_is_reply($status) {
 	$user = user_current_username();
 
 	//	Use Twitter Entities to see if this contains a mention of the user
-	if ($status->entities)	// If there are entities
-	{
-		if ($status->entities->user_mentions)
-		{
+	if ($status->entities) { // If there are entities
+		if ($status->entities->user_mentions) {
 			$entities = $status->entities;
 			
-			foreach($entities->user_mentions as $mentions)
-			{
-				if ($mentions->screen_name == $user) 
-				{
+			foreach ($entities->user_mentions as $mentions) {
+				if ($mentions->screen_name == $user) {
 					return true;
 				}
 			}
@@ -1823,43 +1819,44 @@ function twitter_is_reply($status) {
 	
 	// If there are no entities (for example on a search) do a simple regex
 	$found = Twitter_Extractor::create($status->text)->extractMentionedUsernames();
-	foreach($found as $mentions)
-	{
+	foreach ($found as $mentions) {
 		// Case insensitive compare
-		if (strcasecmp($mentions, $user) == 0)
-		{
+		if (strcasecmp($mentions, $user) == 0) {
 			return true;
 		}
 	}
 	return false;
 }
 
-function theme_followers($feed, $nextPageURL) {
+function theme_followers($feed, $nextPageURL)
+{
 	$rows = array();
 	if (count($feed) == 0 || $feed == '[]') return '<p>No users to display.</p>';
 
 	foreach ($feed as $user) {
-
 		$name = theme('full_name', $user);
 		$tweets_per_day = twitter_tweets_per_day($user);
 		$last_tweet = strtotime($user->status->created_at);
 		$content = "{$name}<br /><span class='about'>";
-		if($user->description != "")
+		if($user->description != "") {
 			$content .= "Bio: " . twitter_parse_tags($user->description) . "<br />";
-		if($user->location != "")
+		}
+		if($user->location != "") {
 			$content .= "Location: {$user->location}<br />";
+		}
 		$content .= "Info: ";
 		$content .= pluralise('tweet', (int)$user->statuses_count, true) . ", ";
 		$content .= pluralise('friend', (int)$user->friends_count, true) . ", ";
 		$content .= pluralise('follower', (int)$user->followers_count, true) . ", ";
 		$content .= "~" . pluralise('tweet', $tweets_per_day, true) . " per day<br />";
 		$content .= "Last tweet: ";
-		if($user->protected == 'true' && $last_tweet == 0)
+		if($user->protected == 'true' && $last_tweet == 0) {
 			$content .= "Private";
-		else if($last_tweet == 0)
+		} else if($last_tweet == 0) {
 			$content .= "Never tweeted";
-		else
+		} else {
 			$content .= twitter_date('l jS F Y', $last_tweet);
+		}
 		$content .= "</span>";
 
 		$rows[] = array('data' => array(array('data' => theme('avatar', theme_get_avatar($user)), 'class' => 'avatar'),
@@ -1869,14 +1866,16 @@ function theme_followers($feed, $nextPageURL) {
 	}
 
 	$content = theme('table', array(), $rows, array('class' => 'followers'));
-	if ($nextPageURL)
+	if ($nextPageURL) {
 		$content .= "<a href='{$nextPageURL}'>Next</a>";
+	}
 	return $content;
 }
 
 // Annoyingly, retweeted_by.xml and followers.xml are subtly different. 
 // TODO merge theme_retweeters with theme_followers
-function theme_retweeters($feed, $hide_pagination = false) {
+function theme_retweeters($feed, $hide_pagination = false)
+{
 	$rows = array();
 	if (count($feed) == 0 || $feed == '[]') return '<p>No one has retweeted this status.</p>';
 

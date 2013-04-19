@@ -4,8 +4,7 @@ function desktop_theme_status_form($text = '', $in_reply_to_id = NULL) {
 		$icon = "images/twitter-bird-16x16.png";
 		
 		//	adding ?status=foo will automaticall add "foo" to the text area.
-		if ($_GET['status'])
-		{
+		if ($_GET['status']) {
 			$text = $_GET['status'];
 		}
 		
