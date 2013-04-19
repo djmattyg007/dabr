@@ -2,15 +2,18 @@
 
 require 'desktop.php';
 
-function worksafe_theme_status_form($text = '', $in_reply_to_id = NULL) {
+function worksafe_theme_status_form($text = '', $in_reply_to_id = NULL)
+{
 	return desktop_theme_status_form($text, $in_reply_to_id);
 }
 
-function worksafe_theme_avatar($url, $force_large = false) {
+function worksafe_theme_avatar($url, $force_large = false)
+{
 	return '';
 }
 
-function worksafe_theme_css() {
+function worksafe_theme_css()
+{
 	return '<style type="text/css">
 table { width: 100%; }
 body, input, textarea { color: #666; font-family: sans-serif; font-size: 11px; }
@@ -22,11 +25,13 @@ textarea, input { background: #eee; border: 1px solid #aaa; }
 </style>';
 }
 
-function worksafe_theme_menu_bottom() {
+function worksafe_theme_menu_bottom()
+{
 	return '';
 }
 
-function worksafe_theme_status_time_link($status, $is_link = true) {
+function worksafe_theme_status_time_link($status, $is_link = true)
+{
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
 		if (twitter_date('dmy') == twitter_date('dmy', $time)) {

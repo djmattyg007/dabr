@@ -30,13 +30,15 @@ menu_register(array (
 	),
 ));
 
-function logout_page() {
+function logout_page()
+{
 	user_logout();
 	header("Location: " . BASE_URL); /* Redirect browser */
 	exit;
 }
 
-function about_page() {
+function about_page()
+{
 	$content = file_get_contents('about.html');
 	theme('page', 'About', $content);
 }
