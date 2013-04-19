@@ -1748,7 +1748,7 @@ function theme_timeline($feed, $paginate = true) {
 		$retweeted = '';
 		if ($status->retweeted_by) {
 			$retweeted_by = $status->retweeted_by->user->screen_name;
-			$retweeted = "<br /><small>" . theme('action_icon', "retweeted_by/{$status->id}", 'images/retweet.png', 'RT') . "retweeted by <a href='user/{$retweeted_by}'>{$retweeted_by}</a></small>";
+			$retweeted = "<br /><small class='from'>retweeted by <a href='user/{$retweeted_by}'>{$retweeted_by}</a></small>";
 			//$source .= "<br /><a href='retweeted_by/{$status->id}'>retweeted</a> by <a href='user/{$retweeted_by}'>{$retweeted_by}</a>";
 		}
 		if ($status->favorite_count) {
