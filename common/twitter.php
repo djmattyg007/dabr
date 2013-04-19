@@ -1743,10 +1743,10 @@ function theme_timeline($feed, $paginate = true) {
 		if ($status->place->name) {
 			$source .= ", " . $status->place->name . ", " . $status->place->country;
 		}
-		if ($status->in_reply_to_status_id)	{
-			$source .= ", in reply to <a href='status/{$status->in_reply_to_status_id_str}'>{$status->in_reply_to_screen_name}</a>";
+		if ($status->in_reply_to_status_id) {
+			$source .= " <a href='status/{$status->in_reply_to_status_id_str}'>in reply to {$status->in_reply_to_screen_name}</a>";
 		}
-		if ($status->retweet_count)	{
+		if ($status->retweet_count) {
 			$source .= ", <a href='retweeted_by/{$status->id}'>retweeted " . x_times($status->retweet_count) . "</a>";
 		}
 		$retweeted = '';
