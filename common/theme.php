@@ -1,5 +1,4 @@
 <?php
-require_once ("common/advert.php");
 
 $current_theme = false;
 
@@ -164,7 +163,6 @@ function theme_page($title, $content)
 						'.$meta.theme('css').'
 					</head>
 					<body id="thepage">';
-	//echo 				"<div id=\"advert\">" . show_advert() . "</div>";
 	echo 				$body;
 	if (setting_fetch('colours') == null)
 	{
