@@ -206,7 +206,7 @@ function theme_css() {
 	.avatar{display:block; height:26px; width:26px; left:0.3em; margin:0; overflow:hidden; position:absolute;}
 	.status{display:block;word-wrap:break-word;}
 	.shift{margin-left:30px;min-height:24px;}
-	.from{font-size:0.75em;color:#{$c->small};font-family:serif;}
+	.from{font-size:0.75em;color:#{$c->small};}
 	.from a{color:#{$c->small};}
 </style>";
 }
