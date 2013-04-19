@@ -1755,11 +1755,11 @@ function theme_timeline($feed, $paginate = true) {
 			$retweeted = "<br /><small>" . theme('action_icon', "retweeted_by/{$status->id}", 'images/retweet.png', 'RT') . "retweeted by <a href='user/{$retweeted_by}'>{$retweeted_by}</a></small>";
 			//$source .= "<br /><a href='retweeted_by/{$status->id}'>retweeted</a> by <a href='user/{$retweeted_by}'>{$retweeted_by}</a>";
 		}
-		if($status->favorite_count) {
+		if ($status->favorite_count) {
 			$source .= ', favourited ' . x_times($status->favorite_count);
 		}
 		//$html = "<b><a href='user/{$status->from->screen_name}'>{$status->from->screen_name}</a></b> $actions $link<br />{$text}<br />$media<small>$source</small>";
-		$html = "<b><a href='user/{$status->from->screen_name}'>{$status->from->screen_name}</a></b> $actions $link{$retweeted}<br />{$text}<br />$media<span class='from'>$source</span>";
+		$html = "<b><a href='user/{$status->from->screen_name}'>{$status->from->screen_name}</a></b> $actions $link<br />{$text}<br />$media<span class='from'>$source</span>$retweeted";
 
 		unset($row);
 		$class = 'status';
