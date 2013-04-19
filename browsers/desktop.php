@@ -1,5 +1,6 @@
 <?php
-function desktop_theme_status_form($text = '', $in_reply_to_id = NULL) {
+function desktop_theme_status_form($text = '', $in_reply_to_id = NULL)
+{
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 		
@@ -54,7 +55,8 @@ function desktop_theme_status_form($text = '', $in_reply_to_id = NULL) {
 	}
 }
 
-function desktop_theme_search_form($query) {
+function desktop_theme_search_form($query)
+{
 	$query = stripslashes(htmlentities($query,ENT_QUOTES,"UTF-8"));
 
 	return '

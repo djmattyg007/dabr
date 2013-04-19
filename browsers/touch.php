@@ -3,7 +3,8 @@
 require 'desktop.php';
 require_once ("common/advert.php");
 
-function touch_theme_action_icon($url, $image_url, $text) {
+function touch_theme_action_icon($url, $image_url, $text)
+{
 	if ($text == 'MAP')	{
 		return "<a href='$url' target='" . get_target() . "'><img src='$image_url' alt='$text' width='12' height='12' /></a>";
 	}
@@ -16,18 +17,22 @@ function touch_theme_action_icon($url, $image_url, $text) {
 }
 
 
-function touch_theme_status_form($text = '', $in_reply_to_id = NULL) {
+function touch_theme_status_form($text = '', $in_reply_to_id = NULL)
+{
 	return desktop_theme_status_form($text, $in_reply_to_id);
 }
-function touch_theme_search_form($query) {
+function touch_theme_search_form($query)
+{
 	return desktop_theme_search_form($query);
 }
 
-function touch_theme_avatar($url, $force_large = false) {
+function touch_theme_avatar($url, $force_large = false)
+{
 	return "<img src='$url' width='48' height='48' />";
 }
 
-function touch_theme_menu_top() {
+function touch_theme_menu_top()
+{
 	$links = array();
 	$main_menu_titles = array('home', 'replies', 'directs', 'search');
 	foreach (menu_visible_items() as $url => $page) {
@@ -48,11 +53,13 @@ function touch_theme_menu_top() {
 	return $html;
 }
 
-function touch_theme_menu_bottom() {
+function touch_theme_menu_bottom()
+{
 	return '';
 }
 
-function touch_theme_status_time_link($status, $is_link = true) {
+function touch_theme_status_time_link($status, $is_link = true)
+{
 	$out = theme_status_time_link($status, $is_link);
 	//old method didn't work with conversation view (and no longer with correct pluralisation)
 	$out = str_replace(array(' years ago', ' year ago', ' days ago', ' day ago', ' hours ago', ' hour ago', ' mins ago', ' min ago', ' secs ago', ' sec ago'),
@@ -60,7 +67,8 @@ function touch_theme_status_time_link($status, $is_link = true) {
 	return $out;
 }
 
-function touch_theme_css() {
+function touch_theme_css()
+{
 	$out = theme_css();
 	$out .= '<link rel="stylesheet" href="browsers/touch.css" />';
 	$out .= '<script type="text/javascript">'.file_get_contents('browsers/touch.js').'</script>';

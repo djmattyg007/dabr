@@ -1,6 +1,7 @@
 <?php
 
-function browser_detect() {
+function browser_detect()
+{
 	if ($browser = setting_fetch('browser')) {
 		return browser_load($browser);
 	}
@@ -22,7 +23,8 @@ function browser_detect() {
 	fclose($handle);
 }
 
-function browser_load($browser) {
+function browser_load($browser)
+{
 	$GLOBALS['current_theme'] = $browser;
 	$file = "browsers/$browser.php";
 	if (file_exists($file)) {
