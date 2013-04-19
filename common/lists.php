@@ -7,7 +7,8 @@ menu_register(array(
 	),
 ));
 
-function lists_paginated_process($url) {
+function lists_paginated_process($url)
+{
 	// Adds cursor/pagination parameters to a query
 	$cursor = $_GET['cursor'];
 	if (!is_numeric($cursor)) {
@@ -17,7 +18,8 @@ function lists_paginated_process($url) {
 	return twitter_process($url);
 }
 
-function twitter_lists_tweets($user, $list) {
+function twitter_lists_tweets($user, $list)
+{
 	// Tweets belonging to a list
 	$url = API_NEW."lists/statuses.json?owner_screen_name={$user}&slug={$list}";
 	if($_GET['max_id']) {
@@ -26,22 +28,26 @@ function twitter_lists_tweets($user, $list) {
 	return twitter_process($url);
 }
 
-function twitter_lists_user_lists($user) {
+function twitter_lists_user_lists($user)
+{
 	// Lists a user has created
 	return twitter_process(API_NEW."lists/list.json?screen_name={$user}");
 }
 
-function twitter_lists_user_memberships($user) {
+function twitter_lists_user_memberships($user)
+{
 	// Lists a user belongs to
 	return lists_paginated_process(API_NEW."lists/memberships.json?screen_name={$user}");
 }
 
-function twitter_lists_list_members($user, $list) {
+function twitter_lists_list_members($user, $list)
+{
 	// Members of a list
 	return lists_paginated_process(API_NEW."lists/members.json?owner_screen_name={$user}&slug={$list}");
 }
 
-function twitter_lists_list_subscribers($user, $list) {
+function twitter_lists_list_subscribers($user, $list)
+{
 	// Subscribers of a list
 	return lists_paginated_process(API_NEW."lists/subscribers.json?owner_screen_name={$user}&slug={$list}");
 }
@@ -61,10 +67,13 @@ lists/$user/$list/subscribers
 lists/$user/$list/edit -- rename a list (no member editting)
 */
 
-function lists_controller($query) {
+function lists_controller($query)
+{
 	// Pick off $user from $query or default to the current user
 	$user = $query[1];
-	if (!$user) $user = user_current_username();
+	if (!$user) {
+		$user = user_current_username();
+	}
 
 	// Fiddle with the $query to find which part identifies the page they want
 	if ($query[3]) {
@@ -92,7 +101,7 @@ function lists_controller($query) {
 			// Show subscribers of a list
 			return lists_list_subscribers_page($user, $list);
 		case 'edit':
-			// TODO: List editting page (name and availability)
+			// TODO: List editing page (name and availability)
 			break;
 		default:
 			// Show tweets in a particular list
@@ -105,10 +114,10 @@ function lists_controller($query) {
 }
 
 
-
 /* Pages */
 
-function lists_lists_page($user) {
+function lists_lists_page($user)
+{
 	// Show a user's lists
 	$lists = twitter_lists_user_lists($user);
 	$content = "<p><a href='lists/{$user}/memberships'>Lists following {$user}</a> | <strong>Lists {$user} follows</strong></p>";
@@ -116,7 +125,8 @@ function lists_lists_page($user) {
 	theme('page', "{$user}'s lists", $content);
 }
 
-function lists_membership_page($user) {
+function lists_membership_page($user)
+{
 	// Show lists a user belongs to
 	$lists = twitter_lists_user_memberships($user);
 	$content = "<p><strong>Lists following {$user}</strong> | <a href='lists/{$user}'>Lists {$user} follows</a></p>";
@@ -124,7 +134,8 @@ function lists_membership_page($user) {
 	theme('page', 'List memberhips', $content);
 }
 
-function lists_list_tweets_page($user, $list) {
+function lists_list_tweets_page($user, $list)
+{
 	// Show tweets in a list
 	$tweets = twitter_lists_tweets($user, $list);
 	$tl = twitter_standard_timeline($tweets, 'user');
@@ -135,7 +146,8 @@ function lists_list_tweets_page($user, $list) {
 	theme('page', "List {$user}/{$list}", $content);
 }
 
-function lists_list_members_page($user, $list) {
+function lists_list_members_page($user, $list)
+{
 	// Show members of a list
 	// TODO: add logic to CREATE and REMOVE members
 	$p = twitter_lists_list_members($user, $list);
@@ -146,7 +158,8 @@ function lists_list_members_page($user, $list) {
 	theme('page', "Members of {$user}/{$list}", $content);
 }
 
-function lists_list_subscribers_page($user, $list) {
+function lists_list_subscribers_page($user, $list)
+{
 	// Show subscribers of a list
 	$p = twitter_lists_list_subscribers($user, $list);
 	$content = "<div class='heading'>Subscribers of <a href='user/{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>:</div>\n";
@@ -158,11 +171,11 @@ function lists_list_subscribers_page($user, $list) {
 
 /* Theme functions */
 
-function theme_lists($json) {
+function theme_lists($json)
+{
 	if(isset($json->lists)) {
 		$lists = $json->lists;
-	}
-	else {
+	} else {
 		$lists = $json;
 	}
 	if (sizeof($lists) == 0 || $lists == '[]') {
@@ -183,12 +196,15 @@ function theme_lists($json) {
 	return $content;
 }
 
-function theme_list_pagination($json) {
+function theme_list_pagination($json)
+{
 	if ($cursor = (string) $json->next_cursor) {
 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Next</a>";
 	}
 	if ($cursor = (string) $json->previous_cursor) {
 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Previous</a>";
 	}
-	if (count($links) > 0) return '<p>'.implode(' | ', $links).'</p>';
+	if (count($links) > 0) {
+		return '<p>'.implode(' | ', $links).'</p>';
+	}
 }
