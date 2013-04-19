@@ -37,7 +37,6 @@ function user_oauth() {
 		_user_save_cookie(1);
 		header('Location: '. BASE_URL);
 		exit();
-
 	} else {
 		// Generate AUTH token request
 		$params = array('oauth_callback' => BASE_URL.'oauth');
@@ -207,23 +206,24 @@ function user_login() {
 <p><b>Registration steps:</b></p>
 
 <ol>
-	<li><a href="oauth">Sign in via Twitter.com</a> from any computer</li>
-	<li>Visit the Dabr settings page to choose a password</li>
-	<li>Done! You can now benefit from accessing Twitter through Dabr from anywhere (even from computers that block Twitter.com)</li>
+	<li><a href="oauth">Sign in via Twitter.com</a> from any computer.</li>
+	<li>Visit the Dabr settings page to choose a password.</li>
+	<li>Done! You can now benefit from accessing Twitter through Dabr from anywhere (even from computers that block Twitter.com).</li>
 </ol>
 ');
 }
 
 function theme_login() {
-	$content = '<div style="margin:1em; font-size: 1.2em">
-<p><a href="oauth"><img src="images/twitter_button_2_lo.gif" alt="Sign in with Twitter/OAuth" width="165" height="28" /></a><br /><a href="oauth">Sign in via Twitter.com</a></p>
-<p>Twitter no longer allow you to log in directly with a username and password so we can\'t show the standard login form. There\'s some more information on the <a href="http://blog.dabr.co.uk/">Dabr blog</a>.</p>';
+	$content = '<div style="margin:1em; font-size: 1.2em"><p><a href="oauth">Sign in via Twitter.com</a></p>';
 	
-	if (MYSQL_USERS == 'ON') $content .= '<p>No access to Twitter.com? <a href="login">Sign in with your Dabr account</a></p>';
+	if (MYSQL_USERS == 'ON') {
+		$content .= '<p>No access to Twitter.com? <a href="login">Sign in with your Dabr account</a></p>';
+	}
+
 	$content .= '</div>';
 	return $content;
 }
 
 function theme_logged_out() {
-	return '<p>Logged out. <a href="">Login again</a></p>';
+	return '<p>Logged out. <a href="">Login again</a>.</p>';
 }
