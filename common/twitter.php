@@ -133,10 +133,6 @@ menu_register(array(
 		'security' => true,
 		'callback' => 'twitter_retweets_page',
 	),
-	'find' => array(
-		'security' => true,
-		'callback' => 'twitter_find_user',
-	),
 	'retweeted_by' => array(
 		'security' => true,
 		'hidden' => true,
@@ -2126,28 +2122,6 @@ function theme_followers_list($feed, $hide_pagination = false) {
 		#$content .= theme('pagination');
 		$content .= theme('list_pagination', $feed);
 	return $content;
-}
-
-function twitter_find_user() {
-#/1.1/ possibility to add the option to paginate via page=2 on these
-	$name = $_GET['name'];
-	if(strpos($name, '@') === 0) {
-		twitter_refresh('user/' . str_replace('@','',$name));
-	}
-	$output = '';
-	$output = '<form method="get" action="find">Find: <input name="name" id="name" value="'.urldecode($name).'" /><input type="submit" value="Go" /></form>';
-	if($name) {
-		$request = API_NEW."users/search.json?q=" . urlencode($name);
-		$users = twitter_process($request);
-	}
-	//ELSE RUNS ON /1/ API, THERE ARE NO PLANS BY TWITTER TO MAKE THIS UNPUBLISHED API CALL WORK WITH /1.1/ :(
-	else {
-		$request = API_OLD."users/recommendations.json?expanded_results_format=1&cursor=-1&pc=true&display_location=wtf-view-all-stream&personalized=false&force_bq=false&algorithm=&connections=true";
-		$users = twitter_process($request);
-		$output .= "<div class='heading'>Recommend for you by Twitter:</div>\n";
-	}
-	$output .= theme_followers_list($users, true);
-	theme('page', 'Find', $output);
 }
 
 function x_times($count) {
