@@ -163,7 +163,7 @@ function twitter_profile_page()
 		// post profile update
 		$post_data = array(
 			"name"			=> stripslashes($_POST['name']),
-			"url"				=> stripslashes($_POST['url']),
+			"url"			=> stripslashes($_POST['url']),
 			"location"		=> stripslashes($_POST['location']),
 			"description"	=> stripslashes($_POST['description']),
 		);
@@ -191,7 +191,8 @@ function twitter_profile_page()
 			'image' => "@{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}",
 		);
 
-		$code = $tmhOAuth->request('POST', 
+		$code = $tmhOAuth->request(
+					'POST', 
 					$tmhOAuth->url("1/account/update_profile_image"),
 					$params,
 					true, // use auth
@@ -203,9 +204,9 @@ function twitter_profile_page()
 			$content = "<h2>Avatar Updated</h2>";			
 		} else {
 			$content = "Damn! Something went wrong. Sorry :-("  
-				."<br /> code="	. $code
-				."<br /> status="	. $status
-				."<br /> image="	. $image
+				."<br /> code=".$code
+				."<br /> status=".$status
+				."<br /> image=".$image
 				//."<br /> response=<pre>"
 				//. print_r($tmhOAuth->response['response'], TRUE)
 				. "</pre><br /> info=<pre>"
@@ -215,8 +216,8 @@ function twitter_profile_page()
 		}
 	}
 	
-	// Twitter API is really slow!  If there's no delay, the old profile is returned.
-	//	Wait for 5 seconds before getting the user's information, which seems to be sufficient
+	// Twitter API is really slow! If there's no delay, the old profile is returned.
+	// Wait for 5 seconds before getting the user's information, which seems to be sufficient
 	sleep(5);
 
 	// retrieve profile information
@@ -317,7 +318,7 @@ function twitter_trends_page($query)
 	$header .= '<option value="1"' . (($woeid == 1) ? ' selected="selected"' : '') . '>Worldwide</option>';
 
 	//sort the output, going for Country with Towns as children
-	foreach($local as $key => $row) {
+	foreach ($local as $key => $row) {
 		$c[$key] = $row->country;
 		$t[$key] = $row->placeType->code;
 		$n[$key] = $row->name;
