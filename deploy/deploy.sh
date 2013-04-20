@@ -5,8 +5,7 @@ ROOT="`dirname $0`/.."
 SOURCE="$ROOT"
 DEST="/var/www/dabr/"
 
-EXCLUDE="--exclude .git* --exclude deploy"
-FILTER="--filter=\"- .git - .gitignore - deploy/\""
+EXCLUDE="--exclude .git* --exclude deploy --exclude README.md"
 
 DRYRUN="--dry-run"
 
