@@ -173,7 +173,7 @@ function lists_list_subscribers_page($user, $list)
 
 function theme_lists($json)
 {
-	if(isset($json->lists)) {
+	if (isset($json->lists)) {
 		$lists = $json->lists;
 	} else {
 		$lists = $json;
