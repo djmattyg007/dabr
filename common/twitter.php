@@ -893,7 +893,7 @@ function twitter_follow_page($query)
 {
 	$user = $query[1];
 	if ($user) {
-		if($query[0] == 'follow'){
+		if ($query[0] == 'follow'){
 			$request = API_NEW."friendships/create.json?screen_name={$user}";
 		} else {
 			$request = API_NEW."friendships/destroy.json?screen_name={$user}";
@@ -908,7 +908,7 @@ function twitter_block_page($query)
 	twitter_ensure_post_action();
 	$user = $query[1];
 	if ($user) {
-		if($query[0] == 'block'){
+		if ($query[0] == 'block'){
 			$request = API_NEW."blocks/create.json?screen_name={$user}";
 			twitter_process($request, true);
 			twitter_refresh("confirmed/block/{$user}");
@@ -952,9 +952,7 @@ function twitter_confirmation_page($query)
 				$action = 'unblock';
 				$content  = "<p>Are you really sure you want to <strong>Unblock $target</strong>?</p>";
 				$content .= '<ul><li>They will see your updates on their home page if they follow you again.</li><li>You <em>can</em> block them again if you want.</li></ul>';
-			}
-			else
-			{
+			} else {
 				$content = "<p>Are you really sure you want to <strong>$action $target</strong>?</p>";
 				$content .= "<ul><li>You won't show up in their list of friends</li><li>They won't see your updates on their home page</li><li>They won't be able to follow you</li><li>You <em>can</em> unblock them but you will need to follow them again afterwards</li></ul>";
 			}
@@ -977,8 +975,8 @@ function twitter_confirmation_page($query)
 
 	}
 	$content .= "<form action='$action/$target' method='post'>
-						<input type='submit' value='Yes please' />
-					</form>";
+					<input type='submit' value='Yes please' />
+				 </form>";
 	theme('Page', 'Confirm', $content);
 }
 
@@ -1098,10 +1096,8 @@ function twitter_get_place($lat, $long)
 	
 	$locations = twitter_process($request);
 	$places = $locations->result->places;
-	foreach($places as $place)
-	{
-		if ($place->id) 
-		{
+	foreach ($places as $place) {
+		if ($place->id) {
 			return $place->id;
 		}
 	}
@@ -1228,7 +1224,7 @@ function twitter_search_page() {
 	}
 	if (!isset($search_query) && array_key_exists('search_favourite', $_COOKIE)) {
 		$search_query = $_COOKIE['search_favourite'];
-		}
+	}
 	if ($search_query) {
 		$tl = twitter_search($search_query, $lat, $long, $radius);
 		if ($search_query !== $_COOKIE['search_favourite']) {
@@ -1239,7 +1235,8 @@ function twitter_search_page() {
 	theme('page', 'Search', $content);
 }
 
-function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL) {
+function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL)
+{
 	$per_page = setting_fetch('perPage', 20);
 	$request = API_NEW."search/tweets.json?result_type=recent&q={$search_query}&rpp={$per_page}";
 	if ($_GET['max_id']) {
@@ -1249,8 +1246,7 @@ function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL
 		$request .= "&geocode=$lat,$long,";
 		if ($radius) {
 			$request .= "$radius";
-		}
-		else {
+		} else {
 			$request .= "1km";
 		}
 	}
@@ -1259,7 +1255,8 @@ function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL
 	return $tl;
 }
 
-function twitter_find_tweet_in_timeline($tweet_id, $tl) {
+function twitter_find_tweet_in_timeline($tweet_id, $tl)
+{
 	// Parameter checks
 	if (!is_numeric($tweet_id) || !$tl) return;
 
@@ -1275,13 +1272,16 @@ function twitter_find_tweet_in_timeline($tweet_id, $tl) {
 	return $tweet;
 }
 
-function twitter_user_page($query) {
+function twitter_user_page($query)
+{
 	$screen_name = $query[1];
 	$subaction = $query[2];
 	$in_reply_to_id = (string) $query[3];
 	$content = '';
 
-	if (!$screen_name) theme('error', 'No username given');
+	if (!$screen_name) {
+		theme('error', 'No username given');
+	}
 
 	// Load up user profile information and one tweet
 	$user = twitter_user_info($screen_name);
@@ -1342,7 +1342,8 @@ function twitter_user_page($query) {
 	theme('page', "User {$screen_name}", $content);
 }
 
-function twitter_favourites_page($query) {
+function twitter_favourites_page($query)
+{
 	$screen_name = $query[1];
 	if (!$screen_name) {
 		user_ensure_authenticated();
@@ -1359,20 +1360,23 @@ function twitter_favourites_page($query) {
 	theme('page', 'Favourites', $content);
 }
 
-function twitter_mark_favourite_page($query) {
+function twitter_mark_favourite_page($query)
+{
 	$id = (string) $query[1];
-	if (!is_numeric($id)) return;
+	if (!is_numeric($id)) {
+		return;
+	}
 	if ($query[0] == 'unfavourite') {
 		$request = API_NEW."favorites/destroy.json?id={$id}";
-	}
-	else {
+	} else {
 		$request = API_NEW."favorites/create.json?id={$id}";
 	}
 	twitter_process($request, true);
 	twitter_refresh();
 }
 
-function twitter_home_page() {
+function twitter_home_page()
+{
 	user_ensure_authenticated();
 	$per_page = setting_fetch('perPage', 20);
 	$request = API_NEW."statuses/home_timeline.json?count={$per_page}";
@@ -1390,7 +1394,8 @@ function twitter_home_page() {
 	theme('page', 'Home', $content);
 }
 
-function twitter_hashtag_page($query) {
+function twitter_hashtag_page($query)
+{
 	if (isset($query[1])) {
 		$hashtag = '#'.$query[1];
 		$content = theme('status_form', $hashtag.' ');
@@ -1402,13 +1407,13 @@ function twitter_hashtag_page($query) {
 	}
 }
 
-function theme_status_form($text = '', $in_reply_to_id = NULL) {
+function theme_status_form($text = '', $in_reply_to_id = NULL)
+{
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 
 		//	adding ?status=foo will automaticall add "foo" to the text area.
-		if ($_GET['status'])
-		{
+		if ($_GET['status']) {
 			$text = $_GET['status'];
 		}
 		
@@ -1416,9 +1421,12 @@ function theme_status_form($text = '', $in_reply_to_id = NULL) {
 	}
 }
 
-function theme_status($status) {
+function theme_status($status)
+{
 	//32bit int / snowflake patch
-	if($status->id_str) $status->id = $status->id_str;
+	if($status->id_str) {
+		$status->id = $status->id_str;
+	}
 	
 	$feed[] = $status;
 	$tl = twitter_standard_timeline($feed, 'status');
@@ -1432,17 +1440,14 @@ function theme_retweet($status)
 	$length = function_exists('mb_strlen') ? mb_strlen($text,'UTF-8') : strlen($text);
 	$from = substr($_SERVER['HTTP_REFERER'], strlen(BASE_URL));
 
-	if($status->user->protected == 0)
-	{
+	if ($status->user->protected == 0) {
 		$content.="<p>Twitter's new style retweet:</p>
 					<form action='twitter-retweet/{$status->id_str}' method='post'>
 						<input type='hidden' name='from' value='$from' />
 						<input type='submit' value='Twitter Retweet' />
 					</form>
 					<hr />";
-	}
-	else
-	{
+	} else {
 		$content.="<p>@{$status->user->screen_name} doesn't allow you to retweet them. You will have to use the  use the old style editable retweet</p>";
 	}
 
@@ -1469,13 +1474,13 @@ function twitter_tweets_per_day($user, $rounding = 1)
 function theme_user_header($user)
 {
 	$friendship = friendship($user->screen_name);
-	$followed_by = $friendship->relationship->target->followed_by; //The $user is followed by the authenticating
+	$followed_by = $friendship->relationship->target->followed_by; // The $user is followed by the authenticating
 	$following = $friendship->relationship->target->following;
 	$name = theme('full_name', $user);
 	$full_avatar = theme_get_full_avatar($user);
 	$link = theme('external_link', $user->url);
-	//Some locations have a prefix which should be removed (UbertTwitter and iPhone)
-	//Sorry if my PC has converted from UTF-8 with the U (artesea)
+	// Some locations have a prefix which should be removed (UberTwitter and iPhone)
+	// Sorry if my PC has converted from UTF-8 with the U (artesea)
 	$cleanLocation = str_replace(array("iPhone: ","ÜT: "),"",$user->location);
 	$raw_date_joined = strtotime($user->created_at);
 	$date_joined = date('jS M Y', $raw_date_joined);
@@ -1500,9 +1505,9 @@ function theme_user_header($user)
 	$out .= "<div class='features'>";
 	$out .= pluralise('tweet', $user->statuses_count, true);
 
-	//If the authenticated user is not following the protected used, the API will return a 401 error when trying to view friends, followers and favourites
-	//This is not the case on the Twitter website
-	//To avoid the user being logged out, check to see if she is following the protected user. If not, don't create links to friends, followers and favourites
+	// If the authenticated user is not following the protected used, the API will return a 401 error when trying to view friends, followers and favourites
+	// This is not the case on the Twitter website
+	// To avoid the user being logged out, check to see if they are following the protected user. If not, don't create links to friends, followers and favourites
 	if ($user->protected == true && $followed_by == false) {
 		$out .= " | " . pluralise('follower', $user->followers_count, true);
 		$out .= " | " . pluralise('friend', $user->friends_count, true);
@@ -1520,7 +1525,6 @@ function theme_user_header($user)
 	
 	//	One cannot follow, block, nor report spam oneself.
 	if (strtolower($user->screen_name) !== strtolower(user_current_username())) {
-	
 		if ($followed_by == false) {
 			$out .= " | <a href='follow/{$user->screen_name}'>Follow</a>";
 		} else {
@@ -1595,18 +1599,20 @@ function twitter_date($format, $timestamp = null)
 function twitter_standard_timeline($feed, $source)
 {
 	$output = array();
-	if (!is_array($feed) && $source != 'thread') return $output;
+	if (!is_array($feed) && $source != 'thread') {
+		return $output;
+	}
 	
 	//32bit int / snowflake patch
 	if (is_array($feed)) {
-		foreach($feed as $key => $status) {
-			if($status->id_str) {
+		foreach ($feed as $key => $status) {
+			if ($status->id_str) {
 				$feed[$key]->id = $status->id_str;
 			}
-			if($status->in_reply_to_status_id_str) {
+			if ($status->in_reply_to_status_id_str) {
 				$feed[$key]->in_reply_to_status_id = $status->in_reply_to_status_id_str;
 			}
-			if($status->retweeted_status->id_str) {
+			if ($status->retweeted_status->id_str) {
 				$feed[$key]->retweeted_status->id = $status->retweeted_status->id_str;
 			}
 		}
@@ -1699,12 +1705,14 @@ function twitter_standard_timeline($feed, $source)
 	}
 }
 
-function preg_match_one($pattern, $subject, $flags = NULL) {
+function preg_match_one($pattern, $subject, $flags = NULL)
+{
 	preg_match($pattern, $subject, $matches, $flags);
 	return trim($matches[1]);
 }
 
-function twitter_user_info($username = null) {
+function twitter_user_info($username = null)
+{
 	if (!$username) {
 		$username = user_current_username();
 	}
@@ -1713,7 +1721,8 @@ function twitter_user_info($username = null) {
 	return $user;
 }
 
-function theme_timeline($feed, $paginate = true) {
+function theme_timeline($feed, $paginate = true)
+{
 	if (count($feed) == 0) {
 		return theme('no_tweets');
 	}
@@ -1826,7 +1835,8 @@ function theme_timeline($feed, $paginate = true) {
 	return $content;
 }
 
-function twitter_is_reply($status) {
+function twitter_is_reply($status)
+{
 	if (!user_is_authenticated()) {
 		return false;
 	}
@@ -1908,14 +1918,16 @@ function theme_followers($feed, $nextPageURL)
 function theme_retweeters($feed, $hide_pagination = false)
 {
 	$rows = array();
-	if (count($feed) == 0 || $feed == '[]') return '<p>No one has retweeted this status.</p>';
+	if (count($feed) == 0 || $feed == '[]') {
+		return '<p>No one has retweeted this status.</p>';
+	}
 
 	foreach ($feed->user as $user) {
 		$name = theme('full_name', $user);
 		$tweets_per_day = twitter_tweets_per_day($user);
 		$last_tweet = strtotime($user->status->created_at);
 		$content = "{$name}<br /><span class='about'>";
-		if($user->description != "") {
+		if ($user->description != "") {
 			$content .= "Bio: " . twitter_parse_tags($user->description) . "<br />";
 		}
 		if($user->location != "") {
@@ -2180,10 +2192,10 @@ function theme_followers_list($feed, $hide_pagination = false)
 
 function x_times($count)
 {
-	if($count == 1) {
+	if ($count == 1) {
 		return 'once';
 	}
-	if($count == 2) {
+	if ($count == 2) {
 		return 'twice';
 	}
 	if (is_int($count)) {
