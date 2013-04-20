@@ -288,18 +288,18 @@ function friendship($user_a)
 
 function twitter_block_exists($query)
 {
-	//Get an array of all ids the authenticated user is blocking (limited at 5000 without cursoring)
+	// Get an array of all ids the authenticated user is blocking (limited at 5000 without cursoring)
 	$request = API_NEW.'blocks/ids.json';
 	$response = twitter_process($request);
 	$blocked = $response->ids;
-	//If the authenticate user has blocked $query it will appear in the array
-	return in_array($query,$blocked);
+	// If the authenticated user has blocked $query it will appear in the array
+	return in_array($query, $blocked);
 }
 
 function twitter_trends_page($query)
 {
 	$woeid = $_GET['woeid'];
-	if(isset($woeid)) {
+	if (isset($woeid)) {
 		$duration = time() + (3600 * 24 * 365);
 		setcookie('woeid', $woeid, $duration, '/');
 	} else {
