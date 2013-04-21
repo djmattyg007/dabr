@@ -29,7 +29,7 @@
 		);
 
 
-		foreach($array as $emoticon => $graphic) {
+		foreach ($array as $emoticon => $graphic) {
 			$text = str_replace($emoticon, "<img src='$graphic' alt='$emoticon'>", $text);
 		}
 
