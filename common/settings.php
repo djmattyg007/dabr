@@ -141,10 +141,6 @@ function settings_page($args) {
 	$content .= theme('options', $perPage, setting_fetch('perPage', 20));
 	$content .= '</select><br /></p>';
 	
-	$content .= '<p>Emoticons - show :) as images<br /><select name="emoticons">';
-	$content .= theme('options', $emoticons, setting_fetch('emoticons', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
-	$content .= '</select></p>';
-
 	$content .= '<p>External links go:<br /><select name="gwt">';
 	$content .= theme('options', $gwt, setting_fetch('gwt', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
 	$content .= '</select><small><br />Google Web Transcoder (GWT) converts third-party sites into small, speedy pages suitable for older phones and people with less bandwidth.</small></p>';
