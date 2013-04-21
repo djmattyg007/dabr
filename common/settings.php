@@ -89,11 +89,11 @@ function settings_page($args) {
 	);
 	
 	$perPage = array(
-		 '10'		=>  '10 Tweets pp',
-		 '20'		=>  '20 Tweets pp',
-		 '30'		=>  '30 Tweets pp',
-		 '40'		=>  '40 Tweets pp',
-		 '50'		=>  '50 Tweets pp',
+		 '10'	=>  '10 Tweets pp',
+		 '20'	=>  '20 Tweets pp',
+		 '30'	=>  '30 Tweets pp',
+		 '40'	=>  '40 Tweets pp',
+		 '50'	=>  '50 Tweets pp',
 		'100' 	=> '100 Tweets pp',
 		'200' 	=> '200 Tweets pp',
 	);
@@ -131,12 +131,9 @@ function settings_page($args) {
 	$content .= theme('options', $modes, $GLOBALS['current_theme']);
 	$content .= '</select>';
 	
-	
 	$content .= '<p>Tweets Per Page:<br /><select name="perPage">';
 	$content .= theme('options', $perPage, setting_fetch('perPage', 20));
 	$content .= '</select>';
-	
-	
 	
 	$content .= '<br/></p><p>Emoticons - show :-) as images<br /><select name="emoticons">';
 	$content .= theme('options', $emoticons, setting_fetch('emoticons', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
