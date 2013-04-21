@@ -484,7 +484,7 @@ function twitter_media_page($query)
 					</form>';
 	$content .= js_counter("message", "119");
 
-	return theme('page', 'Picture Upload', $content);
+	return theme('page', 'Upload Picture', $content);
 }
 
 function twitter_process($url, $post_data = false)
