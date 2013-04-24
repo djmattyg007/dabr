@@ -193,12 +193,11 @@ function twitter_profile_page()
 
 		$code = $tmhOAuth->request(
 					'POST', 
-					$tmhOAuth->url("1/account/update_profile_image"),
+					$tmhOAuth->url("1.1/account/update_profile_image"),
 					$params,
 					true, // use auth
-					true // multipart
+					true  // multipart
 		);
-
 
 		if ($code == 200) {
 			$content = "<h2>Avatar Updated</h2>";			
@@ -396,15 +395,15 @@ function twitter_media_page($query)
 
 		$image = "{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}";
 
-		$code = $tmhOAuth->request('POST', 'https://upload.twitter.com/1/statuses/update_with_media.json',
-											  array(
-												 'media[]'  => "@{$image}",
-												 'status'   => " " . $status, //A space is needed because twitter b0rks if first char is an @
-												 'lat'		=> $lat,
-												 'long'		=> $long,
-											  ),
-											  true, // use auth
-											  true  // multipart
+		$code = $tmhOAuth->request('POST', API_NEW.'statuses/update_with_media.json',
+											array(
+												'media[]'  => "@{$image}",
+												'status'   => " " . $status, //A space is needed because twitter b0rks if first char is an @
+												'lat'		=> $lat,
+												'long'		=> $long,
+											),
+											true, // use auth
+											true  // multipart
 										);
 
 		if ($code == 200) {
