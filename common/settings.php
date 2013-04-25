@@ -100,26 +100,11 @@ function settings_page($args) {
 		'worksafe'	=> 'Work Safe',
 	);
 	
-	$perPage = array(
-		 '10'	=>  '10 Tweets pp',
-		 '20'	=>  '20 Tweets pp',
-		 '30'	=>  '30 Tweets pp',
-		 '40'	=>  '40 Tweets pp',
-		 '50'	=>  '50 Tweets pp',
-		'100' 	=> '100 Tweets pp',
-		'200' 	=> '200 Tweets pp',
-	);
-
 	$gwt = array(
 		'off' => 'direct',
 		'on' => 'via GWT',
 	);
 	
-	$emoticons = array(
-		'on' => 'ON',
-		'off' => 'OFF',
-	);
-
 	$colour_schemes = array();
 	foreach ($GLOBALS['colour_schemes'] as $id => $info) {
 		list($name, $colours) = explode('|', $info);
