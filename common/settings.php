@@ -58,7 +58,6 @@ function setcookie_year($name, $value) {
 function settings_page($args) {
 	if ($args[1] == 'save') {
 		$settings['browser']     = $_POST['browser'];
-		$settings['perPage']     = $_POST['perPage'];
 		$settings['gwt']         = $_POST['gwt'];
 		$settings['colours']     = $_POST['colours'];
 		$settings['reverse']     = $_POST['reverse'];
@@ -66,7 +65,20 @@ function settings_page($args) {
 		$settings['hide_inline'] = $_POST['hide_inline'];
 		$settings['utc_offset']  = (float)$_POST['utc_offset'];
 		$settings['emoticons']   = $_POST['emoticons'];
-		
+
+		// Perform validation on the "tweets per page" value
+		if (is_numeric($_POST['perPage'])) {
+			if ($_POST['perPage'] < 10) {
+				$settings['perPage'] = 10;
+			} else if ($_POST['perPage'] > 200) {
+				$settings['perPage'] = 200;
+			} else {
+				$settings['perPage'] = $_POST['perPage'];
+			}
+		} else {
+			$settings['perPage'] = settings_fetch('perPage', 20);
+		}
+
 		// Save a user's oauth details to a MySQL table
 		if (MYSQL_USERS == 'ON' && $newpass = $_POST['newpassword']) {
 			user_is_authenticated();
@@ -137,9 +149,9 @@ function settings_page($args) {
 	$content .= theme('options', $modes, $GLOBALS['current_theme']);
 	$content .= '</select></p>';
 	
-	$content .= '<p>Tweets Per Page:<br /><select name="perPage">';
-	$content .= theme('options', $perPage, setting_fetch('perPage', 20));
-	$content .= '</select><br /></p>';
+	$content .= '<p><label>Tweets Per Page:<br />';
+	$content .= '<input type="checkbox" name="perPage" value="'. settings_fetch('perPage', 20) .'" />';
+	$content .= '</label><br /></p>';
 	
 	$content .= '<p>External links go:<br /><select name="gwt">';
 	$content .= theme('options', $gwt, setting_fetch('gwt', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
