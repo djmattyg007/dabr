@@ -58,7 +58,6 @@ function setcookie_year($name, $value) {
 function settings_page($args) {
 	if ($args[1] == 'save') {
 		$settings['browser']     = $_POST['browser'];
-		$settings['perPage']     = $_POST['perPage'];
 		$settings['gwt']         = $_POST['gwt'];
 		$settings['colours']     = $_POST['colours'];
 		$settings['reverse']     = $_POST['reverse'];
@@ -66,7 +65,20 @@ function settings_page($args) {
 		$settings['hide_inline'] = $_POST['hide_inline'];
 		$settings['utc_offset']  = (float)$_POST['utc_offset'];
 		$settings['emoticons']   = $_POST['emoticons'];
-		
+
+		// Perform validation on the "tweets per page" value
+		if (is_numeric($_POST['perPage'])) {
+			if ($_POST['perPage'] < 10) {
+				$settings['perPage'] = 10;
+			} else if ($_POST['perPage'] > 200) {
+				$settings['perPage'] = 200;
+			} else {
+				$settings['perPage'] = $_POST['perPage'];
+			}
+		} else {
+			$settings['perPage'] = settings_fetch('perPage', 20);
+		}
+
 		// Save a user's oauth details to a MySQL table
 		if (MYSQL_USERS == 'ON' && $newpass = $_POST['newpassword']) {
 			user_is_authenticated();
@@ -88,26 +100,11 @@ function settings_page($args) {
 		'worksafe'	=> 'Work Safe',
 	);
 	
-	$perPage = array(
-		 '10'	=>  '10 Tweets pp',
-		 '20'	=>  '20 Tweets pp',
-		 '30'	=>  '30 Tweets pp',
-		 '40'	=>  '40 Tweets pp',
-		 '50'	=>  '50 Tweets pp',
-		'100' 	=> '100 Tweets pp',
-		'200' 	=> '200 Tweets pp',
-	);
-
 	$gwt = array(
 		'off' => 'direct',
 		'on' => 'via GWT',
 	);
 	
-	$emoticons = array(
-		'on' => 'ON',
-		'off' => 'OFF',
-	);
-
 	$colour_schemes = array();
 	foreach ($GLOBALS['colour_schemes'] as $id => $info) {
 		list($name, $colours) = explode('|', $info);
@@ -125,28 +122,33 @@ function settings_page($args) {
 		$utc_offset = '+' . $utc_offset;
 	}
 
-	$content .= '<form action="settings/save" method="post"><p>Colour scheme:<br /><select name="colours">';
-	$content .= theme('options', $colour_schemes, setting_fetch('colours', 0));
-	$content .= '</select></p><p>Mode:<br /><select name="browser">';
-	$content .= theme('options', $modes, $GLOBALS['current_theme']);
-	$content .= '</select>';
-	
-	$content .= '<p>Tweets Per Page:<br /><select name="perPage">';
-	$content .= theme('options', $perPage, setting_fetch('perPage', 20));
-	$content .= '</select>';
-	
-	$content .= '<br/></p><p>Emoticons - show :-) as images<br /><select name="emoticons">';
-	$content .= theme('options', $emoticons, setting_fetch('emoticons', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
+	$content = '<form action="settings/save" method="post">'; // Create settings form
 
-	$content .= '</select></p><p>External links go:<br /><select name="gwt">';
+	// Colour scheme dropdown
+	$content .= '<p>Colour scheme:<br /><select name="colours">';
+	$content .= theme('options', $colour_schemes, setting_fetch('colours', 0));
+	$content .= '</select></p>';
+
+	// Mode dropdown
+	$content .= '<p>Mode:<br /><select name="browser">';
+	$content .= theme('options', $modes, $GLOBALS['current_theme']);
+	$content .= '</select></p>';
+	
+	$content .= '<p><label>Tweets Per Page:<br />';
+	$content .= '<input type="textbox" name="perPage" size="3" value="'. setting_fetch('perPage', 20) .'" />';
+	$content .= '</label><br /></p>';
+	
+	$content .= '<p>External links go:<br /><select name="gwt">';
 	$content .= theme('options', $gwt, setting_fetch('gwt', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
 	$content .= '</select><small><br />Google Web Transcoder (GWT) converts third-party sites into small, speedy pages suitable for older phones and people with less bandwidth.</small></p>';
+
 	$content .= '<p><label><input type="checkbox" name="reverse" value="yes" '. (setting_fetch('reverse') == 'yes' ? ' checked="checked" ' : '') .' /> Attempt to reverse the conversation thread view.</label></p>';
 	$content .= '<p><label><input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' /> Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago</label></p>';
 	$content .= '<p><label><input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' /> Hide inline media (eg TwitPic thumbnails)</label></p>';
+	$content .= '<p><label><input type="checkbox" name="emoticons" value="on"'. (setting_fetch('emoticons') == 'on' ? ' checked="checked"' : '') .' /> Use images for emoticons</label></p>';
+
 	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />Adjust this value if the time appears to be wrong.</label></p>';
 
-	
 	// Allow users to choose a Dabr password if accounts are enabled
 	if (MYSQL_USERS == 'ON' && user_is_authenticated()) {
 		$content .= '<fieldset><legend>Dabr account</legend><small>If you want to sign in to Dabr without going via Twitter.com in the future, create a password and we\'ll remember you.</small></p><p>Change Dabr password<br /><input type="password" name="newpassword" /><br /><small>Leave blank if you don\'t want to change it</small></fieldset>';

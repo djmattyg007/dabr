@@ -8,8 +8,8 @@
 			":-("	=> "images/emoticons/icon_sad.gif",
 			":'("	=> "images/emoticons/icon_cry.gif",
 			":D"	=> "images/emoticons/icon_biggrin.gif",
-			";D"	=> "images/emoticons/icon_biggrin.gif",
 			":-D"	=> "images/emoticons/icon_biggrin.gif",
+			";D"	=> "images/emoticons/icon_biggrin.gif",
 			";)"	=> "images/emoticons/icon_wink.gif",
 			";-)"	=> "images/emoticons/icon_wink.gif",
 			":p"	=> "images/emoticons/icon_razz.gif",
@@ -29,7 +29,7 @@
 		);
 
 
-		foreach($array as $emoticon => $graphic) {
+		foreach ($array as $emoticon => $graphic) {
 			$text = str_replace($emoticon, "<img src='$graphic' alt='$emoticon'>", $text);
 		}
 

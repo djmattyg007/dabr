@@ -735,8 +735,8 @@ function twitter_parse_tags($input, $entities = false)
 		$tok = strtok(" \n\t\n\r\0");	// Move to the next token
 	}
 
-	//	Add Emoticons :-)
-	if (setting_fetch('emoticons') != 'off') {
+	//	Add Emoticons :)
+	if (setting_fetch('emoticons') == 'on') {
 		$out = emoticons($out);
 	}
 
