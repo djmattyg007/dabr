@@ -418,7 +418,7 @@ function twitter_media_page($query)
 			$text = $json->text;
 			
 			$content = "<p>Upload success. Image posted to Twitter.</p>
-						<p><img src=\"" . IMAGE_PROXY_URL . "x50/" . $image_url . "\" alt='' /></p>
+						<p><img src=\"" . image_proxy($image_url, "x50/") . "\" alt='' /></p>
 						<p>". twitter_parse_tags($text) . "</p>";
 			
 		} else {
@@ -622,7 +622,7 @@ function twitter_get_media($status)
 			$width = $media->sizes->thumb->w;
 			$height = $media->sizes->thumb->h;
 
-			$media_html .= "<a href=\"" . IMAGE_PROXY_URL . $image . "\" target=\"" . get_target() . "\" >";
+			$media_html .= "<a href=\"" . image_proxy($image) . "\" target=\"" . get_target() . "\" >";
 			$media_html .= "<img src=\"{$image}:thumb\" width=\"{$width}\" height=\"{$height}\" >";
 			$media_html .= "</a>";
 		}
@@ -1968,18 +1968,18 @@ function theme_full_name($user)
 function theme_get_avatar($object)
 {
 	if ($_SERVER['HTTPS'] == "on" && $object->profile_image_url_https) {
-		return IMAGE_PROXY_URL . "48/48/" . $object->profile_image_url_https;
+		return image_proxy($object->profile_image_url_https, "48/48/");
 	} else {
-		return IMAGE_PROXY_URL . "48/48/" . $object->profile_image_url;
+		return image_proxy($object->profile_image_url, "48/48/");
 	}
 }
 
 function theme_get_full_avatar($object)
 {
 	if ($_SERVER['HTTPS'] == "on" && $object->profile_image_url_https) {
-		return IMAGE_PROXY_URL . str_replace('_normal.', '.', $object->profile_image_url_https);
+		return image_proxy(str_replace('_normal.', '.', $object->profile_image_url_https));
 	} else {
-		return IMAGE_PROXY_URL . str_replace('_normal.', '.', $object->profile_image_url);
+		return image_proxy(str_replace('_normal.', '.', $object->profile_image_url));
 	}
 }
 
@@ -2202,6 +2202,15 @@ function x_times($count)
 		return number_format($count) . ' times';
 	}
 	return $count . ' times';
+}
+
+function image_proxy($src, $size = "")
+{
+	if (defined("IMAGE_PROXY_URL") && IMAGE_PROXY_URL != "") {
+		return IMAGE_PROXY_URL . $size . $src;
+	} else {
+		return $src
+	}
 }
 
 ?>
