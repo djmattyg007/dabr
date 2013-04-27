@@ -2209,7 +2209,7 @@ function image_proxy($src, $size = "")
 	if (defined("IMAGE_PROXY_URL") && IMAGE_PROXY_URL != "") {
 		return IMAGE_PROXY_URL . $size . $src;
 	} else {
-		return $src
+		return $src;
 	}
 }
 
