@@ -135,7 +135,7 @@ function settings_page($args) {
 	$content .= '</select></p>';
 	
 	$content .= '<p><label>Tweets Per Page:<br />';
-	$content .= '<input type="checkbox" name="perPage" value="'. setting_fetch('perPage', 20) .'" />';
+	$content .= '<input type="textbox" name="perPage" value="'. setting_fetch('perPage', 20) .'" />';
 	$content .= '</label><br /></p>';
 	
 	$content .= '<p>External links go:<br /><select name="gwt">';
