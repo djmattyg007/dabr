@@ -2,8 +2,11 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 
+// Application name. Used to easily rename the application when you fork it.
+define('APP_NAME', 'Dabr');
+
 // Twitter's API URL - you can also use https://api.twitter.com/1/ if you want a secure connection to Twitter
-define('API_URL','http://api.twitter.com/1/');
+define('API_URL', 'http://api.twitter.com/1/');
 
 // Image Proxy URL
 // Use http://src.sencha.io/ for regular connections

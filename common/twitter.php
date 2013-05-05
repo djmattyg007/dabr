@@ -561,7 +561,7 @@ function twitter_process($url, $post_data = false)
 				$result .= "Key: $key; Value: $value<br />";
 			}
 			*/
-			theme('error', "<h2>Twitter timed out</h2><p>Dabr gave up on waiting for Twitter to respond. They're probably overloaded right now, try again in a minute. <br />{$result}</p>");
+			theme('error', "<h2>Twitter timed out</h2><p>" . APP_NAME . " gave up on waiting for Twitter to respond. They're probably overloaded right now, try again in a minute. <br />{$result}</p>");
 		default:
 			$result = json_decode($body);
 			$result = $result->error ? $result->error : $body;

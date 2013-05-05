@@ -207,8 +207,8 @@ function user_login() {
 
 <ol>
 	<li><a href="oauth">Sign in via Twitter.com</a> from any computer.</li>
-	<li>Visit the Dabr settings page to choose a password.</li>
-	<li>Done! You can now benefit from accessing Twitter through Dabr from anywhere (even from computers that block Twitter.com).</li>
+	<li>Visit the ' . APP_NAME . ' settings page to choose a password.</li>
+	<li>Done! You can now benefit from accessing Twitter through ' . APP_NAME . ' from anywhere (even Twitter.com is blocked).</li>
 </ol>
 ');
 }
@@ -217,7 +217,7 @@ function theme_login() {
 	$content = '<div style="margin:1em; font-size: 1.2em"><p><a href="oauth">Sign in via Twitter.com</a></p>';
 	
 	if (MYSQL_USERS == 'ON') {
-		$content .= '<p>No access to Twitter.com? <a href="login">Sign in with your Dabr account</a></p>';
+		$content .= '<p>No access to Twitter.com? <a href="login">Sign in with your ' . APP_NAME . ' account</a></p>';
 	}
 
 	$content .= '</div>';
