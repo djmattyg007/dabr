@@ -196,7 +196,7 @@ function _user_decrypt_cookie($crypt_text) {
 
 function user_login() {
 	return theme('page', 'Login','
-<form method="post" action="'.$_GET['q'].'">
+<form method="post" action="' . $_GET['q'] . '">
 <p>Username <input name="username" size="15" />
 <br />Password <input name="password" type="password" size="15" />
 <br /><label><input type="checkbox" checked="checked" value="yes" name="stay-logged-in" /> Stay logged in? </label>

@@ -166,7 +166,7 @@ function theme_page($title, $content)
 	echo 				$body;
 	if (setting_fetch('colours') == null)
 	{
-		//	If the cookies haven't been set, remind the user that they can set how Dabr looks
+		// If the cookies haven't been set, remind the user that they can set how Dabr looks
 		echo			'<p>Think Dabr looks ugly? <a href="settings">Change the colours!</a></p>';
 	}
 	echo '		</body>
