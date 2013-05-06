@@ -90,7 +90,7 @@ function theme_menu_both($menu)
 	if ($menu == 'bottom') {
 		$links[] = "<a href='{$_GET['q']}' accesskey='5'>refresh</a> 5";
 	}
-	return "<div class='menu menu-$menu'>".implode(' | ', $links).'</div>';
+	return "<div class='menu menu-$menu'>" . implode(' | ', $links) . '</div>';
 }
 
 ?>
