@@ -145,32 +145,32 @@ function theme_page($title, $content)
 	if (DEBUG_MODE == 'ON') {
 		global $dabr_start, $api_time, $services_time, $rate_limit;
 		$time = microtime(1) - $dabr_start;
-		$body .= '<p>Processed in '.round($time, 4).' seconds ('.round(($time - $api_time - $services_time) / $time * 100).'% Dabr, '.round($api_time / $time * 100).'% Twitter, '.round($services_time / $time * 100).'% other services). '.$rate_limit.'.</p>';
+		$body .= '<p>Processed in ' . round($time, 4) . ' seconds (' . round(($time - $api_time - $services_time) / $time * 100) . '% Dabr, ' . round($api_time / $time * 100) . '% Twitter, ' . round($services_time / $time * 100) . '% other services). ' . $rate_limit .  '.</p>';
 	}
 	if ($title == 'Login') {
-		$title = 'Dabr - mobile Twitter Login';
+		$title = APP_NAME . ' - mobile Twitter Login';
 		$meta = '<meta name="description" content="Free open source alternative to mobile Twitter, bringing you the complete Twitter experience to your phone." />';
 	}
 	ob_start('ob_gzhandler');
 	header('Content-Type: text/html; charset=utf-8');
 	echo	'<!DOCTYPE html>
-				<html>
-					<head>
-						<meta charset="utf-8" />
-						<meta name="viewport" content="width=device-width; initial-scale=1.0;" />
-						<title>Dabr - ' . $title . '</title>
-						<base href="',BASE_URL,'" />
-						'.$meta.theme('css').'
-					</head>
-					<body id="thepage">';
-	echo 				$body;
+			<html>
+				<head>
+					<meta charset="utf-8" />
+					<meta name="viewport" content="width=device-width; initial-scale=1.0;" />
+					<title>', APP_NAME, ' - ' . $title . '</title>
+					<base href="', BASE_URL, '" />
+					'.$meta.theme('css').'
+				</head>
+				<body id="thepage">';
+	echo 			$body;
 	if (setting_fetch('colours') == null)
 	{
 		// If the cookies haven't been set, remind the user that they can set how Dabr looks
-		echo			'<p>Think Dabr looks ugly? <a href="settings">Change the colours!</a></p>';
+		echo		'<p>Think ', APP_NAME, ' looks ugly? <a href="settings">Change the colours!</a></p>';
 	}
 	echo '		</body>
-				</html>';
+			</html>';
 	exit();
 }
 
