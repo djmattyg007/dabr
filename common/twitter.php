@@ -909,11 +909,11 @@ function twitter_block_page($query)
 	$user = $query[1];
 	if ($user) {
 		if ($query[0] == 'block'){
-			$request = API_NEW."blocks/create.json?screen_name={$user}";
+			$request = API_NEW . "blocks/create.json?screen_name={$user}";
 			twitter_process($request, true);
 			twitter_refresh("confirmed/block/{$user}");
 		} else {
-			$request = API_NEW."blocks/destroy.json?screen_name={$user}";
+			$request = API_NEW . "blocks/destroy.json?screen_name={$user}";
 			twitter_process($request, true);
 			twitter_refresh("confirmed/unblock/{$user}");
 		}
@@ -930,7 +930,7 @@ function twitter_spam_page($query)
 	//The data we need to post
 	$post_data = array("screen_name" => $user);
 
-	$request = API_NEW."users/report_spam.json";
+	$request = API_NEW . "users/report_spam.json";
 	twitter_process($request, $post_data);
 
 	//Where should we return the user to?  Back to the user
