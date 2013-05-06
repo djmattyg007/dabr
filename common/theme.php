@@ -35,7 +35,7 @@ function theme_list($items, $attributes)
 	if (!is_array($items) || count($items) == 0) {
 		return '';
 	}
-	$output = '<ul'.theme_attributes($attributes).'>';
+	$output = '<ul' . theme_attributes($attributes) . '>';
 	foreach ($items as $item) {
 		$output .= "<li>$item</li>\n";
 	}
@@ -70,7 +70,7 @@ function theme_info($info)
 
 function theme_table($headers, $rows, $attributes = NULL)
 {
-	$out = '<div'.theme_attributes($attributes).'>';
+	$out = '<div' . theme_attributes($attributes) . '>';
 	if (count($headers) > 0) {
 		$out .= '<thead><tr>';
 		foreach ($headers as $cell) {
@@ -98,7 +98,7 @@ function theme_table_rows($rows)
 			$attributes = FALSE;
 		}
 		$attributes['class'] .= ($attributes['class'] ? ' ' : '') . ($i++ %2 ? 'even' : 'odd');
-		$out .= '<div'.theme_attributes($attributes).'>';
+		$out .= '<div' . theme_attributes($attributes) . '>';
 		foreach ($cells as $cell) {
 			$out .= theme_table_cell($cell);
 		}
@@ -226,9 +226,10 @@ function theme_css()
 function theme_google_analytics()
 {
 	global $GA_ACCOUNT;
-	if (!$GA_ACCOUNT) return '';
+	if (!$GA_ACCOUNT) {
+		return '';
+	}
 	$googleAnalyticsImageUrl = googleAnalyticsGetImageUrl();
 	return "<img src='{$googleAnalyticsImageUrl}' />";
 }
 
-?>
