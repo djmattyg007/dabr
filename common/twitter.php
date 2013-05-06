@@ -1289,9 +1289,10 @@ function twitter_user_page($query)
 	// If the user has at least one tweet
 	if (isset($user->status)) {
 		// Fetch the timeline early, so we can try find the tweet they're replying to
-		$request = API_NEW."statuses/user_timeline.json?screen_name={$screen_name}";
+		$perPage = setting_fetch('perPage', 20);
+		$request = API_NEW . "statuses/user_timeline.json?screen_name={$screen_name}&count={$perPage}&include_rts=true";
 		if ($_GET['max_id']) {
-			$request .= '&max_id='.$_GET['max_id'];
+			$request .= '&max_id=' . $_GET['max_id'];
 		}
 		$tl = twitter_process($request);
 		$tl = twitter_standard_timeline($tl, 'user');
