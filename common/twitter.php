@@ -233,12 +233,12 @@ function theme_profile_form($user)
 	// Profile form
 	$out .= "
 				<form name='profile' action='edit-profile' method='post' enctype='multipart/form-data'>
-					<hr />Name:			<input name='name' maxlength='20' value='"						. htmlspecialchars($user->name, ENT_QUOTES) ."' />
-					<br />Avatar:		<img src='".theme_get_avatar($user)."' /> <input type='file' name='image' />
-					<br />Bio:			<input name='description' size=40 maxlength='160' value='"	. htmlspecialchars($user->description, ENT_QUOTES) ."' />
-					<br />Link:			<input name='url' maxlength='100' size=40 value='"				. htmlspecialchars($user->url, ENT_QUOTES) ."' />
-					<br />Location:	<input name='location' maxlength='30' value='"					. htmlspecialchars($user->location, ENT_QUOTES) ."' />
-					<br /><input type='submit' value='Update Profile' />
+					<hr />Name:		<input name='name' maxlength='20' value='"					. htmlspecialchars($user->name, ENT_QUOTES) ."' />
+					<br />Avatar:	<img src='".theme_get_avatar($user)."' /> <input type='file' name='image' />
+					<br />Bio:		<input name='description' size=40 maxlength='160' value='"	. htmlspecialchars($user->description, ENT_QUOTES) ."' />
+					<br />Link:		<input name='url' maxlength='100' size=40 value='"			. htmlspecialchars($user->url, ENT_QUOTES) ."' />
+					<br />Location:	<input name='location' maxlength='30' value='"				. htmlspecialchars($user->location, ENT_QUOTES) ."' />
+					<br />			<input type='submit' value='Update Profile' />
 				</form>";
 
 	return $out;
@@ -250,21 +250,21 @@ function long_url($shortURL)
 		return $shortURL;
 	}
 	$url = "http://www.longurlplease.com/api/v1.1?q=" . $shortURL;
-	$curl_handle=curl_init();
-	curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-	curl_setopt($curl_handle,CURLOPT_URL,$url);
-	$url_json = curl_exec($curl_handle);
-	curl_close($curl_handle);
+	$curlHandle = curl_init();
+	curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($curlHandle,CURLOPT_URL,$url);
+	$url_json = curl_exec($curlHandle);
+	curl_close($curlHandle);
 
-	$url_array = json_decode($url_json,true);
+	$urlArray = json_decode($url_json, true);
 
-	$url_long = $url_array["$shortURL"];
+	$urlLong = $urlArray["$shortURL"];
 
-	if ($url_long == null) {
+	if ($urlLong == null) {
 		return $shortURL;
 	}
 
-	return $url_long;
+	return $urlLong;
 }
 
 
@@ -311,7 +311,7 @@ function twitter_trends_page($query)
 	}
 
 	//fetch "local" names
-	$request = API_NEW.'trends/available.json';
+	$request = API_NEW . 'trends/available.json';
 	$local = twitter_process($request);
 	$header = '<form method="get" action="trends"><select name="woeid">';
 	$header .= '<option value="1"' . (($woeid == 1) ? ' selected="selected"' : '') . '>Worldwide</option>';
@@ -335,7 +335,7 @@ function twitter_trends_page($query)
 	}
 	$header .= '</select> <input type="submit" value="Go" /></form>';
 	
-	$request = API_NEW.'trends/place.json?id=' . $woeid;
+	$request = API_NEW . 'trends/place.json?id=' . $woeid;
 	$trends = twitter_process($request);
 	$search_url = 'search?query=';
 	foreach ($trends[0]->trends as $trend) {
@@ -460,7 +460,7 @@ function twitter_media_page($query)
 							chkbox = document.getElementById("geoloc");
 							if (navigator.geolocation) {
 								geoStatus("Tweet my location");
-								if ("'.$_COOKIE['geo'].'"=="Y") {
+								if ("' . $_COOKIE['geo'] . '"=="Y") {
 									chkbox.checked = true;
 									goGeo();
 								}
@@ -761,15 +761,17 @@ function flickr_decode($num)
 function flickr_encode($num)
 {
 	$alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
-	$base_count = strlen($alphabet);
+	$baseCount = strlen($alphabet);
 	$encoded = '';
-	while ($num >= $base_count) {
-		$div = $num/$base_count;
-		$mod = ($num-($base_count*intval($div)));
+	while ($num >= $baseCount) {
+		$div = $num/$baseCount;
+		$mod = ($num-($baseCount*intval($div)));
 		$encoded = $alphabet[$mod] . $encoded;
 		$num = intval($div);
 	}
-	if ($num) $encoded = $alphabet[$num] . $encoded;
+	if ($num) {
+		$encoded = $alphabet[$num] . $encoded;
+	}
 	return $encoded;
 }
 
@@ -787,7 +789,7 @@ function format_interval($timestamp, $granularity = 2)
 	$output = '';
 	foreach ($units as $key => $value) {
 		if ($timestamp >= $value) {
-			$output .= ($output ? ' ' : ''). pluralise($key, floor($timestamp / $value), true);
+			$output .= ($output ? ' ' : '') . pluralise($key, floor($timestamp / $value), true);
 			$timestamp %= $value;
 			$granularity--;
 		}
@@ -802,13 +804,13 @@ function twitter_status_page($query)
 {
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$request = API_NEW."statuses/show.json?id={$id}";
+		$request = API_NEW . "statuses/show.json?id={$id}";
 		$status = twitter_process($request);
-		$text = $status->text;	//	Grab the text before it gets formatted
+		$text = $status->text; // Grab the text before it gets formatted
 
 		$content = theme('status', $status);
 
-		//	Show a link to the original tweet		
+		// Show a link to the original tweet		
 		$screen_name = $status->from->screen_name;
 		$content .= '<p><a href="https://twitter.com/' . $screen_name . '/status/' . $id . '" target="'. get_target() . '">View orginal tweet on Twitter</a> | ';
 		
@@ -826,9 +828,9 @@ function twitter_status_page($query)
 	}
 }
 
-function twitter_thread_timeline($thread_id)
+function twitter_thread_timeline($threadID)
 {
-	$request = "https://search.twitter.com/search/thread/{$thread_id}";
+	$request = "https://search.twitter.com/search/thread/{$threadID}";
 	$tl = twitter_standard_timeline(twitter_fetch($request), 'thread');
 	return $tl;
 }
@@ -837,7 +839,7 @@ function twitter_retweet_page($query)
 {
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$request = API_NEW."statuses/show.json?id={$id}";
+		$request = API_NEW . "statuses/show.json?id={$id}";
 		$tl = twitter_process($request);
 		$content = theme('retweet', $tl);
 		theme('page', 'Retweet', $content);
@@ -851,7 +853,7 @@ function twitter_refresh($page = NULL)
 	} else {
 		$page = $_SERVER['HTTP_REFERER'];
 	}
-	header('Location: '. $page);
+	header('Location: ' . $page);
 	exit();
 }
 
@@ -861,7 +863,7 @@ function twitter_delete_page($query)
 
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$request = API_NEW."statuses/destroy/{$id}.json";
+		$request = API_NEW . "statuses/destroy/{$id}.json";
 		$tl = twitter_process($request, true);
 		twitter_refresh('user/'.user_current_username());
 	}
@@ -874,7 +876,7 @@ function twitter_deleteDM_page($query)
 
 	$id = (string) $query[1];
 	if (is_numeric($id)) {
-		$request = API_NEW."direct_messages/destroy.json?id={$id}";
+		$request = API_NEW . "direct_messages/destroy.json?id={$id}";
 		twitter_process($request, true);
 		twitter_refresh('directs/');
 	}
@@ -894,9 +896,9 @@ function twitter_follow_page($query)
 	$user = $query[1];
 	if ($user) {
 		if ($query[0] == 'follow'){
-			$request = API_NEW."friendships/create.json?screen_name={$user}";
+			$request = API_NEW . "friendships/create.json?screen_name={$user}";
 		} else {
-			$request = API_NEW."friendships/destroy.json?screen_name={$user}";
+			$request = API_NEW . "friendships/destroy.json?screen_name={$user}";
 		}
 		twitter_process($request, true);
 		twitter_refresh('friends');
@@ -1109,7 +1111,7 @@ function twitter_retweet($query)
 	twitter_ensure_post_action();
 	$id = $query[1];
 	if (is_numeric($id)) {
-		$request = API_NEW."statuses/retweet/{$id}.json";
+		$request = API_NEW . "statuses/retweet/{$id}.json";
 		twitter_process($request, true);
 	}
 	twitter_refresh($_POST['from'] ? $_POST['from'] : '');
@@ -1163,7 +1165,7 @@ function twitter_directs_page($query)
 			twitter_refresh('directs/sent');
 
 		case 'sent':
-			$request = API_NEW."direct_messages/sent.json?count={$perPage}";
+			$request = API_NEW . "direct_messages/sent.json?count={$perPage}";
 			if ($_GET['max_id']) {
 				$request .= '&max_id='.$_GET['max_id'];
 			}
@@ -1175,7 +1177,7 @@ function twitter_directs_page($query)
 
 		case 'inbox':
 		default:
-			$request = API_NEW."direct_messages.json?count={$perPage}";
+			$request = API_NEW . "direct_messages.json?count={$perPage}";
 			if ($_GET['max_id']) {
 				$request .= '&max_id='.$_GET['max_id'];
 			}
@@ -1194,16 +1196,16 @@ function theme_directs_menu()
 
 function theme_directs_form($to)
 {
-	$html_to = "";
+	$htmlTo = "";
 	if ($to) {
 		if (friendship_exists($to) != 1) {
-			$html_to .= "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :(<br/>";
+			$htmlTo .= "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :(<br/>";
 		}
-		$html_to .= "Sending direct message to <b>$to</b><input name='to' value='$to' type='hidden'>";
+		$htmlTo .= "Sending direct message to <b>$to</b><input name='to' value='$to' type='hidden'>";
 	} else {
-		$html_to .= "To: <input name='to'><br />Message:";
+		$htmlTo .= "To: <input name='to'><br />Message:";
 	}
-	$content = "<form action='directs/send' method='post'>$html_to<br><textarea name='message' style='width:90%; max-width: 400px;' rows='3' id='message'></textarea><br><input type='submit' value='Send'><span id='remaining'>140</span></form>";
+	$content = "<form action='directs/send' method='post'>$htmlTo<br><textarea name='message' style='width:90%; max-width: 400px;' rows='3' id='message'></textarea><br><input type='submit' value='Send'><span id='remaining'>140</span></form>";
 	$content .= js_counter("message");
 	return $content;
 }
@@ -1228,19 +1230,19 @@ function twitter_search_page() {
 	if ($search_query) {
 		$tl = twitter_search($search_query, $lat, $long, $radius);
 		if ($search_query !== $_COOKIE['search_favourite']) {
-			$content .= '<form action="search/bookmark" method="post"><input type="hidden" name="query" value="'.$search_query.'" /><input type="submit" value="Save as default search" /></form>';
+			$content .= '<form action="search/bookmark" method="post"><input type="hidden" name="query" value="' . $search_query . '" /><input type="submit" value="Save as default search" /></form>';
 		}
 		$content .= theme('timeline', $tl);
 	}
 	theme('page', 'Search', $content);
 }
 
-function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL)
+function twitter_search($searchQuery, $lat = NULL, $long = NULL, $radius = NULL)
 {
-	$per_page = setting_fetch('perPage', 20);
-	$request = API_NEW."search/tweets.json?result_type=recent&q={$search_query}&rpp={$per_page}";
+	$perPage = setting_fetch('perPage', 20);
+	$request = API_NEW . "search/tweets.json?result_type=recent&q={$searchQuery}&rpp={$perPage}";
 	if ($_GET['max_id']) {
-		$request .= '&max_id='.$_GET['max_id'];
+		$request .= '&max_id=' . $_GET['max_id'];
 	}
 	if ($lat && $long) {
 		$request .= "&geocode=$lat,$long,";
@@ -1255,18 +1257,20 @@ function twitter_search($search_query, $lat = NULL, $long = NULL, $radius = NULL
 	return $tl;
 }
 
-function twitter_find_tweet_in_timeline($tweet_id, $tl)
+function twitter_find_tweet_in_timeline($tweetID, $tl)
 {
 	// Parameter checks
-	if (!is_numeric($tweet_id) || !$tl) return;
+	if (!is_numeric($tweetID) || !$tl) {
+		return;
+	}
 
 	// Check if the tweet exists in the timeline given
-	if (array_key_exists($tweet_id, $tl)) {
+	if (array_key_exists($tweetID, $tl)) {
 		// Found the tweet
-		$tweet = $tl[$tweet_id];
+		$tweet = $tl[$tweetID];
 	} else {
 		// Not found, fetch it specifically from the API
-		$request = API_NEW."statuses/show.json?id={$tweet_id}";
+		$request = API_NEW . "statuses/show.json?id={$tweetID}";
 		$tweet = twitter_process($request);
 	}
 	return $tweet;
@@ -1345,12 +1349,12 @@ function twitter_user_page($query)
 
 function twitter_favourites_page($query)
 {
-	$screen_name = $query[1];
-	if (!$screen_name) {
+	$screenName = $query[1];
+	if (!$screenName) {
 		user_ensure_authenticated();
-		$screen_name = user_current_username();
+		$screenName = user_current_username();
 	}
-	$request = API_NEW."favorites/list.json?screen_name={$screen_name}";
+	$request = API_NEW."favorites/list.json?screen_name={$screenName}";
 	if ($_GET['max_id']) {
 		$request .= '&max_id=' . $_GET['max_id'];
 	}
@@ -1368,9 +1372,9 @@ function twitter_mark_favourite_page($query)
 		return;
 	}
 	if ($query[0] == 'unfavourite') {
-		$request = API_NEW."favorites/destroy.json?id={$id}";
+		$request = API_NEW . "favorites/destroy.json?id={$id}";
 	} else {
-		$request = API_NEW."favorites/create.json?id={$id}";
+		$request = API_NEW . "favorites/create.json?id={$id}";
 	}
 	twitter_process($request, true);
 	twitter_refresh();
@@ -1379,13 +1383,13 @@ function twitter_mark_favourite_page($query)
 function twitter_home_page()
 {
 	user_ensure_authenticated();
-	$per_page = setting_fetch('perPage', 20);
-	$request = API_NEW."statuses/home_timeline.json?count={$per_page}";
+	$perPage = setting_fetch('perPage', 20);
+	$request = API_NEW . "statuses/home_timeline.json?count={$perPage}";
 	if ($_GET['max_id']) {
-		$request .= '&max_id='.$_GET['max_id'];
+		$request .= '&max_id=' . $_GET['max_id'];
 	}
 	if ($_GET['since_id']) {
-		$request .= '&since_id='.$_GET['since_id'];
+		$request .= '&since_id=' . $_GET['since_id'];
 	}
 	//echo $request;
 	$tl = twitter_process($request);
@@ -1398,8 +1402,8 @@ function twitter_home_page()
 function twitter_hashtag_page($query)
 {
 	if (isset($query[1])) {
-		$hashtag = '#'.$query[1];
-		$content = theme('status_form', $hashtag.' ');
+		$hashtag = '#' . $query[1];
+		$content = theme('status_form', $hashtag . ' ');
 		$tl = twitter_search($hashtag);
 		$content .= theme('timeline', $tl);
 		theme('page', $hashtag, $content);
@@ -1408,7 +1412,7 @@ function twitter_hashtag_page($query)
 	}
 }
 
-function theme_status_form($text = '', $in_reply_to_id = NULL)
+function theme_status_form($text = '', $inReplyToID = NULL)
 {
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
@@ -1418,13 +1422,13 @@ function theme_status_form($text = '', $in_reply_to_id = NULL)
 			$text = $_GET['status'];
 		}
 		
-		return "<fieldset><legend><img src='{$icon}' width='16' height='16' /> What's Happening?</legend><form method='post' action='update'><input name='status' value='{$text}' maxlength='140' /> <input name='in_reply_to_id' value='{$in_reply_to_id}' type='hidden' /><input type='submit' value='Tweet' /></form></fieldset>";
+		return "<fieldset><legend><img src='{$icon}' width='16' height='16' /> What's Happening?</legend><form method='post' action='update'><input name='status' value='{$text}' maxlength='140' /> <input name='in_reply_to_id' value='{$inReplyToID}' type='hidden' /><input type='submit' value='Tweet' /></form></fieldset>";
 	}
 }
 
 function theme_status($status)
 {
-	//32bit int / snowflake patch
+	// 32bit int / snowflake patch
 	if($status->id_str) {
 		$status->id = $status->id_str;
 	}
@@ -1488,7 +1492,7 @@ function theme_user_header($user)
 	$tweets_per_day = twitter_tweets_per_day($user, 1);
 	$bio = twitter_parse_tags($user->description);
 	$out = "<div class='profile'>";
-	$out .= "<span class='avatar'>".theme('external_link', $full_avatar, theme('avatar', theme_get_avatar($user)))."</span>";
+	$out .= "<span class='avatar'>" . theme('external_link', $full_avatar, theme('avatar', theme_get_avatar($user))) . "</span>";
 	$out .= "<span class='status shift'><b>{$name}</b><br />";
 	$out .= "<span class='about'>";
 	if ($user->verified == true) {
@@ -1548,9 +1552,9 @@ function theme_user_header($user)
 	return $out;
 }
 
-function theme_avatar($url, $force_large = false)
+function theme_avatar($url, $forceLarge = false)
 {
-	$size = $force_large ? 48 : 24;
+	$size = $forceLarge ? 48 : 24;
 	return "<img src='$url' height='$size' width='$size' />";
 }
 
@@ -1604,7 +1608,7 @@ function twitter_standard_timeline($feed, $source)
 		return $output;
 	}
 	
-	//32bit int / snowflake patch
+	// 32bit int / snowflake patch
 	if (is_array($feed)) {
 		foreach ($feed as $key => $status) {
 			if ($status->id_str) {
@@ -2022,9 +2026,9 @@ function theme_search_form($query)
 
 function theme_external_link($url, $content = null)
 {
-	//Long URL functionality.  Also uncomment function long_url($shortURL)
+	// Long URL functionality. Also uncomment function long_url($shortURL)
 	if (!$content) {
-		//Used to wordwrap long URLs
+		// Used to wordwrap long URLs
 		//return "<a href='$url' target='_blank'>". wordwrap(long_url($url), 64, "\n", true) ."</a>";
 		return "<a href='$url' target='" . get_target() . "'>". long_url($url) ."</a>";
 	} else {
@@ -2039,21 +2043,21 @@ function theme_pagination($max_id = false)
 		$query = $matches[0];
 	}
 	if ($max_id) {
-		$links[] = "<a href='{$_GET['q']}?max_id=".$max_id."$query' accesskey='9'>Older</a> 9";
+		$links[] = "<a href='{$_GET['q']}?max_id=" . $max_id . "$query' accesskey='9'>Older</a> 9";
 	} else {
 		if ($page == 0) {
 			$page = 1;
 		}
-		$links[] = "<a href='{$_GET['q']}?page=".($page+1)."$query' accesskey='9'>Older</a> 9";
+		$links[] = "<a href='{$_GET['q']}?page=" . ($page+1) . "$query' accesskey='9'>Older</a> 9";
 		if ($page > 1) {
-			$links[] = "<a href='{$_GET['q']}?page=".($page-1)."$query' accesskey='8'>Newer</a> 8";
+			$links[] = "<a href='{$_GET['q']}?page=" . ($page-1) . "$query' accesskey='8'>Newer</a> 8";
 		}
 	}
 	if ($query) {
 		$query = '?' . substr($query, 1);
 	}
 	$links[] = "<a href='{$_GET['q']}?$query'>First</a>";
-	return '<p>'.implode(' | ', $links).'</p>';
+	return '<p>' . implode(' | ', $links) . '</p>';
 }
 
 function theme_action_icons($status)
@@ -2109,17 +2113,17 @@ function theme_action_icons($status)
 	return implode(' ', $actions);
 }
 
-function theme_action_icon($url, $image_url, $text)
+function theme_action_icon($url, $imageURL, $text)
 {
 	// alt attribute left off to reduce bandwidth by about 720 bytes per page
 	if ($text == 'MAP') {
-		return "<a href='$url' alt='$text' target='" . get_target() . "'><img src='$image_url' /></a>";
+		return "<a href='$url' alt='$text' target='" . get_target() . "'><img src='$imageURL' /></a>";
 	}
 
-	return "<a href='$url'><img src='$image_url' alt='$text' /></a>";
+	return "<a href='$url'><img src='$imageURL' alt='$text' /></a>";
 }
 
-function pluralise($word, $count, $show = FALSE)
+function pluralise($word, $count, $show = false)
 {
 	if ($show) {
 		$word = number_format($count) . " {$word}";
