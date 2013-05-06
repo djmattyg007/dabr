@@ -1091,8 +1091,8 @@ function twitter_get_place($lat, $long)
 	//	This will look up a place ID based on lat / long.
 	//	Not needed (Twitter include it automagically
 	//	Left in just incase we ever need it...
-	$request = API_OLD.'geo/reverse_geocode.json';
-	$request .= '?lat='.$lat.'&long='.$long.'&max_results=1';
+	$request = API_OLD . 'geo/reverse_geocode.json';
+	$request .= '?lat=' . $lat . '&long=' . $long . '&max_results=1';
 	
 	$locations = twitter_process($request);
 	$places = $locations->result->places;
@@ -1117,8 +1117,8 @@ function twitter_retweet($query)
 
 function twitter_replies_page()
 {
-	$per_page = setting_fetch('perPage', 20);	
-	$request = API_NEW."statuses/mentions_timeline.json?count={$per_page}";
+	$perPage = setting_fetch('perPage', 20);
+	$request = API_NEW . "statuses/mentions_timeline.json?count={$perPage}";
 	if ($_GET['max_id']) {
 		$request .= '&max_id='.$_GET['max_id'];
 	}
@@ -1131,8 +1131,8 @@ function twitter_replies_page()
 
 function twitter_retweets_page()
 {
-	$per_page = setting_fetch('perPage', 20);
-	$request = API_NEW."statuses/retweets_of_me.json?count={$per_page}";
+	$perPage = setting_fetch('perPage', 20);
+	$request = API_NEW . "statuses/retweets_of_me.json?count={$perPage}";
 	if ($_GET['max_id']) {
 		$request .= '&max_id='.$_GET['max_id'];
 	}
@@ -1145,7 +1145,7 @@ function twitter_retweets_page()
 
 function twitter_directs_page($query)
 {
-	$per_page = setting_fetch('perPage', 20);
+	$perPage = setting_fetch('perPage', 20);
 	
 	$action = strtolower(trim($query[1]));
 	switch ($action) {
@@ -1158,12 +1158,12 @@ function twitter_directs_page($query)
 			twitter_ensure_post_action();
 			$to = trim(stripslashes(str_replace('@','',$_POST['to'])));
 			$message = trim(stripslashes($_POST['message']));
-			$request = API_NEW.'direct_messages/new.json';
+			$request = API_NEW . 'direct_messages/new.json';
 			twitter_process($request, array('screen_name' => $to, 'text' => $message));
 			twitter_refresh('directs/sent');
 
 		case 'sent':
-			$request = API_NEW."direct_messages/sent.json?count={$per_page}";
+			$request = API_NEW."direct_messages/sent.json?count={$perPage}";
 			if ($_GET['max_id']) {
 				$request .= '&max_id='.$_GET['max_id'];
 			}
@@ -1175,7 +1175,7 @@ function twitter_directs_page($query)
 
 		case 'inbox':
 		default:
-			$request = API_NEW."direct_messages.json?count={$per_page}";
+			$request = API_NEW."direct_messages.json?count={$perPage}";
 			if ($_GET['max_id']) {
 				$request .= '&max_id='.$_GET['max_id'];
 			}
