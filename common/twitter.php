@@ -1,8 +1,8 @@
 <?php
-require 'Autolink.php';
-require 'Extractor.php';
-require 'Embedly.php';
-require 'Emoticons.php';
+require("Autolink.php");
+require("Extractor.php");
+require("Embedly.php");
+require("Emoticons.php");
 		
 menu_register(array(
 	'' => array(
@@ -175,7 +175,7 @@ function twitter_profile_page()
 	
 	//	http://api.twitter.com/1/account/update_profile_image.format 
 	if ($_FILES['image']['tmp_name']) {
-		require 'tmhOAuth.php';
+		require("tmhOAuth.php");
 		
 		list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
 		
@@ -375,7 +375,7 @@ function twitter_media_page($query)
 	$status = stripslashes($_POST['message']);
 	
 	if ($_POST['message'] && $_FILES['image']['tmp_name']) {
-		require 'tmhOAuth.php';
+		require("tmhOAuth.php");
 		
 		// Geolocation parameters
 		list($lat, $long) = explode(',', $_POST['location']);

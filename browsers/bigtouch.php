@@ -1,6 +1,6 @@
 <?php
 
-require 'touch.php';
+require("touch.php");
 
 function bigtouch_theme_action_icon($url, $image_url, $text)
 {

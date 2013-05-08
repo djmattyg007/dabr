@@ -1,6 +1,6 @@
 <?php
 
-require 'desktop.php';
+require("desktop.php");
 
 function worksafe_theme_status_form($text = '', $in_reply_to_id = NULL)
 {
@@ -47,4 +47,3 @@ function worksafe_theme_status_time_link($status, $is_link = true)
 	return $out;
 }
 
-?>

@@ -7,18 +7,18 @@ header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
-require 'config.php';
-require 'common/browser.php';
-require 'common/menu.php';
-require 'common/user.php';
-require 'common/theme.php';
-require 'common/twitter.php';
-require 'common/lists.php';
-require 'common/settings.php';
+require("config.php");
+require("common/browser.php");
+require("common/menu.php");
+require("common/user.php");
+require("common/theme.php");
+require("common/twitter.php");
+require("common/lists.php");
+require("common/settings.php");
 
 // Twitter's API URL.
-define('API_NEW','http://api.twitter.com/1.1/');
-define('API_OLD','http://api.twitter.com/1/');
+define('API_NEW', 'http://api.twitter.com/1.1/');
+define('API_OLD', 'http://api.twitter.com/1/');
 
 menu_register(array (
 	'about' => array (

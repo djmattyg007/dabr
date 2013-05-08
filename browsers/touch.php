@@ -1,6 +1,6 @@
 <?php
 
-require 'desktop.php';
+require("desktop.php");
 
 function touch_theme_action_icon($url, $image_url, $text)
 {
