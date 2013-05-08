@@ -56,14 +56,15 @@ function setcookie_year($name, $value) {
 
 function settings_page($args) {
 	if ($args[1] == 'save') {
-		$settings['browser']     = $_POST['browser'];
-		$settings['gwt']         = $_POST['gwt'];
-		$settings['colours']     = $_POST['colours'];
-		$settings['reverse']     = $_POST['reverse'];
-		$settings['timestamp']   = $_POST['timestamp'];
-		$settings['hide_inline'] = $_POST['hide_inline'];
-		$settings['utc_offset']  = (float)$_POST['utc_offset'];
-		$settings['emoticons']   = $_POST['emoticons'];
+		$settings['browser']		= $_POST['browser'];
+		$settings['gwt']			= $_POST['gwt'];
+		$settings['colours']		= $_POST['colours'];
+		$settings['reverse']		= $_POST['reverse'];
+		$settings['timestamp']		= $_POST['timestamp'];
+		$settings['hide_inline']	= $_POST['hide_inline'];
+		$settings['utc_offset']		= (float)$_POST['utc_offset'];
+		$settings['emoticons']		= $_POST['emoticons'];
+		$settings['lastDM']			= $_POST['lastDM'];
 
 		// Perform validation on the "tweets per page" value
 		if (is_numeric($_POST['perPage'])) {
@@ -141,10 +142,11 @@ function settings_page($args) {
 	$content .= theme('options', $gwt, setting_fetch('gwt', $GLOBALS['current_theme'] == 'text' ? 'on' : 'off'));
 	$content .= '</select><small><br />Google Web Transcoder (GWT) converts third-party sites into small, speedy pages suitable for older phones and people with less bandwidth.</small></p>';
 
-	$content .= '<p><label><input type="checkbox" name="reverse" value="yes" '. (setting_fetch('reverse') == 'yes' ? ' checked="checked" ' : '') .' /> Attempt to reverse the conversation thread view.</label></p>';
-	$content .= '<p><label><input type="checkbox" name="timestamp" value="yes" '. (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') .' /> Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago</label></p>';
-	$content .= '<p><label><input type="checkbox" name="hide_inline" value="yes" '. (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') .' /> Hide inline media (eg TwitPic thumbnails)</label></p>';
-	$content .= '<p><label><input type="checkbox" name="emoticons" value="on"'. (setting_fetch('emoticons') == 'on' ? ' checked="checked"' : '') .' /> Use images for emoticons</label></p>';
+	$content .= '<p><label><input type="checkbox" name="reverse" value="yes" ' . (setting_fetch('reverse') == 'yes' ? ' checked="checked" ' : '') . ' /> Attempt to reverse the conversation thread view.</label></p>';
+	$content .= '<p><label><input type="checkbox" name="timestamp" value="yes" ' . (setting_fetch('timestamp') == 'yes' ? ' checked="checked" ' : '') . ' /> Show the timestamp ' . twitter_date('H:i') . ' instead of 25 sec ago</label></p>';
+	$content .= '<p><label><input type="checkbox" name="hide_inline" value="yes" ' . (setting_fetch('hide_inline') == 'yes' ? ' checked="checked" ' : '') . ' /> Hide inline media (eg TwitPic thumbnails)</label></p>';
+	$content .= '<p><label><input type="checkbox" name="emoticons" value="on"' . (setting_fetch('emoticons') == 'on' ? ' checked="checked"' : '') . ' /> Use images for emoticons</label></p>';
+	$content .= '<p><label><input type="checkbox" name="lastDM" value="yes"' . (setting_fetch('lastDM') == 'yes' ? ' checked="checked"' : '') . ' /> Display last DM on compose page</label</p>';
 
 	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />Adjust this value if the time appears to be wrong.</label></p>';
 
