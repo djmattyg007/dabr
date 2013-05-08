@@ -168,7 +168,7 @@ function twitter_profile_page()
 			"description"	=> stripslashes($_POST['description']),
 		);
 
-		$url = API_NEW."account/update_profile.json";
+		$url = API_NEW . "account/update_profile.json";
 		$user = twitter_process($url, $post_data);
 		$content = "<h2>Profile Updated</h2>";
 	} 
