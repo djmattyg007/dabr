@@ -149,7 +149,6 @@ function theme_page($title, $content)
 	}
 	if ($title == 'Login') {
 		$title = APP_NAME . ' - mobile Twitter Login';
-		$meta = '<meta name="description" content="Free open source alternative to mobile Twitter, bringing you the complete Twitter experience to your phone." />';
 	}
 	ob_start('ob_gzhandler');
 	header('Content-Type: text/html; charset=utf-8');
@@ -160,7 +159,7 @@ function theme_page($title, $content)
 					<meta name="viewport" content="width=device-width; initial-scale=1.0;" />
 					<title>', APP_NAME, ' - ' . $title . '</title>
 					<base href="', BASE_URL, '" />
-					'.$meta.theme('css').'
+					' . theme('css') . '
 				</head>
 				<body id="thepage">';
 	echo 			$body;
