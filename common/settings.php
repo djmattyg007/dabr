@@ -3,7 +3,6 @@
 /*
 Syntax is 
 'Name|links,bodybg,bodyt,small,odd,even,replyodd,replyeven,menubg,menut,menua',
-
 Assembled in theme_css()
 */
 
@@ -16,11 +15,11 @@ $GLOBALS['colour_schemes'] = array(
 
 menu_register(array(
 	'settings' => array(
-		'callback' => 'settings_page',
+		'callback'	=> 'settings_page',
 	),
 	'reset' => array(
-		'hidden' => true,
-		'callback' => 'cookie_monster',
+		'hidden'	=> true,
+		'callback'	=> 'cookie_monster',
 	),
 ));
 
@@ -102,7 +101,7 @@ function settings_page($args) {
 	
 	$gwt = array(
 		'off' => 'direct',
-		'on' => 'via GWT',
+		'on'  => 'via GWT',
 	);
 	
 	$colour_schemes = array();
@@ -135,7 +134,7 @@ function settings_page($args) {
 	$content .= '</select></p>';
 	
 	$content .= '<p><label>Tweets Per Page:<br />';
-	$content .= '<input type="textbox" name="perPage" size="3" value="'. setting_fetch('perPage', 20) .'" />';
+	$content .= '<input type="textbox" name="perPage" size="3" value="'. setting_fetch('perPage', 20) . '" />';
 	$content .= '</label><br /></p>';
 	
 	$content .= '<p>External links go:<br /><select name="gwt">';
