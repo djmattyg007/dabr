@@ -14,14 +14,14 @@ function lists_paginated_process($url)
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
-	$url .= '&cursor='.$cursor;
+	$url .= '&cursor=' . $cursor;
 	return twitter_process($url);
 }
 
 function twitter_lists_tweets($user, $list)
 {
 	// Tweets belonging to a list
-	$url = API_NEW."lists/statuses.json?owner_screen_name={$user}&slug={$list}";
+	$url = API_NEW . "lists/statuses.json?owner_screen_name={$user}&slug={$list}";
 	if($_GET['max_id']) {
 		$url .= '&max_id=' . $_GET['max_id'];
 	}
@@ -31,28 +31,26 @@ function twitter_lists_tweets($user, $list)
 function twitter_lists_user_lists($user)
 {
 	// Lists a user has created
-	return twitter_process(API_NEW."lists/list.json?screen_name={$user}");
+	return twitter_process(API_NEW . "lists/list.json?screen_name={$user}");
 }
 
 function twitter_lists_user_memberships($user)
 {
 	// Lists a user belongs to
-	return lists_paginated_process(API_NEW."lists/memberships.json?screen_name={$user}");
+	return lists_paginated_process(API_NEW . "lists/memberships.json?screen_name={$user}");
 }
 
 function twitter_lists_list_members($user, $list)
 {
 	// Members of a list
-	return lists_paginated_process(API_NEW."lists/members.json?owner_screen_name={$user}&slug={$list}");
+	return lists_paginated_process(API_NEW . "lists/members.json?owner_screen_name={$user}&slug={$list}");
 }
 
 function twitter_lists_list_subscribers($user, $list)
 {
 	// Subscribers of a list
-	return lists_paginated_process(API_NEW."lists/subscribers.json?owner_screen_name={$user}&slug={$list}");
+	return lists_paginated_process(API_NEW . "lists/subscribers.json?owner_screen_name={$user}&slug={$list}");
 }
-
-
 
 /* Front controller for the new pages
 
@@ -167,8 +165,6 @@ function lists_list_subscribers_page($user, $list)
 	theme('page', "Subscribers of {$user}/{$list}", $content);
 }
 
-
-
 /* Theme functions */
 
 function theme_lists($json)
@@ -205,6 +201,6 @@ function theme_list_pagination($json)
 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Previous</a>";
 	}
 	if (count($links) > 0) {
-		return '<p>'.implode(' | ', $links).'</p>';
+		return '<p>' . implode(' | ', $links) . '</p>';
 	}
 }

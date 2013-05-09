@@ -2,12 +2,12 @@
 
 menu_register(array(
 	'oauth' => array(
-		'callback' => 'user_oauth',
-		'hidden' => 'true',
+		'callback'	=> 'user_oauth',
+		'hidden'	=> 'true',
 	),
 	'login' => array(
-		'callback' => 'user_login',
-		'hidden' => 'true',
+		'callback'	=> 'user_login',
+		'hidden'	=> 'true',
 	),
 ));
 
@@ -27,7 +27,7 @@ function user_oauth() {
 		parse_str($response, $token);
 
 		// Store ACCESS tokens in COOKIE
-		$GLOBALS['user']['password'] = $token['oauth_token'] .'|'.$token['oauth_token_secret'];
+		$GLOBALS['user']['password'] = $token['oauth_token'] . '|' . $token['oauth_token_secret'];
 
 		// Fetch the user's screen name with a quick API call
 		unset($_SESSION['oauth_request_token_secret']);

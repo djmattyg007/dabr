@@ -202,16 +202,16 @@ function twitter_profile_page()
 		if ($code == 200) {
 			$content = "<h2>Avatar Updated</h2>";			
 		} else {
-			$content = "Damn! Something went wrong. Sorry :-("  
-				."<br /> code=".$code
-				."<br /> status=".$status
-				."<br /> image=".$image
-				//."<br /> response=<pre>"
-				//. print_r($tmhOAuth->response['response'], TRUE)
-				. "</pre><br /> info=<pre>"
-				. print_r($tmhOAuth->response['info'], TRUE)
-				. "</pre><br /> code=<pre>"
-				. print_r($tmhOAuth->response['code'], TRUE) . "</pre>";
+			$content = "Damn! Something went wrong. Sorry :(";
+			$content .= "<br /> code=" . $code;
+			$content .= "<br /> status=" . $status;
+			$content .= "<br /> image=" . $image;
+			//$content .= "<br /> response=<pre>";
+			//$content .= print_r($tmhOAuth->response['response'], TRUE);
+			$content .= "</pre><br /> info=<pre>";
+			$content .= print_r($tmhOAuth->response['info'], true);
+			$content .= "</pre><br /> code=<pre>";
+			$content .= print_r($tmhOAuth->response['code'], true) . "</pre>";
 		}
 	}
 	
@@ -251,20 +251,20 @@ function long_url($shortURL)
 	}
 	$url = "http://www.longurlplease.com/api/v1.1?q=" . $shortURL;
 	$curlHandle = curl_init();
-	curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1);
-	curl_setopt($curlHandle,CURLOPT_URL,$url);
+	curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curlHandle, CURLOPT_URL, $url);
 	$url_json = curl_exec($curlHandle);
 	curl_close($curlHandle);
 
 	$urlArray = json_decode($url_json, true);
 
-	$urlLong = $urlArray["$shortURL"];
+	$longURL = $urlArray["$shortURL"];
 
-	if ($urlLong == null) {
+	if ($longURL == null) {
 		return $shortURL;
 	}
 
-	return $urlLong;
+	return $longURL;
 }
 
 
