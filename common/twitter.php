@@ -397,8 +397,8 @@ function twitter_media_page($query)
 
 		$code = $tmhOAuth->request('POST', API_NEW . 'statuses/update_with_media.json',
 											array(
-												'media[]'  => "@{$image}",
-												'status'   => " " . $status, //A space is needed because twitter b0rks if first char is an @
+												'media[]'	=> "@{$image}",
+												'status'	=> " " . $status, //A space is needed because twitter b0rks if first char is an @
 												'lat'		=> $lat,
 												'long'		=> $long,
 											),
@@ -949,7 +949,7 @@ function twitter_confirmation_page($query)
 			if (twitter_block_exists($target_id)) //Is the target blocked by the user?
 			{
 				$action = 'unblock';
-				$content  = "<p>Are you really sure you want to <strong>Unblock $target</strong>?</p>";
+				$content = "<p>Are you really sure you want to <strong>Unblock $target</strong>?</p>";
 				$content .= '<ul><li>They will see your updates on their home page if they follow you again.</li><li>You <em>can</em> block them again if you want.</li></ul>';
 			} else {
 				$content = "<p>Are you really sure you want to <strong>$action $target</strong>?</p>";
@@ -968,7 +968,7 @@ function twitter_confirmation_page($query)
 			break;
 
 		case 'spam':
-			$content  = "<p>Are you really sure you want to report <strong>$target</strong> as a spammer?</p>";
+			$content = "<p>Are you really sure you want to report <strong>$target</strong> as a spammer?</p>";
 			$content .= "<p>They will also be blocked from following you.</p>";
 			break;
 
@@ -1010,7 +1010,7 @@ function twitter_friends_page($query)
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}	
-	$request = API_NEW."friends/list.json?screen_name={$user}&cursor={$cursor}";
+	$request = API_NEW . "friends/list.json?screen_name={$user}&cursor={$cursor}";
 	$tl = twitter_process($request);
 	$content = theme('followers_list', $tl);
 	theme('page', 'Friends', $content);
@@ -1027,7 +1027,7 @@ function twitter_followers_page($query)
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}	
-	$request = API_NEW."followers/list.json?screen_name={$user}&cursor={$cursor}";
+	$request = API_NEW . "followers/list.json?screen_name={$user}&cursor={$cursor}";
 	$tl = twitter_process($request);
 	$content = theme('followers_list', $tl);
 	theme('page', 'Followers', $content);
@@ -1155,7 +1155,7 @@ function twitter_directs_page($query)
 
 		case 'send':
 			twitter_ensure_post_action();
-			$to = trim(stripslashes(str_replace('@','',$_POST['to'])));
+			$to = trim(stripslashes(str_replace('@', '', $_POST['to'])));
 			$message = trim(stripslashes($_POST['message']));
 			$request = API_NEW . 'direct_messages/new.json';
 			twitter_process($request, array('screen_name' => $to, 'text' => $message));
@@ -1164,7 +1164,7 @@ function twitter_directs_page($query)
 		case 'sent':
 			$request = API_NEW . "direct_messages/sent.json?count={$perPage}";
 			if ($_GET['max_id']) {
-				$request .= '&max_id='.$_GET['max_id'];
+				$request .= '&max_id=' . $_GET['max_id'];
 			}
 			$tl = twitter_process($request);
 			$tl = twitter_standard_timeline($tl, 'directs_sent');	
@@ -1314,8 +1314,7 @@ function twitter_user_page($query)
 		$content .= "<p>In reply to:<br />{$out}</p>";
 
 		if ($subaction == 'replyall') {
-			$found = Twitter_Extractor::create($tweet->text)
-				->extractMentionedUsernames();
+			$found = Twitter_Extractor::create($tweet->text)->extractMentionedUsernames();
 			$to_users = array_unique(array_merge($to_users, $found));
 		}
 				
@@ -1351,7 +1350,7 @@ function twitter_favourites_page($query)
 		user_ensure_authenticated();
 		$screenName = user_current_username();
 	}
-	$request = API_NEW."favorites/list.json?screen_name={$screenName}";
+	$request = API_NEW . "favorites/list.json?screen_name={$screenName}";
 	if ($_GET['max_id']) {
 		$request .= '&max_id=' . $_GET['max_id'];
 	}
@@ -1414,7 +1413,7 @@ function theme_status_form($text = '', $inReplyToID = NULL)
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 
-		//	adding ?status=foo will automaticall add "foo" to the text area.
+		//	adding ?status=foo will automatically add "foo" to the text area.
 		if ($_GET['status']) {
 			$text = $_GET['status'];
 		}
@@ -1439,7 +1438,7 @@ function theme_status($status)
 function theme_retweet($status)
 {
 	$text = "RT @{$status->user->screen_name}: {$status->text}";
-	$length = function_exists('mb_strlen') ? mb_strlen($text,'UTF-8') : strlen($text);
+	$length = function_exists('mb_strlen') ? mb_strlen($text, 'UTF-8') : strlen($text);
 	$from = substr($_SERVER['HTTP_REFERER'], strlen(BASE_URL));
 
 	if ($status->user->protected == 0) {
@@ -1454,13 +1453,13 @@ function theme_retweet($status)
 	}
 
 	$content .= "<p>Old style editable retweet:</p>
-					<form action='update' method='post'>
-						<input type='hidden' name='from' value='$from' />
-						<textarea name='status' style='width:90%; max-width: 400px;' rows='3' id='status'>$text</textarea>
-						<br/>
-						<input type='submit' value='Retweet' />
-						<span id='remaining'>" . (140 - $length) ."</span>
-					</form>";
+				<form action='update' method='post'>
+					<input type='hidden' name='from' value='$from' />
+					<textarea name='status' style='width:90%; max-width: 400px;' rows='3' id='status'>$text</textarea>
+					<br/>
+					<input type='submit' value='Retweet' />
+					<span id='remaining'>" . (140 - $length) ."</span>
+				</form>";
 	$content .= js_counter("status");
 
 	return $content;
@@ -1483,7 +1482,7 @@ function theme_user_header($user)
 	$link = theme('external_link', $user->url);
 	// Some locations have a prefix which should be removed (UberTwitter and iPhone)
 	// Sorry if my PC has converted from UTF-8 with the U (artesea)
-	$cleanLocation = str_replace(array("iPhone: ","ÜT: "),"",$user->location);
+	$cleanLocation = str_replace(array("iPhone: ","ÜT: "), "", $user->location);
 	$raw_date_joined = strtotime($user->created_at);
 	$date_joined = date('jS M Y', $raw_date_joined);
 	$tweets_per_day = twitter_tweets_per_day($user, 1);
@@ -1555,7 +1554,7 @@ function theme_avatar($url, $forceLarge = false)
 	return "<img src='$url' height='$size' width='$size' />";
 }
 
-function theme_status_time_link($status, $is_link = true)
+function theme_status_time_link($status, $isLink = true)
 {
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
@@ -1567,7 +1566,7 @@ function theme_status_time_link($status, $is_link = true)
 	} else {
 		$out = $status->created_at;
 	}
-	if ($is_link) {
+	if ($isLink) {
 		$out = "<a href='status/{$status->id}' class='time'>$out</a>";
 	}
 	return $out;
@@ -1703,7 +1702,8 @@ function twitter_standard_timeline($feed, $source)
 
 		default:
 			echo "<h1>$source</h1><pre>";
-			print_r($feed); die();
+			print_r($feed);
+			die();
 	}
 }
 
@@ -1718,7 +1718,7 @@ function twitter_user_info($username = null)
 	if (!$username) {
 		$username = user_current_username();
 	}
-	$request = API_NEW."users/show.json?screen_name={$username}";
+	$request = API_NEW . "users/show.json?screen_name={$username}";
 	$user = twitter_process($request);
 	return $user;
 }
@@ -1764,7 +1764,10 @@ function theme_timeline($feed, $paginate = true)
 			$date = twitter_date('l jS F Y', strtotime($status->created_at));
 			if ($date_heading !== $date) {
 				$date_heading = $date;
-				$rows[] = array('data'  => array($date), 'class' => 'date');
+				$rows[] = array(
+					'data' => array($date),
+					'class' => 'date'
+				);
 			}
 		} else {
 			$date = $status->created_at;
@@ -1776,7 +1779,7 @@ function theme_timeline($feed, $paginate = true)
 		$link = theme('status_time_link', $status, !$status->is_direct);
 		$actions = theme('action_icons', $status);
 		$avatar = theme('avatar', theme_get_avatar($status->from));
-		$source = $status->source ? " from ".str_replace('rel="nofollow"', 'rel="nofollow" target="' . get_target() . '"', preg_replace('/&(?![a-z][a-z0-9]*;|#[0-9]+;|#x[0-9a-f]+;)/i', '&amp;', $status->source)) : ''; //need to replace & in links with &amps and force new window on links
+		$source = $status->source ? " from " . str_replace('rel="nofollow"', 'rel="nofollow" target="' . get_target() . '"', preg_replace('/&(?![a-z][a-z0-9]*;|#[0-9]+;|#x[0-9a-f]+;)/i', '&amp;', $status->source)) : ''; //need to replace & in links with &amps and force new window on links
 		if ($status->place->name) {
 			$source .= ", " . $status->place->name . ", " . $status->place->country;
 		}
@@ -1902,10 +1905,19 @@ function theme_followers($feed, $nextPageURL)
 		}
 		$content .= "</span>";
 
-		$rows[] = array('data' => array(array('data' => theme('avatar', theme_get_avatar($user)), 'class' => 'avatar'),
-		                                array('data' => $content, 'class' => 'status shift')),
-		                'class' => 'tweet');
-
+		$rows[] = array(
+			'data' => array(
+				array(
+					'data' => theme('avatar', theme_get_avatar($user)),
+					'class' => 'avatar'
+				),
+				array(
+					'data' => $content,
+					'class' => 'status shift'
+				)
+			),
+			'class' => 'tweet'
+		);
 	}
 
 	$content = theme('table', array(), $rows, array('class' => 'followers'));
@@ -1942,10 +1954,19 @@ function theme_retweeters($feed, $hide_pagination = false)
 		$content .= "~" . pluralise('tweet', $tweets_per_day, true) . " per day<br />";
 		$content .= "</span>";
 
-		$rows[] = array('data' => array(
-						array('data' => theme('avatar', theme_get_avatar($user)), 'class' => 'avatar'),
-						array('data' => $content, 'class' => 'status shift')),
-					'class' => 'tweet');
+		$rows[] = array(
+			'data' => array(
+				array(
+					'data' => theme('avatar', theme_get_avatar($user)),
+					'class' => 'avatar'
+				),
+				array(
+					'data' => $content,
+					'class' => 'status shift'
+				)
+			),
+			'class' => 'tweet'
+		);
 	}
 
 	$content = theme('table', array(), $rows, array('class' => 'followers'));
