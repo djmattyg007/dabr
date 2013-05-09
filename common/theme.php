@@ -11,8 +11,9 @@ function theme()
 
 	if ($current_theme) {
 		$custom_function = $current_theme.'_'.$function;
-		if (function_exists($custom_function))
-		$function = $custom_function;
+		if (function_exists($custom_function)) {
+			$function = $custom_function;
+		}
 	} else {
 		if (!function_exists($function)) {
 			return "<p>Error: theme function <b>$function</b> not found.</p>";

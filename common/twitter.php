@@ -192,11 +192,11 @@ function twitter_profile_page()
 		);
 
 		$code = $tmhOAuth->request(
-					'POST', 
-					$tmhOAuth->url("1.1/account/update_profile_image"),
-					$params,
-					true, // use auth
-					true  // multipart
+			'POST',
+			$tmhOAuth->url("1.1/account/update_profile_image"),
+			$params,
+			true, // use auth
+			true  // multipart
 		);
 
 		if ($code == 200) {
@@ -270,7 +270,7 @@ function long_url($shortURL)
 
 function friendship_exists($user_a)
 {
-	$request = API_NEW.'friendships/show.json?target_screen_name=' . $user_a;
+	$request = API_NEW . 'friendships/show.json?target_screen_name=' . $user_a;
 	$following = twitter_process($request);
 
 	if ($following->relationship->target->following == 1) {
@@ -282,14 +282,14 @@ function friendship_exists($user_a)
 
 function friendship($user_a)
 {
-	$request = API_NEW.'friendships/show.json?target_screen_name=' . $user_a;
+	$request = API_NEW . 'friendships/show.json?target_screen_name=' . $user_a;
 	return twitter_process($request);
 }
 
 function twitter_block_exists($query)
 {
 	// Get an array of all ids the authenticated user is blocking (limited at 5000 without cursoring)
-	$request = API_NEW.'blocks/ids.json';
+	$request = API_NEW . 'blocks/ids.json';
 	$response = twitter_process($request);
 	$blocked = $response->ids;
 	// If the authenticated user has blocked $query it will appear in the array
@@ -387,15 +387,15 @@ function twitter_media_page($query)
 		list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
 		
 		$tmhOAuth = new tmhOAuth(array(
-			'consumer_key'    => OAUTH_CONSUMER_KEY,
-			'consumer_secret' => OAUTH_CONSUMER_SECRET,
-			'user_token'      => $oauth_token,
-			'user_secret'     => $oauth_token_secret,
+			'consumer_key'		=> OAUTH_CONSUMER_KEY,
+			'consumer_secret'	=> OAUTH_CONSUMER_SECRET,
+			'user_token'		=> $oauth_token,
+			'user_secret'		=> $oauth_token_secret,
 		));
 
 		$image = "{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}";
 
-		$code = $tmhOAuth->request('POST', API_NEW.'statuses/update_with_media.json',
+		$code = $tmhOAuth->request('POST', API_NEW . 'statuses/update_with_media.json',
 											array(
 												'media[]'  => "@{$image}",
 												'status'   => " " . $status, //A space is needed because twitter b0rks if first char is an @
@@ -592,8 +592,8 @@ function twitter_fetch($url)
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-	$user_agent = "Mozilla/5.0 (compatible; dabr; " . BASE_URL . ")";
-	curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+	$userAgent = "Mozilla/5.0 (compatible; dabr; " . BASE_URL . ")";
+	curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$fetch_start = microtime(1);
 	$response = curl_exec($ch);
@@ -622,12 +622,12 @@ function twitter_get_media($status)
 			$width = $media->sizes->thumb->w;
 			$height = $media->sizes->thumb->h;
 
-			$media_html .= "<a href=\"" . image_proxy($image) . "\" target=\"" . get_target() . "\" >";
-			$media_html .= "<img src=\"{$image}:thumb\" width=\"{$width}\" height=\"{$height}\" >";
-			$media_html .= "</a>";
+			$media_html .= '<a href="' . image_proxy($image) . '" target="' . get_target() . '">';
+			$media_html .= '<img src="' . $image . ':thumb" width="' . $width . '" height="' . $height . '" />';
+			$media_html .= '</a>';
 		}
 	
-		return $media_html . "<br/>";
+		return $media_html . "<br />";
 	}	
 }
 
@@ -668,7 +668,7 @@ function twitter_parse_tags($input, $entities = false)
 				$url = $urls->url;
 			
 				// Replace all URLs *UNLESS* they have already been linked (for example to an image)
-				$pattern = '#((?<!href\=(\'|\"))'.preg_quote($url,'#').')#i';
+				$pattern = '#((?<!href\=(\'|\"))' . preg_quote($url, '#') . ')#i';
 				$out = preg_replace($pattern,  $link_html, $out);
 			}
 		}
@@ -693,8 +693,7 @@ function twitter_parse_tags($input, $entities = false)
 		
 	} else {  // If Entities haven't been returned (usually because of search or a bio) use Autolink
 		// Create an array containing all URLs
-		$urls = Twitter_Extractor::create($input)
-				->extractURLs();
+		$urls = Twitter_Extractor::create($input)->extractURLs();
 
 		// Hyperlink the URLs 
 		if (setting_fetch('gwt') == 'on') { // If the user wants links to go via GWT 
@@ -750,7 +749,7 @@ function flickr_decode($num)
 	$decoded = 0;
 	$multi = 1;
 	while (strlen($num) > 0) {
-		$digit = $num[strlen($num)-1];
+		$digit = $num[strlen($num) - 1];
 		$decoded += $multi * strpos($alphabet, $digit);
 		$multi = $multi * strlen($alphabet);
 		$num = substr($num, 0, -1);
@@ -764,8 +763,8 @@ function flickr_encode($num)
 	$baseCount = strlen($alphabet);
 	$encoded = '';
 	while ($num >= $baseCount) {
-		$div = $num/$baseCount;
-		$mod = ($num-($baseCount*intval($div)));
+		$div = $num / $baseCount;
+		$mod = ($num - ($baseCount * intval($div)));
 		$encoded = $alphabet[$mod] . $encoded;
 		$num = intval($div);
 	}
@@ -775,16 +774,14 @@ function flickr_encode($num)
 	return $encoded;
 }
 
-
-
 function format_interval($timestamp, $granularity = 2)
 {
 	$units = array(
-	'year' => 31536000,
-	'day'  => 86400,
-	'hour' => 3600,
-	'min'  => 60,
-	'sec'  => 1
+		'year' => 31536000,
+		'day'  => 86400,
+		'hour' => 3600,
+		'min'  => 60,
+		'sec'  => 1
 	);
 	$output = '';
 	foreach ($units as $key => $value) {
@@ -865,7 +862,7 @@ function twitter_delete_page($query)
 	if (is_numeric($id)) {
 		$request = API_NEW . "statuses/destroy/{$id}.json";
 		$tl = twitter_process($request, true);
-		twitter_refresh('user/'.user_current_username());
+		twitter_refresh('user/' . user_current_username());
 	}
 }
 
@@ -1136,7 +1133,7 @@ function twitter_retweets_page()
 	$perPage = setting_fetch('perPage', 20);
 	$request = API_NEW . "statuses/retweets_of_me.json?count={$perPage}";
 	if ($_GET['max_id']) {
-		$request .= '&max_id='.$_GET['max_id'];
+		$request .= '&max_id=' . $_GET['max_id'];
 	}
 	$tl = twitter_process($request);
 	$tl = twitter_standard_timeline($tl, 'retweets');
@@ -1199,7 +1196,7 @@ function theme_directs_form($to)
 	$htmlTo = "";
 	if ($to) {
 		if (friendship_exists($to) != 1) {
-			$htmlTo .= "<em>Warning</em> <b>" . $to . "</b> is not following you. You cannot send them a Direct Message :(<br/>";
+			$htmlTo .= "<em>Warning</em> <b>$to</b> is not following you. You cannot send them a Direct Message :(<br/>";
 		}
 		$htmlTo .= "Sending direct message to <b>$to</b><input name='to' value='$to' type='hidden'>";
 	} else {
@@ -2117,10 +2114,10 @@ function theme_action_icon($url, $imageURL, $text)
 {
 	// alt attribute left off to reduce bandwidth by about 720 bytes per page
 	if ($text == 'MAP') {
-		return "<a href='$url' alt='$text' target='" . get_target() . "'><img src='$imageURL' /></a>";
+		return '<a href="' . $url . '" alt="' . $text . '" target="' . get_target() . '"><img src="' . $imageURL . '" /></a>';
 	}
 
-	return "<a href='$url'><img src='$imageURL' alt='$text' /></a>";
+	return '<a href="' . $url . '"><img src="' . $imageURL . '" alt="' . $text . '" /></a>';
 }
 
 function pluralise($word, $count, $show = false)
@@ -2182,9 +2179,19 @@ function theme_followers_list($feed, $hide_pagination = false)
 		}
 		$content .= "</span>";
 
-		$rows[] = array('data' => array(
-			array('data' => theme('avatar', $user->profile_image_url), 'class' => 'avatar'),
-			array('data' => $content, 'class' => 'status shift')), 'class' => 'tweet');
+		$rows[] = array(
+			'data' => array(
+				array(
+					'data'	=> theme('avatar', $user->profile_image_url),
+					'class'	=> 'avatar'
+				),
+				array(
+					'data'	=> $content,
+					'class'	=> 'status shift'
+				)
+			),
+			'class' => 'tweet'
+		);
 	}
 
 	$content = theme('table', array(), $rows, array('class' => 'followers'));
