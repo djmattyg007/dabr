@@ -32,4 +32,3 @@ function browser_load($browser)
 	}
 }
 
-?>

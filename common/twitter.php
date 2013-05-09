@@ -2024,7 +2024,10 @@ function theme_search_results($feed)
 			"<a href='user/{$status->from_user}'>{$status->from_user}</a> $actions - {$link}<br />{$text}",
 		);
 		if (twitter_is_reply($status)) {
-			$row = array('class' => 'reply', 'data' => $row);
+			$row = array(
+				'class'	=> 'reply',
+				'data'	=> $row
+			);
 		}
 		$rows[] = $row;
 	}
@@ -2048,7 +2051,7 @@ function theme_external_link($url, $content = null)
 	if (!$content) {
 		// Used to wordwrap long URLs
 		//return "<a href='$url' target='_blank'>". wordwrap(long_url($url), 64, "\n", true) ."</a>";
-		return "<a href='$url' target='" . get_target() . "'>". long_url($url) ."</a>";
+		return "<a href='$url' target='" . get_target() . "'>" . long_url($url) . "</a>";
 	} else {
 		return "<a href='$url' target='" . get_target() . "'>$content</a>";
 	}
@@ -2126,7 +2129,7 @@ function theme_action_icons($status)
 		$actions[] = theme('action_icon', "https://maps.google.com/maps?q={$lat},{$long}", 'images/map.png', 'MAP');
 	}
 	//Search for @ to a user
-	$actions[] = theme('action_icon',"search?query=%40{$from}",'images/q.png','?');
+	$actions[] = theme('action_icon', "search?query=%40{$from}", "images/q.png", "?");
 
 	return implode(' ', $actions);
 }
@@ -2175,7 +2178,7 @@ function theme_followers_list($feed, $hide_pagination = false)
 		$name = theme('full_name', $user);
 		$tweets_per_day = twitter_tweets_per_day($user);
 		$last_tweet = strtotime($user->status->created_at);
-		#$vicon = ($user->verified) ? theme('action_icon', "", 'images/verified.png', '&#10004;') : '';
+		//$vicon = ($user->verified) ? theme('action_icon', "", 'images/verified.png', '&#10004;') : '';
 		$content = "{$vicon}{$name}<br /><span class='about'>";
 		if ($user->description != "") {
 			$content .= "Bio: {$user->description}<br />";
@@ -2217,7 +2220,7 @@ function theme_followers_list($feed, $hide_pagination = false)
 
 	$content = theme('table', array(), $rows, array('class' => 'followers'));
 	if (!$hide_pagination) {
-		#$content .= theme('pagination');
+		//$content .= theme('pagination');
 		$content .= theme('list_pagination', $feed);
 	}
 	return $content;
@@ -2246,4 +2249,3 @@ function image_proxy($src, $size = "")
 	}
 }
 
-?>
