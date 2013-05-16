@@ -1199,7 +1199,7 @@ function theme_directs_form($to)
 		$request = API_NEW . "direct_messages.json?count=1";
 		$DM = twitter_process($request);
 		$htmlTo .= "Most recent DM:<br />";
-		$htmlTo .= $DM[0]->text;
+		$htmlTo .= "<b>" . $DM[0]->sender . "</b>: " . $DM[0]->text . "<br />";
 	}
 	if ($to) {
 		if (friendship_exists($to) != 1) {
