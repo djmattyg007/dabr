@@ -1194,6 +1194,13 @@ function theme_directs_menu()
 function theme_directs_form($to)
 {
 	$htmlTo = "";
+
+	if (setting_fetch('perPage', '') == 'yes') {
+		$request = API_NEW . "direct_messages.json?count=1";
+		$DM = twitter_process($request);
+		$htmlTo .= "Most recent DM:<br />";
+		$htmlTo .= $DM[0]->text;
+	}
 	if ($to) {
 		if (friendship_exists($to) != 1) {
 			$htmlTo .= "<em>Warning</em> <b>$to</b> is not following you. You cannot send them a Direct Message :(<br/>";
