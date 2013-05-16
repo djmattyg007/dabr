@@ -1195,7 +1195,7 @@ function theme_directs_form($to)
 {
 	$htmlTo = "";
 
-	if (setting_fetch('perPage', '') == 'yes') {
+	if (setting_fetch('lastDM', '') == 'yes') {
 		$request = API_NEW . "direct_messages.json?count=1";
 		$DM = twitter_process($request);
 		$htmlTo .= "Most recent DM:<br />";
