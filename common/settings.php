@@ -62,7 +62,7 @@ function settings_page($args) {
 		$settings['reverse']		= $_POST['reverse'];
 		$settings['timestamp']		= $_POST['timestamp'];
 		$settings['hide_inline']	= $_POST['hide_inline'];
-		$settings['utc_offset']		= (float)$_POST['utc_offset'];
+		$settings['utc_offset']		= (float) $_POST['utc_offset'];
 		$settings['emoticons']		= $_POST['emoticons'];
 		$settings['lastDM']			= $_POST['lastDM'];
 

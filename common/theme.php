@@ -10,7 +10,7 @@ function theme()
 	$function = 'theme_'.$function;
 
 	if ($current_theme) {
-		$custom_function = $current_theme.'_'.$function;
+		$custom_function = $current_theme.'_' . $function;
 		if (function_exists($custom_function)) {
 			$function = $custom_function;
 		}
@@ -24,9 +24,9 @@ function theme()
 
 function theme_csv($headers, $rows)
 {
-	$out = implode(',', $headers)."\n";
+	$out = implode(',', $headers) . "\n";
 	foreach ($rows as $row) {
-		$out .= implode(',', $row)."\n";
+		$out .= implode(',', $row) . "\n";
 	}
 	return $out;
 }
