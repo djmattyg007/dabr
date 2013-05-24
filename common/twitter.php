@@ -606,6 +606,12 @@ function twitter_fetch($url)
 //	http://dev.twitter.com/pages/tweet_entities
 function twitter_get_media($status)
 {
+	if (setting_fetch("hide_inline") || in_array(setting_fetch("browser"), array("text", "worksafe"))) {
+		return;
+	}
+	if (setting_fetch("hideNSFW") && stripos($status->text, "NSFW") === true) {
+		return;
+	}
 	if ($status->entities->media) {
 		$media_html = '';
 		
@@ -1728,7 +1734,7 @@ function twitter_user_info($username = null)
 function theme_timeline($feed, $paginate = true)
 {
 	if (count($feed) == 0) {
-		return theme('no_tweets');
+		return theme("no_tweets");
 	}
 	if (count($feed) < 2) { 
 		$hide_pagination = true;
@@ -1736,7 +1742,7 @@ function theme_timeline($feed, $paginate = true)
 	$rows = array();
 	$page = menu_current_page();
 	$date_heading = false;
-	$first=0;
+	$first = 0;
 	
 	// Add the hyperlinks *BEFORE* adding images
 	foreach ($feed as &$status)	{
@@ -1744,21 +1750,21 @@ function theme_timeline($feed, $paginate = true)
 	}
 	unset($status);
 	
-	// Only embed images in suitable browsers
-	if (!in_array(setting_fetch('browser'), array('text', 'worksafe')))	{
-		if (EMBEDLY_KEY !== '')	{
+	// Check to see whether we should embed images
+	if (!setting_fetch("hide_inline") && !in_array(setting_fetch("browser"), array("text", "worksafe"))) {
+		if (EMBEDLY_KEY !== "")	{
 			embedly_embed_thumbnails($feed);
 		}
 	}
 
 	foreach ($feed as $status) {
-		if ($first==0) {
+		if ($first == 0) {
 			$since_id = $status->id;
 			$first++;
 		} else {
-			$max_id =  $status->id;
+			$max_id = $status->id;
 			if ($status->original_id) {
-				$max_id =  $status->original_id;
+				$max_id = $status->original_id;
 			}
 		}
 		$time = strtotime($status->created_at);
