@@ -1163,10 +1163,13 @@ function twitter_directs_page($query)
 
 		case "sent":
 			$request = API_NEW . "direct_messages/sent.json?count={$perPage}";
+			break;
 
 		case "inbox":
 		default:
+			$action = "inbox";
 			$request = API_NEW . "direct_messages.json?count={$perPage}";
+			break;
 	}
 	if ($_GET["max_id"]) {
 		$request .= "&max_id=" . $_GET["max_id"];
