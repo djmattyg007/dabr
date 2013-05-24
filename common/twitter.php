@@ -2169,12 +2169,12 @@ function theme_action_icons($status)
 		$latlong = $geo->coordinates;
 		$lat = $latlong[0];
 		$long = $latlong[1];
-		$actions[] = theme('action_icon', "https://maps.google.com/maps?q={$lat},{$long}", 'images/map.png', 'MAP');
+		$actions[] = theme("action_icon", "https://maps.google.com/maps?q={$lat},{$long}", "images/map.png", "MAP");
 	}
 	//Search for @ to a user
-	$actions[] = theme('action_icon', "search?query=%40{$from}", "images/q.png", "?");
+	$actions[] = theme("action_icon", "search?query=%40{$from}", "images/q.png", "?");
 
-	return implode(' ', $actions);
+	return implode(" ", $actions);
 }
 
 function theme_action_icon($url, $imageURL, $text)
