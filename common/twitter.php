@@ -1111,57 +1111,57 @@ function twitter_retweet($query)
 		$request = API_NEW . "statuses/retweet/{$id}.json";
 		twitter_process($request, true);
 	}
-	twitter_refresh($_POST['from'] ? $_POST['from'] : '');
+	twitter_refresh($_POST["from"] ? $_POST["from"] : "");
 }
 
 function twitter_replies_page()
 {
-	$perPage = setting_fetch('perPage', 20);
+	$perPage = setting_fetch("perPage", 20);
 	$request = API_NEW . "statuses/mentions_timeline.json?count={$perPage}";
-	if ($_GET['max_id']) {
-		$request .= '&max_id='.$_GET['max_id'];
+	if ($_GET["max_id"]) {
+		$request .= "&max_id=" . $_GET["max_id"];
 	}
 	$tl = twitter_process($request);
-	$tl = twitter_standard_timeline($tl, 'replies');
-	$content = theme('status_form');
-	$content .= theme('timeline', $tl);
-	theme('page', 'Replies', $content);
+	$tl = twitter_standard_timeline($tl, "replies");
+	$content = theme("status_form");
+	$content .= theme("timeline", $tl);
+	theme("page", "Replies", $content);
 }
 
 function twitter_retweets_page()
 {
-	$perPage = setting_fetch('perPage', 20);
+	$perPage = setting_fetch("perPage", 20);
 	$request = API_NEW . "statuses/retweets_of_me.json?count={$perPage}";
-	if ($_GET['max_id']) {
-		$request .= '&max_id=' . $_GET['max_id'];
+	if ($_GET["max_id"]) {
+		$request .= "&max_id=" . $_GET["max_id"];
 	}
 	$tl = twitter_process($request);
-	$tl = twitter_standard_timeline($tl, 'retweets');
-	$content = theme('status_form');
-	$content .= theme('timeline',$tl);
-	theme('page', 'Retweets', $content);
+	$tl = twitter_standard_timeline($tl, "retweets");
+	$content = theme("status_form");
+	$content .= theme("timeline", $tl);
+	theme("page", "Retweets", $content);
 }
 
 function twitter_directs_page($query)
 {
-	$perPage = setting_fetch('perPage', 20);
+	$perPage = setting_fetch("perPage", 20);
 	
 	$action = strtolower(trim($query[1]));
 	switch ($action) {
-		case 'create':
+		case "create":
 			$to = $query[2];
-			$content = theme('directs_form', $to);
-			theme('page', 'Create DM', $content);
+			$content = theme("directs_form", $to);
+			theme("page", "Create DM", $content);
 
-		case 'send':
+		case "send":
 			twitter_ensure_post_action();
-			$to = trim(stripslashes(str_replace('@', '', $_POST['to'])));
-			$message = trim(stripslashes($_POST['message']));
-			$request = API_NEW . 'direct_messages/new.json';
-			twitter_process($request, array('screen_name' => $to, 'text' => $message));
-			twitter_refresh('directs/sent');
+			$to = trim(stripslashes(str_replace("@", "", $_POST["to"])));
+			$message = trim(stripslashes($_POST["message"]));
+			$request = API_NEW . "direct_messages/new.json";
+			twitter_process($request, array("screen_name" => $to, "text" => $message));
+			twitter_refresh("directs/sent");
 
-		case 'sent':
+		case "sent":
 			$request = API_NEW . "direct_messages/sent.json?count={$perPage}";
 			if ($_GET['max_id']) {
 				$request .= '&max_id=' . $_GET['max_id'];
@@ -1172,7 +1172,7 @@ function twitter_directs_page($query)
 			$content .= theme('timeline', $tl);
 			theme('page', 'DM Sent', $content);
 
-		case 'inbox':
+		case "inbox":
 		default:
 			$request = API_NEW . "direct_messages.json?count={$perPage}";
 			if ($_GET['max_id']) {
@@ -1195,7 +1195,7 @@ function theme_directs_form($to)
 {
 	$htmlTo = "";
 
-	if (setting_fetch('lastDM', '') == 'yes') {
+	if (setting_fetch("lastDM", "") == "yes") {
 		$request = API_NEW . "direct_messages.json?count=1";
 		$DM = twitter_process($request);
 		$htmlTo .= "Most recent DM:<br />";
