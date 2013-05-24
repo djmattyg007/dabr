@@ -1800,7 +1800,8 @@ function theme_timeline($feed, $paginate = true)
 		$retweeted = '';
 		if ($status->retweeted_by) {
 			$retweeted_by = $status->retweeted_by->user->screen_name;
-			$retweeted = "<br /><small class='from'>retweeted by <a href='user/{$retweeted_by}'>{$retweeted_by}</a></small>";
+			$retweeted_by_created_at = twitter_date("D M j Y H:i", strtotime($status->retweeted_by->created_at));
+			$retweeted = "<br /><small class='from'>retweeted by <a href='user/{$retweeted_by}'>{$retweeted_by}</a> at {$retweeted_by_created_at}</small>";
 			//$source .= "<br /><a href='retweeted_by/{$status->id}'>retweeted</a> by <a href='user/{$retweeted_by}'>{$retweeted_by}</a>";
 		}
 		if ($status->favorite_count) {
