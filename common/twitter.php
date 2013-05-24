@@ -1163,27 +1163,19 @@ function twitter_directs_page($query)
 
 		case "sent":
 			$request = API_NEW . "direct_messages/sent.json?count={$perPage}";
-			if ($_GET['max_id']) {
-				$request .= '&max_id=' . $_GET['max_id'];
-			}
-			$tl = twitter_process($request);
-			$tl = twitter_standard_timeline($tl, 'directs_sent');	
-			$content = theme_directs_menu();
-			$content .= theme('timeline', $tl);
-			theme('page', 'DM Sent', $content);
 
 		case "inbox":
 		default:
 			$request = API_NEW . "direct_messages.json?count={$perPage}";
-			if ($_GET['max_id']) {
-				$request .= '&max_id='.$_GET['max_id'];
-			}
-			$tl = twitter_process($request);
-			$tl = twitter_standard_timeline($tl, 'directs_inbox');	
-			$content = theme_directs_menu();
-			$content .= theme('timeline', $tl);
-			theme('page', 'DM Inbox', $content);
 	}
+	if ($_GET["max_id"]) {
+		$request .= "&max_id=" . $_GET["max_id"];
+	}
+	$tl = twitter_process($request);
+	$tl = twitter_standard_timeline($tl, "directs_" . $action);	
+	$content = theme_directs_menu();
+	$content .= theme("timeline", $tl);
+	theme("page", "DM " . strtoupper($action), $content);
 }
 
 function theme_directs_menu()
