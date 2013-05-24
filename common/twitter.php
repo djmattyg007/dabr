@@ -141,7 +141,17 @@ menu_register(array(
 	"edit-profile" => array(
 		"security"	=> true,
 		"callback"	=> "twitter_profile_page",
-	)
+	),
+	"showretweets" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_retweets",
+	),
+	"hideretweets" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_retweets",
+	),
 ));
 
 // How should external links be opened?
@@ -978,6 +988,10 @@ function twitter_confirmation_page($query)
 			$content .= "<p>They will also be blocked from following you.</p>";
 			break;
 
+		case "hideretweets":
+			$content = "<p>Are you really sure you want to hide the retweets from <strong>$target</strong>?</p>";
+			$content .= "<ul><li>Their retweets will no longer appear in your timeline.</li><li>You will still see them when looking at the timeline of $target.</li></ul>";
+			break;
 	}
 	$content .= "<form action='$action/$target' method='post'>
 					<input type='submit' value='Yes please' />
@@ -1003,6 +1017,20 @@ function twitter_confirmed_page($query)
                         break;
 	}
  	theme ('Page', 'Confirmed', $content);
+}
+
+function twitter_retweets($query)
+{
+	$user = $query[1]; // The name of the user we are doing this action on.
+	if ($user) {
+		if ($query[0] == "showretweets") {
+			$request = API_NEW . "friendships/update.json?screen_name={$user}&retweets=true";
+		} else {
+			$request = API_NEW . "friendships/update.json?screen_name={$user}&retweets=false";
+		}
+		twitter_process($request, true);
+		twitter_refresh("user/{$user}");
+	}
 }
 
 function twitter_friends_page($query)
@@ -1538,6 +1566,12 @@ function theme_user_header($user)
 			$out .= " | <a href='follow/{$user->screen_name}'>Follow</a>";
 		} else {
 			$out .= " | <a href='unfollow/{$user->screen_name}'>Unfollow</a>";
+		}
+
+		if ($friendship->relationship->source->want_retweets) {
+			$out .= ' | <a href="confirm/hideretweets/' . $user->screen_name . '">Hide Retweets</a>';
+		} else {
+			$out .= ' | <a href="showretweets/' . $user->screen_name . '">Show Retweets</a>';
 		}
 	
 		//We need to pass the User Name and the User ID.  The Name is presented in the UI, the ID is used in checking
