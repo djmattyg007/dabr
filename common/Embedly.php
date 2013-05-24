@@ -1,10 +1,6 @@
 <?php
 
 function embedly_embed_thumbnails(&$feed) {
-	if (setting_fetch('hide_inline')) {
-		return $text;
-	}
-	
 	// Find URLs throughout the $feed, noting the tweet IDs they occur in
 	// Regex from http://embed.ly/providers
 	$matched_urls = array();
@@ -39,39 +35,25 @@ function embedly_embed_thumbnails(&$feed) {
 		);
 
 
-	foreach ($feed as &$status)	{	// Loop through the feed
-		if ($status->entities) {	// If there are entities
-			$entities = $status->entities;
-			
-			if ($entities->urls) {
-				foreach($entities->urls as $urls) { // Loop through the URL entities
-					if ($urls->expanded_url != "") { // Use the expanded URL, if it exists, to pass to Embedly
-						if (preg_match($embedly_re, $urls->expanded_url) > 0) { // If it matches an Embedly supported URL
-							$matched_urls[urlencode($urls->expanded_url)][] = $status->id;
-						} else { // Can we handle it without an Embedly call?
-							foreach ($services as $pattern => $thumbnail_url) {
-								if (preg_match_all($pattern, $urls->expanded_url, $matches, PREG_PATTERN_ORDER) > 0)
-								{
-									foreach ($matches[1] as $key => $match) {
-										$html = theme('external_link', $urls->expanded_url, "<img src=\"" . image_proxy(sprintf($thumbnail_url, $match), "x50/") . "\" />");
-									
-										$feed[$status->id]->text = $html . '<br />' . $feed[$status->id]->text;
-									
-									}
-								}
-							}
+	foreach ($feed as &$status) { // Loop through the feed
+		if (stripos($status->text, "NSFW") === false) { // Ignore image fetching for tweets containing NSFW
+			if ($status->entities) { // If there are entities
+				$entities = $status->entities;
+				if ($entities->urls) {
+					foreach($entities->urls as $urls) { // Loop through the URL entities
+						if ($urls->expanded_url != "") { // Use the expanded URL, if it exists, to pass to Embedly
+							$url = $urls->expanded_url;
+						} else {
+							$url = $urls->url;
 						}
-					} else { // If there is no expanded URL, use the regular URL
-						//$match = $urls->url;
-						if (preg_match($embedly_re, $urls->url) > 0) {
-							$matched_urls[$urls->url][] = $status->id;
+						if (preg_match($embedly_re, $url) > 0) { // If it matches an Embedly supported URL
+							$matched_urls[urlencode($url)][] = $status->id;
 						} else { // Can we handle it without an Embedly call?
 							foreach ($services as $pattern => $thumbnail_url) {
-								if (preg_match_all($pattern, $urls->url, $matches, PREG_PATTERN_ORDER) > 0){
+								if (preg_match_all($pattern, $url, $matches, PREG_PATTERN_ORDER) > 0) {
 									foreach ($matches[1] as $key => $match) {
-										$html = theme('external_link', $urls->url, "<img src=\"" . image_proxy(sprintf($thumbnail_url, $match), "x50/") . "\" />");
-									
-										$feed[$status->id]->text = $html . '<br />' . $feed[$status->id]->text;
+										$html = theme("external_link", $url, "<img src=\"" . image_proxy(sprintf($thumbnail_url, $match), "x50/") . "\" />");
+										$feed[$status->id]->text = $html . "<br />" . $feed[$status->id]->text;
 									}
 								}
 							}
