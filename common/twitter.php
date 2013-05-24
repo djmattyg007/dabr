@@ -338,26 +338,26 @@ function twitter_trends_page($query)
 		if ($l->woeid != 1) {
 			$n = $l->name;
 			if ($l->placeType->code != 12) {
-				$n = '-' . $n;
+				$n = "-" . $n;
 			}
 			$header .= '<option value="' . $l->woeid . '"' . (($l->woeid == $woeid) ? ' selected="selected"' : '') . '>' . $n . '</option>';
 		}
 	}
 	$header .= '</select> <input type="submit" value="Go" /></form>';
 	
-	$request = API_NEW . 'trends/place.json?id=' . $woeid;
+	$request = API_NEW . "trends/place.json?id=" . $woeid;
 	$trends = twitter_process($request);
-	$search_url = 'search?query=';
+	$search_url = "search?query=";
 	foreach ($trends[0]->trends as $trend) {
 		$row = array("<strong><a href='{$search_url}{$trend->query}'>{$trend->name}</a></strong>");
-		$rows[] = array('data' => $row,  'class' => 'tweet');
+		$rows[] = array("data" => $row, "class" => "tweet");
 	}
 	$headers = array($header);
-	$content = theme('table', $headers, $rows, array('class' => 'timeline'));
-	theme('page', 'Trends', $content);
+	$content = theme("table", $headers, $rows, array("class" => "timeline"));
+	theme("page", "Trends", $content);
 }
 
-function js_counter($name, $length='140')
+function js_counter($name, $length = "140")
 {
 	$script = '<script type="text/javascript">
 function updateCount() {
@@ -382,44 +382,44 @@ updateCount();
 function twitter_media_page($query) 
 {
 	$content = "";
-	$status = stripslashes($_POST['message']);
+	$status = stripslashes($_POST["message"]);
 	
-	if ($_POST['message'] && $_FILES['image']['tmp_name']) {
+	if ($_POST["message"] && $_FILES["image"]["tmp_name"]) {
 		require("tmhOAuth.php");
 		
 		// Geolocation parameters
-		list($lat, $long) = explode(',', $_POST['location']);
+		list($lat, $long) = explode(",", $_POST["location"]);
 		if (is_numeric($lat) && is_numeric($long)) {
-			$post_data['lat'] = $lat;
-			$post_data['long'] = $long;	
+			$post_data["lat"] = $lat;
+			$post_data["long"] = $long;	
 		}
 		
-		list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
+		list($oauth_token, $oauth_token_secret) = explode("|", $GLOBALS["user"]["password"]);
 		
 		$tmhOAuth = new tmhOAuth(array(
-			'consumer_key'		=> OAUTH_CONSUMER_KEY,
-			'consumer_secret'	=> OAUTH_CONSUMER_SECRET,
-			'user_token'		=> $oauth_token,
-			'user_secret'		=> $oauth_token_secret,
+			"consumer_key"		=> OAUTH_CONSUMER_KEY,
+			"consumer_secret"	=> OAUTH_CONSUMER_SECRET,
+			"user_token"		=> $oauth_token,
+			"user_secret"		=> $oauth_token_secret,
 		));
 
-		$image = "{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}";
+		$image = "{$_FILES["image"]["tmp_name"]};type={$_FILES["image"]["type"]};filename={$_FILES["image"]["name"]}";
 
-		$code = $tmhOAuth->request('POST', API_NEW . 'statuses/update_with_media.json',
-											array(
-												'media[]'	=> "@{$image}",
-												'status'	=> " " . $status, //A space is needed because twitter b0rks if first char is an @
-												'lat'		=> $lat,
-												'long'		=> $long,
-											),
-											true, // use auth
-											true  // multipart
-										);
+		$code = $tmhOAuth->request("POST", API_NEW . "statuses/update_with_media.json",
+				array(
+					'media[]'	=> "@{$image}",
+					'status'	=> " " . $status, //A space is needed because twitter b0rks if first char is an @
+					'lat'		=> $lat,
+					'long'		=> $long,
+				),
+				true, // use auth
+				true  // multipart
+			);
 
 		if ($code == 200) {
-			$json = json_decode($tmhOAuth->response['response']);
+			$json = json_decode($tmhOAuth->response["response"]);
 			
-			if ($_SERVER['HTTPS'] == "on") {
+			if ($_SERVER["HTTPS"] == "on") {
 				$image_url = $json->entities->media[0]->media_url_https;
 			} else {
 				$image_url = $json->entities->media[0]->media_url;
@@ -433,10 +433,10 @@ function twitter_media_page($query)
 			
 		} else {
 			$content = "Damn! Something went wrong. Sorry :("
-				."<br /> code=" . $code
-				."<br /> status=" . $status
-				."<br /> image=" . $image
-				."<br /> response=<pre>"
+				. "<br /> code=" . $code
+				. "<br /> status=" . $status
+				. "<br /> image=" . $image
+				. "<br /> response=<pre>"
 				. print_r($tmhOAuth->response['response'], TRUE)
 				. "</pre><br /> info=<pre>"
 				. print_r($tmhOAuth->response['info'], TRUE)
@@ -446,11 +446,11 @@ function twitter_media_page($query)
 	}
 	
 	if ($_POST) {
-		if (!$_POST['message']) {
+		if (!$_POST["message"]) {
 			$content .= "<p>Please enter a message to go with your image.</p>";
 		}
 
-		if (!$_FILES['image']['tmp_name']) {
+		if (!$_FILES["image"]["tmp_name"]) {
 			$content .= "<p>Please select an image to upload.</p>";
 		}
 	}
@@ -470,7 +470,7 @@ function twitter_media_page($query)
 							chkbox = document.getElementById("geoloc");
 							if (navigator.geolocation) {
 								geoStatus("Tweet my location");
-								if ("' . $_COOKIE['geo'] . '"=="Y") {
+								if ("' . $_COOKIE["geo"] . '"=="Y") {
 									chkbox.checked = true;
 									goGeo();
 								}
@@ -493,7 +493,7 @@ function twitter_media_page($query)
 					</form>';
 	$content .= js_counter("message", "119");
 
-	return theme('page', 'Upload Picture', $content);
+	return theme("page", "Upload Picture", $content);
 }
 
 function twitter_process($url, $post_data = false)
@@ -502,13 +502,13 @@ function twitter_process($url, $post_data = false)
 		$post_data = array();
 	}
 
-	$status = $post_data['status'];
+	$status = $post_data["status"];
 	user_oauth_sign($url, $post_data);
 	$api_start = microtime(1);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 
-	if ($post_data !== false && !$_GET['page']) {
+	if ($post_data !== false && !$_GET["page"]) {
 		curl_setopt ($ch, CURLOPT_POST, true);
 		curl_setopt ($ch, CURLOPT_POSTFIELDS, $post_data);
 	}
