@@ -36,25 +36,27 @@ function embedly_embed_thumbnails(&$feed) {
 
 
 	foreach ($feed as &$status) { // Loop through the feed
-		if (stripos($status->text, "NSFW") === false) { // Ignore image fetching for tweets containing NSFW
-			if ($status->entities) { // If there are entities
-				$entities = $status->entities;
-				if ($entities->urls) {
-					foreach($entities->urls as $urls) { // Loop through the URL entities
-						if ($urls->expanded_url != "") { // Use the expanded URL, if it exists, to pass to Embedly
-							$url = $urls->expanded_url;
-						} else {
-							$url = $urls->url;
-						}
-						if (preg_match($embedly_re, $url) > 0) { // If it matches an Embedly supported URL
-							$matched_urls[urlencode($url)][] = $status->id;
-						} else { // Can we handle it without an Embedly call?
-							foreach ($services as $pattern => $thumbnail_url) {
-								if (preg_match_all($pattern, $url, $matches, PREG_PATTERN_ORDER) > 0) {
-									foreach ($matches[1] as $key => $match) {
-										$html = theme("external_link", $url, "<img src=\"" . image_proxy(sprintf($thumbnail_url, $match), "x50/") . "\" />");
-										$feed[$status->id]->text = $html . "<br />" . $feed[$status->id]->text;
-									}
+		if (setting_fetch("hideNSFW") && stripos($status->text, "NSFW") === true) {
+			// Ignore image fetching for tweets containing NSFW
+			continue;
+		}
+		if ($status->entities) { // If there are entities
+			$entities = $status->entities;
+			if ($entities->urls) {
+				foreach($entities->urls as $urls) { // Loop through the URL entities
+					if ($urls->expanded_url != "") { // Use the expanded URL, if it exists, to pass to Embedly
+						$url = $urls->expanded_url;
+					} else {
+						$url = $urls->url;
+					}
+					if (preg_match($embedly_re, $url) > 0) { // If it matches an Embedly supported URL
+						$matched_urls[urlencode($url)][] = $status->id;
+					} else { // Can we handle it without an Embedly call?
+						foreach ($services as $pattern => $thumbnail_url) {
+							if (preg_match_all($pattern, $url, $matches, PREG_PATTERN_ORDER) > 0) {
+								foreach ($matches[1] as $key => $match) {
+									$html = theme("external_link", $url, "<img src=\"" . image_proxy(sprintf($thumbnail_url, $match), "x50/") . "\" />");
+									$feed[$status->id]->text = $html . "<br />" . $feed[$status->id]->text;
 								}
 							}
 						}
