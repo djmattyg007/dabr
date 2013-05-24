@@ -6,38 +6,38 @@ Syntax is
 Assembled in theme_css()
 */
 
-$GLOBALS['colour_schemes'] = array(
-	0 => 'Pretty In Pink|c06,fcd,623,c8a,fee,fde,ffa,dd9,c06,fee,fee',
-	1 => 'Ugly Orange|b50,ddd,111,555,fff,eee,ffa,dd9,e81,c40,fff',
-	2 => 'Touch Blue|138,ddd,111,555,fff,eee,ffa,dd9,138,fff,fff',
-	5 => '#red|d12,ddd,111,555,fff,eee,ffa,dd9,c12,fff,fff',
+$GLOBALS["colour_schemes"] = array(
+	0 => "Pretty In Pink|c06,fcd,623,c8a,fee,fde,ffa,dd9,c06,fee,fee",
+	1 => "Ugly Orange|b50,ddd,111,555,fff,eee,ffa,dd9,e81,c40,fff",
+	2 => "Touch Blue|138,ddd,111,555,fff,eee,ffa,dd9,138,fff,fff",
+	5 => "#red|d12,ddd,111,555,fff,eee,ffa,dd9,c12,fff,fff",
 );
 
 menu_register(array(
-	'settings' => array(
-		'callback'	=> 'settings_page',
+	"settings" => array(
+		"callback"	=> "settings_page",
 	),
-	'reset' => array(
-		'hidden'	=> true,
-		'callback'	=> 'cookie_monster',
+	"reset" => array(
+		"hidden"	=> true,
+		"callback"	=> "cookie_monster",
 	),
 ));
 
 function cookie_monster() {
 	$cookies = array(
-		'browser',
-		'settings',
-		'utc_offset',
-		'search_favourite',
-		'perPage',
-		'USER_AUTH',
+		"browser",
+		"settings",
+		"utc_offset",
+		"search_favourite",
+		"perPage",
+		"USER_AUTH",
 	);
 	$duration = time() - 3600;
 	foreach ($cookies as $cookie) {
 		setcookie($cookie, NULL, $duration, '/');
 		setcookie($cookie, NULL, $duration);
 	}
-	return theme('page', 'Cookie Monster', '<p>The cookie monster has logged you out and cleared all settings. Try logging in again now.</p>');
+	return theme("page", "Cookie Monster", "<p>The cookie monster has logged you out and cleared all settings. Try logging in again now.</p>");
 }
 
 function setting_fetch($setting, $default = NULL) {
@@ -55,63 +55,63 @@ function setcookie_year($name, $value) {
 }
 
 function settings_page($args) {
-	if ($args[1] == 'save') {
-		$settings['browser']		= $_POST['browser'];
-		$settings['gwt']			= $_POST['gwt'];
-		$settings['colours']		= $_POST['colours'];
-		$settings['reverse']		= $_POST['reverse'];
-		$settings['timestamp']		= $_POST['timestamp'];
-		$settings['hide_inline']	= $_POST['hide_inline'];
-		$settings['utc_offset']		= (float) $_POST['utc_offset'];
-		$settings['emoticons']		= $_POST['emoticons'];
-		$settings['lastDM']			= $_POST['lastDM'];
+	if ($args[1] == "save") {
+		$settings["browser"]		= $_POST["browser"];
+		$settings["gwt"]			= $_POST["gwt"];
+		$settings["colours"]		= $_POST["colours"];
+		$settings["reverse"]		= $_POST["reverse"];
+		$settings["timestamp"]		= $_POST["timestamp"];
+		$settings["hide_inline"]	= $_POST["hide_inline"];
+		$settings["utc_offset"]		= (float) $_POST["utc_offset"];
+		$settings["emoticons"]		= $_POST["emoticons"];
+		$settings["lastDM"]			= $_POST["lastDM"];
 
 		// Perform validation on the "tweets per page" value
-		if (is_numeric($_POST['perPage'])) {
-			if ($_POST['perPage'] < 10) {
-				$settings['perPage'] = 10;
-			} else if ($_POST['perPage'] > 200) {
-				$settings['perPage'] = 200;
+		if (is_numeric($_POST["perPage"])) {
+			if ($_POST["perPage"] < 10) {
+				$settings["perPage"] = 10;
+			} else if ($_POST["perPage"] > 200) {
+				$settings["perPage"] = 200;
 			} else {
-				$settings['perPage'] = $_POST['perPage'];
+				$settings["perPage"] = $_POST["perPage"];
 			}
 		} else {
-			$settings['perPage'] = settings_fetch('perPage', 20);
+			$settings["perPage"] = settings_fetch("perPage", 20);
 		}
 
 		// Save a user's oauth details to a MySQL table
-		if (MYSQL_USERS == 'ON' && $newpass = $_POST['newpassword']) {
+		if (MYSQL_USERS == "ON" && $newpass = $_POST["newpassword"]) {
 			user_is_authenticated();
-			list($key, $secret) = explode('|', $GLOBALS['user']['password']);
+			list($key, $secret) = explode("|", $GLOBALS["user"]["password"]);
 			$sql = sprintf("REPLACE INTO user (username, oauth_key, oauth_secret, password) VALUES ('%s', '%s', '%s', MD5('%s'))",  mysql_escape_string(user_current_username()), mysql_escape_string($key), mysql_escape_string($secret), mysql_escape_string($newpass));
 			mysql_query($sql);
 		}
 		
-		setcookie_year('settings', base64_encode(serialize($settings)));
+		setcookie_year("settings", base64_encode(serialize($settings)));
 		twitter_refresh('');
 	}
 
 	$modes = array(
-		'mobile' 	=> 'Normal phone',
-		'touch'		=> 'Touch Screen',
-		'bigtouch'	=> 'Touch Screen Big Icons',
-		'desktop'	=> 'PC/Laptop',
-		'text'		=> 'Text only',
-		'worksafe'	=> 'Work Safe',
+		"mobile" 	=> "Normal phone",
+		"touch"		=> "Touch Screen",
+		"bigtouch"	=> "Touch Screen Big Icons",
+		"desktop"	=> "PC/Laptop",
+		"text"		=> "Text only",
+		"worksafe"	=> "Work Safe",
 	);
 	
 	$gwt = array(
-		'off' => 'direct',
-		'on'  => 'via GWT',
+		"off" => "direct",
+		"on"  => "via GWT",
 	);
 	
 	$colour_schemes = array();
-	foreach ($GLOBALS['colour_schemes'] as $id => $info) {
-		list($name, $colours) = explode('|', $info);
+	foreach ($GLOBALS["colour_schemes"] as $id => $info) {
+		list($name, $colours) = explode("|", $info);
 		$colour_schemes[$id] = $name;
 	}
 	
-	$utc_offset = setting_fetch('utc_offset', 0);
+	$utc_offset = setting_fetch("utc_offset", 0);
 /* returning 401 as it calls http://api.twitter.com/1/users/show.json?screen_name= (no username???)	
 	if (!$utc_offset) {
 		$user = twitter_user_info();
@@ -151,7 +151,7 @@ function settings_page($args) {
 	$content .= '<p><label>The time in UTC is currently ' . gmdate('H:i') . ', by using an offset of <input type="text" name="utc_offset" value="'. $utc_offset .'" size="3" /> we display the time as ' . twitter_date('H:i') . '.<br />Adjust this value if the time appears to be wrong.</label></p>';
 
 	// Allow users to choose a Dabr password if accounts are enabled
-	if (MYSQL_USERS == 'ON' && user_is_authenticated()) {
+	if (MYSQL_USERS == "ON" && user_is_authenticated()) {
 		$content .= '<fieldset><legend>' . APP_NAME . ' account</legend><small>If you want to sign in to ' . APP_NAME . ' without going via Twitter.com in the future, create a password and we\'ll remember you.</small></p><p>Change ' . APP_NAME . ' password<br /><input type="password" name="newpassword" /><br /><small>Leave blank if you don\'t want to change it</small></fieldset>';
 	}
 	
@@ -159,5 +159,5 @@ function settings_page($args) {
 
 	$content .= '<hr /><p>Visit <a href="reset">Reset</a> if things go horribly wrong - it will log you out and clear all settings.</p>';
 
-	return theme('page', 'Settings', $content);
+	return theme("page", "Settings", $content);
 }

@@ -5,142 +5,142 @@ require("Embedly.php");
 require("Emoticons.php");
 		
 menu_register(array(
-	'' => array(
-		'callback'	=> 'twitter_home_page',
-		'accesskey'	=> '0',
+	"" => array(
+		"callback"	=> "twitter_home_page",
+		"accesskey"	=> "0",
 	),
-	'status' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_status_page',
+	"status" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_status_page",
 	),
-	'update' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_update',
+	"update" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_update",
 	),
-	'twitter-retweet' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_retweet',
+	"twitter-retweet" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_retweet",
 	),
-	'replies' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_replies_page',
-		'accesskey'	=> '1',
+	"replies" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_replies_page",
+		"accesskey"	=> "1",
 	),
-	'favourite' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_mark_favourite_page',
+	"favourite" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_mark_favourite_page",
 	),
-	'unfavourite' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_mark_favourite_page',
+	"unfavourite" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_mark_favourite_page",
 	),
-	'directs' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_directs_page',
-		'accesskey'	=> '2',
+	"directs" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_directs_page",
+		"accesskey"	=> "2",
 	),
-	'search' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_search_page',
-		'accesskey'	=> '3',
+	"search" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_search_page",
+		"accesskey"	=> "3",
 	),
-	'user' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_user_page',
+	"user" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_user_page",
 	),
-	'follow' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_follow_page',
+	"follow" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_follow_page",
 	),
-	'unfollow' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_follow_page',
+	"unfollow" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_follow_page",
 	),
-	'confirm' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_confirmation_page',
+	"confirm" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_confirmation_page",
 	),
-	'confirmed' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_confirmed_page',
+	"confirmed" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_confirmed_page",
 	),
-	'block' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_block_page',
+	"block" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_block_page",
 	),
-	'unblock' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_block_page',
+	"unblock" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_block_page",
 	),
-	'spam' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_spam_page',
+	"spam" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_spam_page",
 	),
-	'favourites' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_favourites_page',
+	"favourites" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_favourites_page",
 	),
-	'followers' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_followers_page',
+	"followers" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_followers_page",
 	),
-	'friends' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_friends_page',
+	"friends" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_friends_page",
 	),
-	'delete' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_delete_page',
+	"delete" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_delete_page",
 	),
-	'deleteDM' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_deleteDM_page',
+	"deleteDM" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_deleteDM_page",
 	),
-	'retweet' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_retweet_page',
+	"retweet" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_retweet_page",
 	),
-	'hash' => array(
-		'hidden'	=> true,
-		'security'	=> true,
-		'callback'	=> 'twitter_hashtag_page',
+	"hash" => array(
+		"hidden"	=> true,
+		"security"	=> true,
+		"callback"	=> "twitter_hashtag_page",
 	),
-	'upload-picture' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_media_page',
+	"upload-picture" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_media_page",
 	),
-	'trends' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_trends_page',
+	"trends" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_trends_page",
 	),
-	'retweets' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_retweets_page',
+	"retweets" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_retweets_page",
 	),
-	'retweeted_by' => array(
-		'security'	=> true,
-		'hidden'	=> true,
-		'callback'	=> 'twitter_retweeters_page',
+	"retweeted_by" => array(
+		"security"	=> true,
+		"hidden"	=> true,
+		"callback"	=> "twitter_retweeters_page",
 	),
-	'edit-profile' => array(
-		'security'	=> true,
-		'callback'	=> 'twitter_profile_page',
+	"edit-profile" => array(
+		"security"	=> true,
+		"callback"	=> "twitter_profile_page",
 	)
 ));
 
@@ -148,7 +148,7 @@ menu_register(array(
 function get_target()
 {
 	// Kindle doesn't support opening in a new window
-	if (stristr($_SERVER['HTTP_USER_AGENT'], "Kindle/")) {
+	if (stristr($_SERVER["HTTP_USER_AGENT"], "Kindle/")) {
 		return "_self";
 	} else {
 		return "_blank";
@@ -159,13 +159,13 @@ function get_target()
 function twitter_profile_page()
 {
 	// process form data
-	if ($_POST['name']) {
+	if ($_POST["name"]) {
 		// post profile update
 		$post_data = array(
-			"name"			=> stripslashes($_POST['name']),
-			"url"			=> stripslashes($_POST['url']),
-			"location"		=> stripslashes($_POST['location']),
-			"description"	=> stripslashes($_POST['description']),
+			"name"			=> stripslashes($_POST["name"]),
+			"url"			=> stripslashes($_POST["url"]),
+			"location"		=> stripslashes($_POST["location"]),
+			"description"	=> stripslashes($_POST["description"]),
 		);
 
 		$url = API_NEW . "account/update_profile.json";
@@ -174,25 +174,25 @@ function twitter_profile_page()
 	} 
 	
 	//	http://api.twitter.com/1/account/update_profile_image.format 
-	if ($_FILES['image']['tmp_name']) {
+	if ($_FILES["image"]["tmp_name"]) {
 		require("tmhOAuth.php");
 		
-		list($oauth_token, $oauth_token_secret) = explode('|', $GLOBALS['user']['password']);
+		list($oauth_token, $oauth_token_secret) = explode("|", $GLOBALS["user"]["password"]);
 		
 		$tmhOAuth = new tmhOAuth(array(
-			'consumer_key'    => OAUTH_CONSUMER_KEY,
-			'consumer_secret' => OAUTH_CONSUMER_SECRET,
-			'user_token'      => $oauth_token,
-			'user_secret'     => $oauth_token_secret,
+			"consumer_key"		=> OAUTH_CONSUMER_KEY,
+			"consumer_secret"	=> OAUTH_CONSUMER_SECRET,
+			"user_token"		=> $oauth_token,
+			"user_secret"		=> $oauth_token_secret,
 		));
 
 		// note the type and filename are set here as well
 		$params = array(
-			'image' => "@{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}",
+			"image" => "@{$_FILES["image"]["tmp_name"]};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}",
 		);
 
 		$code = $tmhOAuth->request(
-			'POST',
+			"POST",
 			$tmhOAuth->url("1.1/account/update_profile_image"),
 			$params,
 			true, // use auth
@@ -246,7 +246,7 @@ function theme_profile_form($user)
 
 function long_url($shortURL)
 {
-	if (!defined('LONGURL_KEY')) {
+	if (!defined("LONGURL_KEY")) {
 		return $shortURL;
 	}
 	$url = "http://www.longurlplease.com/api/v1.1?q=" . $shortURL;
@@ -289,7 +289,7 @@ function friendship($user_a)
 function twitter_block_exists($query)
 {
 	// Get an array of all ids the authenticated user is blocking (limited at 5000 without cursoring)
-	$request = API_NEW . 'blocks/ids.json';
+	$request = API_NEW . "blocks/ids.json";
 	$response = twitter_process($request);
 	$blocked = $response->ids;
 	// If the authenticated user has blocked $query it will appear in the array
