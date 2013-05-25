@@ -4,15 +4,15 @@ require("touch.php");
 
 function bigtouch_theme_action_icon($url, $image_url, $text)
 {
-	$image_url = str_replace('.png', 'L.png', $image_url);
-	$image_url = str_replace('.gif', 'L.png', $image_url);
+	$image_url = str_replace(".png", "L.png", $image_url);
+	$image_url = str_replace(".gif", "L.png", $image_url);
 	if ($text == 'MAP')	{
 		return "<a href='$url' target='" . get_target() . "'><img src='$image_url' alt='$text' width='24' height='24' /></a>";
 	}
 	return "<a href='$url'><img src='$image_url' alt='$text' width='24' height='24' /></a>";
 }
 
-function bigtouch_theme_status_form($text = '', $in_reply_to_id = NULL)
+function bigtouch_theme_status_form($text = "", $in_reply_to_id = NULL)
 {
 	return desktop_theme_status_form($text, $in_reply_to_id);
 }
@@ -38,7 +38,7 @@ function bigtouch_theme_menu_top()
 
 function bigtouch_theme_menu_bottom()
 {
-	return '';
+	return "";
 }
 
 function bigtouch_theme_status_time_link($status, $is_link = true)
@@ -53,4 +53,4 @@ function bigtouch_theme_css()
 	$out .= '<script type="text/javascript">'.file_get_contents('browsers/touch.js').'</script>';
 	return $out;
 }
-?>
+

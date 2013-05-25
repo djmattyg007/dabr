@@ -12,4 +12,3 @@ function blackberry_theme_css()
 	return $out;
 }
 
-?>

@@ -1,21 +1,22 @@
 <?php
-function desktop_theme_status_form($text = '', $in_reply_to_id = NULL)
+
+function desktop_theme_status_form($text = "", $in_reply_to_id = NULL)
 {
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 		
 		//	adding ?status=foo will automaticall add "foo" to the text area.
-		if ($_GET['status']) {
-			$text = $_GET['status'];
+		if ($_GET["status"]) {
+			$text = $_GET["status"];
 		}
 		
 		$output = '
 		<form method="post" action="update">
 			<fieldset>
-				<legend><img src="'.$icon.'" width="16" height="16" /> What\'s Happening?</legend>
-				<textarea id="status" name="status" rows="4" style="width:95%; max-width: 400px;">'.$text.'</textarea>
+				<legend><img src="' . $icon . '" width="16" height="16" /> What\'s Happening?</legend>
+				<textarea id="status" name="status" rows="4" style="width:95%; max-width: 400px;">' . $text . '</textarea>
 				<div>
-					<input name="in_reply_to_id" value="'.$in_reply_to_id.'" type="hidden" />
+					<input name="in_reply_to_id" value="' . $in_reply_to_id . '" type="hidden" />
 					<input type="submit" value="Tweet" />
 					<span id="remaining">140</span> 
 					<span id="geo" style="display: none;">
@@ -29,7 +30,7 @@ function desktop_theme_status_form($text = '', $in_reply_to_id = NULL)
 				chkbox = document.getElementById("geoloc");
 				if (navigator.geolocation) {
 					geoStatus("Tweet my location");
-					if ("'.$_COOKIE['geo'].'"=="Y") {
+					if ("' . $_COOKIE["geo"] . '"=="Y") {
 						chkbox.checked = true;
 						goGeo();
 					}
@@ -50,17 +51,17 @@ function desktop_theme_status_form($text = '', $in_reply_to_id = NULL)
 				}
 			</script>
 		</form>';
-		$output .= js_counter('status');
+		$output .= js_counter("status");
 		return $output;
 	}
 }
 
 function desktop_theme_search_form($query)
 {
-	$query = stripslashes(htmlentities($query,ENT_QUOTES,"UTF-8"));
+	$query = stripslashes(htmlentities($query, ENT_QUOTES, "UTF-8"));
 
 	return '
-	<form action="search" method="get"><input name="query" value="'. $query .'" />
+	<form action="search" method="get"><input name="query" value="' . $query . '" />
 		<input type="submit" value="Search" />
 		<br />
 		<span id="geo" style="display: none;">
@@ -78,7 +79,7 @@ function desktop_theme_search_form($query)
 			chkbox = document.getElementById("geoloc");
 			if (navigator.geolocation) {
 				geoStatus("Search near my location");
-				if ("'.$_COOKIE['geo'].'"=="Y") {
+				if ("' . $_COOKIE["geo"] . '"=="Y") {
 					chkbox.checked = true;
 					goGeo();
 				}

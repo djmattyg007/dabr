@@ -2,14 +2,14 @@
 
 require("desktop.php");
 
-function worksafe_theme_status_form($text = '', $in_reply_to_id = NULL)
+function worksafe_theme_status_form($text = "", $in_reply_to_id = NULL)
 {
 	return desktop_theme_status_form($text, $in_reply_to_id);
 }
 
 function worksafe_theme_avatar($url, $force_large = false)
 {
-	return '';
+	return "";
 }
 
 function worksafe_theme_css()
@@ -27,17 +27,17 @@ textarea, input { background: #eee; border: 1px solid #aaa; }
 
 function worksafe_theme_menu_bottom()
 {
-	return '';
+	return "";
 }
 
 function worksafe_theme_status_time_link($status, $is_link = true)
 {
 	$time = strtotime($status->created_at);
 	if ($time > 0) {
-		if (twitter_date('dmy') == twitter_date('dmy', $time)) {
-			$out = format_interval(time() - $time, 1). ' ago';
+		if (twitter_date("dmy") == twitter_date("dmy", $time)) {
+			$out = format_interval(time() - $time, 1) . " ago";
 		} else {
-			$out = twitter_date('H:i', $time);
+			$out = twitter_date("H:i", $time);
 		}
 	} else {
 		$out = $status->created_at;
