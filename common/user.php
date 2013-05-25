@@ -11,7 +11,8 @@ menu_register(array(
 	),
 ));
 
-function user_oauth() {
+function user_oauth()
+{
 	require_once "OAuth.php";
 
 	// Session used to keep track of secret token during authorisation step
@@ -52,7 +53,8 @@ function user_oauth() {
 	}
 }
 
-function user_oauth_sign(&$url, &$args = false) {
+function user_oauth_sign(&$url, &$args = false)
+{
 	require_once "OAuth.php";
 
 	$method = $args !== false ? "POST" : "GET";
@@ -93,7 +95,8 @@ function user_oauth_sign(&$url, &$args = false) {
 	}
 }
 
-function user_ensure_authenticated() {
+function user_ensure_authenticated()
+{
 	if (!user_is_authenticated()) {
 		$content = theme("login");
 		$content .= file_get_contents("about.html");
@@ -101,12 +104,14 @@ function user_ensure_authenticated() {
 	}
 }
 
-function user_logout() {
+function user_logout()
+{
 	unset($GLOBALS["user"]);
 	setcookie("USER_AUTH", "", time() - 3600, "/");
 }
 
-function user_is_authenticated() {
+function user_is_authenticated()
+{
 	if (!isset($GLOBALS["user"])) {
 		if(array_key_exists("USER_AUTH", $_COOKIE)) {
 			_user_decrypt_cookie($_COOKIE["USER_AUTH"]);
@@ -145,19 +150,23 @@ function user_is_authenticated() {
 	return true;
 }
 
-function user_current_username() {
+function user_current_username()
+{
 	return $GLOBALS["user"]["username"];
 }
 
-function user_is_current_user($username) {
+function user_is_current_user($username)
+{
 	return (strcasecmp($username, user_current_username()) == 0);
 }
 
-function user_type() {
+function user_type()
+{
 	return $GLOBALS["user"]["type"];
 }
 
-function _user_save_cookie($stay_logged_in = 0) {
+function _user_save_cookie($stay_logged_in = 0)
+{
 	$cookie = _user_encrypt_cookie();
 	$duration = 0;
 	if ($stay_logged_in) {
@@ -166,11 +175,13 @@ function _user_save_cookie($stay_logged_in = 0) {
 	setcookie("USER_AUTH", $cookie, $duration, "/");
 }
 
-function _user_encryption_key() {
+function _user_encryption_key()
+{
 	return ENCRYPTION_KEY;
 }
 
-function _user_encrypt_cookie() {
+function _user_encrypt_cookie()
+{
 	$plain_text = $GLOBALS["user"]["username"] . ":" . $GLOBALS["user"]["password"] . ":" . $GLOBALS["user"]["type"];
 
 	$td = mcrypt_module_open("blowfish", "", "cfb", "");
@@ -181,7 +192,8 @@ function _user_encrypt_cookie() {
 	return base64_encode($iv.$crypt_text);
 }
 
-function _user_decrypt_cookie($crypt_text) {
+function _user_decrypt_cookie($crypt_text)
+{
 	$crypt_text = base64_decode($crypt_text);
 	$td = mcrypt_module_open("blowfish", "", "cfb", "");
 	$ivsize = mcrypt_enc_get_iv_size($td);
@@ -194,7 +206,8 @@ function _user_decrypt_cookie($crypt_text) {
 	list($GLOBALS["user"]["username"], $GLOBALS["user"]["password"], $GLOBALS["user"]["type"]) = explode(":", $plain_text);
 }
 
-function user_login() {
+function user_login()
+{
 	return theme("page", "Login",'
 <form method="post" action="' . $_GET["q"] . '">
 <p>Username <input name="username" size="15" />
@@ -213,7 +226,8 @@ function user_login() {
 ');
 }
 
-function theme_login() {
+function theme_login()
+{
 	$content = '<div style="margin:1em; font-size: 1.2em"><p><a href="oauth">Sign in via Twitter.com</a></p>';
 	
 	if (MYSQL_USERS == "ON") {
@@ -224,6 +238,7 @@ function theme_login() {
 	return $content;
 }
 
-function theme_logged_out() {
+function theme_logged_out()
+{
 	return '<p>Logged out. <a href="">Login again</a>.</p>';
 }
