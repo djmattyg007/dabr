@@ -1,20 +1,20 @@
 <?php
 
 menu_register(array(
-	'lists' => array(
-		'security' => true,
-		'callback' => 'lists_controller',
+	"lists" => array(
+		"security" => true,
+		"callback" => "lists_controller",
 	),
 ));
 
 function lists_paginated_process($url)
 {
 	// Adds cursor/pagination parameters to a query
-	$cursor = $_GET['cursor'];
+	$cursor = $_GET["cursor"];
 	if (!is_numeric($cursor)) {
 		$cursor = -1;
 	}
-	$url .= '&cursor=' . $cursor;
+	$url .= "&cursor=" . $cursor;
 	return twitter_process($url);
 }
 
@@ -22,8 +22,8 @@ function twitter_lists_tweets($user, $list)
 {
 	// Tweets belonging to a list
 	$url = API_NEW . "lists/statuses.json?owner_screen_name={$user}&slug={$list}";
-	if($_GET['max_id']) {
-		$url .= '&max_id=' . $_GET['max_id'];
+	if($_GET["max_id"]) {
+		$url .= "&max_id=" . $_GET["max_id"];
 	}
 	return twitter_process($url);
 }
@@ -85,20 +85,20 @@ function lists_controller($query)
 
 	// Attempt to call the correct page based on $method
 	switch ($method) {
-		case '':
-		case 'lists':
+		case "":
+		case "lists":
 			// Show which lists a user has created
 			return lists_lists_page($user);
-		case 'memberships':
+		case "memberships":
 			// Show which lists a user belongs to
 			return lists_membership_page($user);
-		case 'members':
+		case "members":
 			// Show members of a list
 			return lists_list_members_page($user, $list);
-		case 'subscribers':
+		case "subscribers":
 			// Show subscribers of a list
 			return lists_list_subscribers_page($user, $list);
-		case 'edit':
+		case "edit":
 			// TODO: List editing page (name and availability)
 			break;
 		default:
@@ -108,7 +108,7 @@ function lists_controller($query)
 	}
 
 	// Error to be shown for any incomplete pages (breaks above)
-	return theme('error', 'List page not found');
+	return theme("error", "List page not found");
 }
 
 
@@ -119,8 +119,8 @@ function lists_lists_page($user)
 	// Show a user's lists
 	$lists = twitter_lists_user_lists($user);
 	$content = "<p><a href='lists/{$user}/memberships'>Lists following {$user}</a> | <strong>Lists {$user} follows</strong></p>";
-	$content .= theme('lists', $lists);
-	theme('page', "{$user}'s lists", $content);
+	$content .= theme("lists", $lists);
+	theme("page", "{$user}'s lists", $content);
 }
 
 function lists_membership_page($user)
@@ -128,20 +128,20 @@ function lists_membership_page($user)
 	// Show lists a user belongs to
 	$lists = twitter_lists_user_memberships($user);
 	$content = "<p><strong>Lists following {$user}</strong> | <a href='lists/{$user}'>Lists {$user} follows</a></p>";
-	$content .= theme('lists', $lists);
-	theme('page', 'List memberhips', $content);
+	$content .= theme("lists", $lists);
+	theme("page", "List memberhips", $content);
 }
 
 function lists_list_tweets_page($user, $list)
 {
 	// Show tweets in a list
 	$tweets = twitter_lists_tweets($user, $list);
-	$tl = twitter_standard_timeline($tweets, 'user');
-	$content = theme('status_form');
+	$tl = twitter_standard_timeline($tweets, "user");
+	$content = theme("status_form");
 	$list_url = "lists/{$user}/{$list}";
 	$content .= "<p>Tweets in <a href='user/{$user}'>@{$user}</a>/<strong>{$list}</strong> | <a href='{$list_url}/members'>View Members</a> | <a href='{$list_url}/subscribers'>View Subscribers</a></p>";
-	$content .= theme('timeline', $tl);
-	theme('page', "List {$user}/{$list}", $content);
+	$content .= theme("timeline", $tl);
+	theme("page", "List {$user}/{$list}", $content);
 }
 
 function lists_list_members_page($user, $list)
@@ -152,8 +152,8 @@ function lists_list_members_page($user, $list)
 
 	// TODO: use a different theme() function? Add a "delete member" link for each member
 	$content = "<div class='heading'>Members of <a href='user/{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>:</div>\n";
-	$content .= theme('followers_list', $p);
-	theme('page', "Members of {$user}/{$list}", $content);
+	$content .= theme("followers_list", $p);
+	theme("page", "Members of {$user}/{$list}", $content);
 }
 
 function lists_list_subscribers_page($user, $list)
@@ -161,8 +161,8 @@ function lists_list_subscribers_page($user, $list)
 	// Show subscribers of a list
 	$p = twitter_lists_list_subscribers($user, $list);
 	$content = "<div class='heading'>Subscribers of <a href='user/{$user}'>@{$user}</a>/<a href='lists/{$user}/{$list}'>{$list}</a>:</div>\n";
-	$content .= theme('followers_list', $p);
-	theme('page', "Subscribers of {$user}/{$list}", $content);
+	$content .= theme("followers_list", $p);
+	theme("page", "Subscribers of {$user}/{$list}", $content);
 }
 
 /* Theme functions */
@@ -174,11 +174,11 @@ function theme_lists($json)
 	} else {
 		$lists = $json;
 	}
-	if (sizeof($lists) == 0 || $lists == '[]') {
+	if (sizeof($lists) == 0 || $lists == "[]") {
 		return "<p>No lists to display</p>";
 	}
 	$rows = array();
-	$headers = array('List ', 'Members ', 'Subscribers');
+	$headers = array("List ", "Members ", "Subscribers");
 	foreach ($lists as $list) {
 		$url = "lists/{$list->user->screen_name}/{$list->slug}";
 		$rows[] = array(
@@ -187,8 +187,8 @@ function theme_lists($json)
 			"<a href='{$url}/subscribers'>{$list->subscriber_count}</a>",
 		);
 	}
-	$content = theme('table', $headers, $rows);
-	$content .= theme('list_pagination', $json);
+	$content = theme("table", $headers, $rows);
+	$content .= theme("list_pagination", $json);
 	return $content;
 }
 
@@ -201,6 +201,7 @@ function theme_list_pagination($json)
 		$links[] = "<a href='{$_GET['q']}?cursor={$cursor}'>Previous</a>";
 	}
 	if (count($links) > 0) {
-		return '<p>' . implode(' | ', $links) . '</p>';
+		return "<p>" . implode(" | ", $links) . "</p>";
 	}
 }
+
