@@ -1934,36 +1934,36 @@ function theme_followers($feed, $nextPageURL)
 			$content .= "Location: {$user->location}<br />";
 		}
 		$content .= "Info: ";
-		$content .= pluralise('tweet', (int)$user->statuses_count, true) . ", ";
-		$content .= pluralise('friend', (int)$user->friends_count, true) . ", ";
-		$content .= pluralise('follower', (int)$user->followers_count, true) . ", ";
+		$content .= pluralise("tweet", (int) $user->statuses_count, true) . ", ";
+		$content .= pluralise("friend", (int) $user->friends_count, true) . ", ";
+		$content .= pluralise("follower", (int) $user->followers_count, true) . ", ";
 		$content .= "~" . pluralise('tweet', $tweets_per_day, true) . " per day<br />";
 		$content .= "Last tweet: ";
-		if($user->protected == 'true' && $last_tweet == 0) {
+		if ($user->protected == "true" && $last_tweet == 0) {
 			$content .= "Private";
 		} else if($last_tweet == 0) {
 			$content .= "Never tweeted";
 		} else {
-			$content .= twitter_date('l jS F Y', $last_tweet);
+			$content .= twitter_date("l jS F Y", $last_tweet);
 		}
 		$content .= "</span>";
 
 		$rows[] = array(
-			'data' => array(
+			"data" => array(
 				array(
-					'data' => theme('avatar', theme_get_avatar($user)),
-					'class' => 'avatar'
+					"data" => theme("avatar", theme_get_avatar($user)),
+					"class" => "avatar"
 				),
 				array(
-					'data' => $content,
-					'class' => 'status shift'
+					"data" => $content,
+					"class" => "status shift"
 				)
 			),
-			'class' => 'tweet'
+			"class" => "tweet"
 		);
 	}
 
-	$content = theme('table', array(), $rows, array('class' => 'followers'));
+	$content = theme("table", array(), $rows, array("class" => "followers"));
 	if ($nextPageURL) {
 		$content .= "<a href='{$nextPageURL}'>Next</a>";
 	}
@@ -1975,12 +1975,12 @@ function theme_followers($feed, $nextPageURL)
 function theme_retweeters($feed, $hide_pagination = false)
 {
 	$rows = array();
-	if (count($feed) == 0 || $feed == '[]') {
-		return '<p>No one has retweeted this status.</p>';
+	if (count($feed) == 0 || $feed == "[]") {
+		return "<p>No one has retweeted this status.</p>";
 	}
 
 	foreach ($feed->user as $user) {
-		$name = theme('full_name', $user);
+		$name = theme("full_name", $user);
 		$tweets_per_day = twitter_tweets_per_day($user);
 		$last_tweet = strtotime($user->status->created_at);
 		$content = "{$name}<br /><span class='about'>";
@@ -1991,30 +1991,30 @@ function theme_retweeters($feed, $hide_pagination = false)
 			$content .= "Location: {$user->location}<br />";
 		}
 		$content .= "Info: ";
-		$content .= pluralise('tweet', (int)$user->statuses_count, true) . ", ";
-		$content .= pluralise('friend', (int)$user->friends_count, true) . ", ";
-		$content .= pluralise('follower', (int)$user->followers_count, true) . ", ";
-		$content .= "~" . pluralise('tweet', $tweets_per_day, true) . " per day<br />";
+		$content .= pluralise("tweet", (int) $user->statuses_count, true) . ", ";
+		$content .= pluralise("friend", (int) $user->friends_count, true) . ", ";
+		$content .= pluralise("follower", (int) $user->followers_count, true) . ", ";
+		$content .= "~" . pluralise("tweet", $tweets_per_day, true) . " per day<br />";
 		$content .= "</span>";
 
 		$rows[] = array(
 			'data' => array(
 				array(
-					'data' => theme('avatar', theme_get_avatar($user)),
-					'class' => 'avatar'
+					"data" => theme("avatar", theme_get_avatar($user)),
+					"class" => "avatar"
 				),
 				array(
-					'data' => $content,
-					'class' => 'status shift'
+					"data" => $content,
+					"class" => "status shift"
 				)
 			),
-			'class' => 'tweet'
+			"class" => "tweet"
 		);
 	}
 
-	$content = theme('table', array(), $rows, array('class' => 'followers'));
+	$content = theme("table", array(), $rows, array("class" => "followers"));
 	if (!$hide_pagination) {
-		$content .= theme('list_pagination', $feed);
+		$content .= theme("list_pagination", $feed);
 	}
 	return $content;
 }
@@ -2033,7 +2033,7 @@ function theme_full_name($user)
 // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/50fd4d953e5b5229#
 function theme_get_avatar($object)
 {
-	if ($_SERVER['HTTPS'] == "on" && $object->profile_image_url_https) {
+	if ($_SERVER["HTTPS"] == "on" && $object->profile_image_url_https) {
 		return image_proxy($object->profile_image_url_https, "48/48/");
 	} else {
 		return image_proxy($object->profile_image_url, "48/48/");
@@ -2042,16 +2042,16 @@ function theme_get_avatar($object)
 
 function theme_get_full_avatar($object)
 {
-	if ($_SERVER['HTTPS'] == "on" && $object->profile_image_url_https) {
-		return image_proxy(str_replace('_normal.', '.', $object->profile_image_url_https));
+	if ($_SERVER["HTTPS"] == "on" && $object->profile_image_url_https) {
+		return image_proxy(str_replace("_normal.", ".", $object->profile_image_url_https));
 	} else {
-		return image_proxy(str_replace('_normal.', '.', $object->profile_image_url));
+		return image_proxy(str_replace("_normal.", ".", $object->profile_image_url));
 	}
 }
 
 function theme_no_tweets()
 {
-	return '<p>No tweets to display.</p>';
+	return "<p>No tweets to display.</p>";
 }
 
 function theme_search_results($feed)
@@ -2059,8 +2059,8 @@ function theme_search_results($feed)
 	$rows = array();
 	foreach ($feed->results as $status) {
 		$text = twitter_parse_tags($status->text, $status->entities);
-		$link = theme('status_time_link', $status);
-		$actions = theme('action_icons', $status);
+		$link = theme("status_time_link", $status);
+		$actions = theme("action_icons", $status);
 
 		$row = array(
 			theme('avatar', theme_get_avatar($status)),
@@ -2068,20 +2068,20 @@ function theme_search_results($feed)
 		);
 		if (twitter_is_reply($status)) {
 			$row = array(
-				'class'	=> 'reply',
-				'data'	=> $row
+				"class"	=> "reply",
+				"data"	=> $row
 			);
 		}
 		$rows[] = $row;
 	}
-	$content = theme('table', array(), $rows, array('class' => 'timeline'));
-	$content .= theme('pagination');
+	$content = theme("table", array(), $rows, array("class" => "timeline"));
+	$content .= theme("pagination");
 	return $content;
 }
 
 function theme_search_form($query)
 {
-	$query = stripslashes(htmlentities($query,ENT_QUOTES,"UTF-8"));
+	$query = stripslashes(htmlentities($query, ENT_QUOTES, "UTF-8"));
 	return '
 	<form action="search" method="get"><input name="query" value="'. $query .'" />
 		<input type="submit" value="Search" />
@@ -2102,8 +2102,8 @@ function theme_external_link($url, $content = null)
 
 function theme_pagination($max_id = false)
 {
-	$page = intval($_GET['page']);
-	if (preg_match('#&q(.*)#', $_SERVER['QUERY_STRING'], $matches))	{
+	$page = intval($_GET["page"]);
+	if (preg_match("#&q(.*)#", $_SERVER["QUERY_STRING"], $matches))	{
 		$query = $matches[0];
 	}
 	if ($max_id) {
@@ -2118,10 +2118,10 @@ function theme_pagination($max_id = false)
 		}
 	}
 	if ($query) {
-		$query = '?' . substr($query, 1);
+		$query = "?" . substr($query, 1);
 	}
-	$links[] = "<a href='{$_GET['q']}?$query'>First</a>";
-	return '<p>' . implode(' | ', $links) . '</p>';
+	$links[] = "<a href='{$_GET["q"]}?$query'>First</a>";
+	return "<p>" . implode(" | ", $links) . "</p>";
 }
 
 function theme_action_icons($status)
@@ -2133,37 +2133,37 @@ function theme_action_icons($status)
 	$actions = array();
 
 	if (!$status->is_direct) {
-		$actions[] = theme('action_icon', "user/{$from}/reply/{$status->id}", 'images/reply.png', '@');
+		$actions[] = theme("action_icon", "user/{$from}/reply/{$status->id}", "images/reply.png", "@");
 	}
 	//Reply All functionality.
 	if ($status->entities->user_mentions ) {
-		$actions[] = theme('action_icon', "user/{$from}/replyall/{$status->id}", 'images/replyall.png', 'REPLY ALL');
+		$actions[] = theme("action_icon", "user/{$from}/replyall/{$status->id}", "images/replyall.png", "REPLY ALL");
 	}
 
 	if (!user_is_current_user($from)) {
-		$actions[] = theme('action_icon', "directs/create/{$from}", 'images/dm.png', 'DM');
+		$actions[] = theme("action_icon", "directs/create/{$from}", "images/dm.png", "DM");
 	}
 	if (!$status->is_direct) {
 		if ($status->favorited == '1') {
-			$actions[] = theme('action_icon', "unfavourite/{$status->id}", 'images/star.png', 'UNFAV');
+			$actions[] = theme("action_icon", "unfavourite/{$status->id}", "images/star.png", "UNFAV");
 		} else {
-			$actions[] = theme('action_icon', "favourite/{$status->id}", 'images/star_grey.png', 'FAV');
+			$actions[] = theme("action_icon", "favourite/{$status->id}", "images/star_grey.png", "FAV");
 		}
 		// Show a diffrent retweet icon to indicate to the user this is an RT
 		if ($status->retweeted || user_is_current_user($retweeted_by)) {
-			$actions[] = theme('action_icon', "retweet/{$status->id}", 'images/retweeted.png', 'RT');
+			$actions[] = theme("action_icon", "retweet/{$status->id}", "images/retweeted.png", "RT");
 		} else {
-			$actions[] = theme('action_icon', "retweet/{$status->id}", 'images/retweet.png', 'RT');
+			$actions[] = theme("action_icon", "retweet/{$status->id}", "images/retweet.png", "RT");
 		}
 		if (user_is_current_user($from)) {
-			$actions[] = theme('action_icon', "confirm/delete/{$status->id}", 'images/trash.gif', 'DEL');
+			$actions[] = theme("action_icon", "confirm/delete/{$status->id}", "images/trash.gif", "DEL");
 		}
 		//Allow users to delete what they have retweeted
 		if (user_is_current_user($retweeted_by)) {
-			$actions[] = theme('action_icon', "confirm/delete/{$retweeted_id}", 'images/trash.gif', 'DEL');
+			$actions[] = theme("action_icon", "confirm/delete/{$retweeted_id}", "images/trash.gif", "DEL");
 		}		
 	} else {
-		$actions[] = theme('action_icon', "confirm/deleteDM/{$status->id}", 'images/trash.gif', 'DEL');
+		$actions[] = theme("action_icon", "confirm/deleteDM/{$status->id}", "images/trash.gif", "DEL");
 	}
 	if ($geo !== null) {
 		$latlong = $geo->coordinates;
@@ -2192,7 +2192,7 @@ function pluralise($word, $count, $show = false)
 	if ($show) {
 		$word = number_format($count) . " {$word}";
 	}
-	return $word . (($count != 1) ? 's' : '');
+	return $word . (($count != 1) ? "s" : "");
 }
 
 function is_64bit()
@@ -2210,15 +2210,15 @@ function theme_followers_list($feed, $hide_pagination = false)
 		$users = $feed;
 	}
 	$rows = array();
-	if (count($users) == 0 || $users == '[]') {
-		return '<p>No users to display.</p>';
+	if (count($users) == 0 || $users == "[]") {
+		return "<p>No users to display.</p>";
 	}
 
 	foreach ($users as $user) {
 		if ($user->user) {
 			$user = $user->user;
 		}
-		$name = theme('full_name', $user);
+		$name = theme("full_name", $user);
 		$tweets_per_day = twitter_tweets_per_day($user);
 		$last_tweet = strtotime($user->status->created_at);
 		//$vicon = ($user->verified) ? theme('action_icon', "", 'images/verified.png', '&#10004;') : '';
@@ -2231,17 +2231,17 @@ function theme_followers_list($feed, $hide_pagination = false)
 		}
 		$content .= "Info: ";
 		$content .= pluralise('tweet', $user->statuses_count, true) . ", ";
-		$content .= pluralise('friend', $user->friends_count, true) . ", ";
-		$content .= pluralise('follower', $user->followers_count, true) . ", ";
-		$content .= "~" . pluralise('tweet', $tweets_per_day, true) . " per day<br />";
+		$content .= pluralise("friend", $user->friends_count, true) . ", ";
+		$content .= pluralise("follower", $user->followers_count, true) . ", ";
+		$content .= "~" . pluralise("tweet", $tweets_per_day, true) . " per day<br />";
 		if ($user->status->created_at) {
 			$content .= "Last tweet: ";
-			if ($user->protected == 'true' && $last_tweet == 0) {
+			if ($user->protected == "true" && $last_tweet == 0) {
 				$content .= "Private";
 			} else if ($last_tweet == 0) {
 				$content .= "Never tweeted";
 			} else {
-				$content .= twitter_date('l jS F Y', $last_tweet);
+				$content .= twitter_date("l jS F Y", $last_tweet);
 			}
 		}
 		$content .= "</span>";
@@ -2249,22 +2249,22 @@ function theme_followers_list($feed, $hide_pagination = false)
 		$rows[] = array(
 			'data' => array(
 				array(
-					'data'	=> theme('avatar', $user->profile_image_url),
-					'class'	=> 'avatar'
+					"data"	=> theme("avatar", $user->profile_image_url),
+					"class"	=> "avatar"
 				),
 				array(
-					'data'	=> $content,
-					'class'	=> 'status shift'
+					"data"	=> $content,
+					"class"	=> "status shift"
 				)
 			),
-			'class' => 'tweet'
+			"class" => "tweet"
 		);
 	}
 
-	$content = theme('table', array(), $rows, array('class' => 'followers'));
+	$content = theme("table", array(), $rows, array("class" => "followers"));
 	if (!$hide_pagination) {
 		//$content .= theme('pagination');
-		$content .= theme('list_pagination', $feed);
+		$content .= theme("list_pagination", $feed);
 	}
 	return $content;
 }
@@ -2272,15 +2272,15 @@ function theme_followers_list($feed, $hide_pagination = false)
 function x_times($count)
 {
 	if ($count == 1) {
-		return 'once';
+		return "once";
 	}
 	if ($count == 2) {
-		return 'twice';
+		return "twice";
 	}
 	if (is_int($count)) {
-		return number_format($count) . ' times';
+		return number_format($count) . " times";
 	}
-	return $count . ' times';
+	return $count . " times";
 }
 
 function image_proxy($src, $size = "")
