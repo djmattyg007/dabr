@@ -34,13 +34,13 @@ function cookie_monster() {
 	);
 	$duration = time() - 3600;
 	foreach ($cookies as $cookie) {
-		setcookie($cookie, NULL, $duration, '/');
-		setcookie($cookie, NULL, $duration);
+		setcookie($cookie, null, $duration, "/");
+		setcookie($cookie, null, $duration);
 	}
 	return theme("page", "Cookie Monster", "<p>The cookie monster has logged you out and cleared all settings. Try logging in again now.</p>");
 }
 
-function setting_fetch($setting, $default = NULL) {
+function setting_fetch($setting, $default = null) {
 	$settings = (array) unserialize(base64_decode($_COOKIE['settings']));
 	if (array_key_exists($setting, $settings)) {
 		return $settings[$setting];
@@ -120,10 +120,11 @@ function settings_page($args) {
 	}
 */
 	if ($utc_offset > 0) {
-		$utc_offset = '+' . $utc_offset;
+		$utc_offset = "+" . $utc_offset;
 	}
 
-	$content = '<form action="settings/save" method="post">'; // Create settings form
+	// Create settings form
+	$content = '<form action="settings/save" method="post">';
 
 	// Colour scheme dropdown
 	$content .= '<p>Colour scheme:<br /><select name="colours">';

@@ -10,7 +10,7 @@ function theme()
 	$function = 'theme_'.$function;
 
 	if ($current_theme) {
-		$custom_function = $current_theme.'_' . $function;
+		$custom_function = $current_theme . "_" . $function;
 		if (function_exists($custom_function)) {
 			$function = $custom_function;
 		}
@@ -24,9 +24,9 @@ function theme()
 
 function theme_csv($headers, $rows)
 {
-	$out = implode(',', $headers) . "\n";
+	$out = implode(",", $headers) . "\n";
 	foreach ($rows as $row) {
-		$out .= implode(',', $row) . "\n";
+		$out .= implode(",", $row) . "\n";
 	}
 	return $out;
 }
@@ -36,7 +36,7 @@ function theme_list($items, $attributes)
 	if (!is_array($items) || count($items) == 0) {
 		return '';
 	}
-	$output = '<ul' . theme_attributes($attributes) . '>';
+	$output = "<ul" . theme_attributes($attributes) . ">";
 	foreach ($items as $item) {
 		$output .= "<li>$item</li>\n";
 	}
@@ -44,15 +44,17 @@ function theme_list($items, $attributes)
 	return $output;
 }
 
-function theme_options($options, $selected = NULL)
+function theme_options($options, $selected = null)
 {
-	if (count($options) == 0) return '';
-	$output = '';
+	if (count($options) == 0) {
+		return "";
+	}
+	$output = "";
 	foreach($options as $value => $name) {
 		if (is_array($name)) {
 			$output .= '<optgroup label="'.$value.'">';
 			$output .= theme('options', $name, $selected);
-			$output .= '</optgroup>';
+			$output .= "</optgroup>";
 		} else {
 			$output .= '<option value="'.$value.'"'.($selected == $value ? ' selected="selected"' : '').'>'.$name."</option>\n";
 		}
@@ -69,37 +71,38 @@ function theme_info($info)
 	return theme('table', array(), $rows);
 }
 
-function theme_table($headers, $rows, $attributes = NULL)
+function theme_table($headers, $rows, $attributes = null)
 {
-	$out = '<div' . theme_attributes($attributes) . '>';
+	$out = "<div" . theme_attributes($attributes) . ">";
 	if (count($headers) > 0) {
-		$out .= '<thead><tr>';
+		$out .= "<thead><tr>";
 		foreach ($headers as $cell) {
-			$out .= theme_table_cell($cell, TRUE);
+			$out .= theme_table_cell($cell, true);
 		}
-		$out .= '</tr></thead>';
+		$out .= "</tr></thead>";
 	}
 	if (count($rows) > 0) {
 		$out .= theme('table_rows', $rows);
 	}
-	$out .= '</div>';
+	$out .= "</div>";
 	return $out;
 }
 
 function theme_table_rows($rows)
 {
 	$i = 0;
+	$out = "";
 	foreach ($rows as $row) {
-		if ($row['data']) {
-			$cells = $row['data'];
-			unset($row['data']);
+		if ($row["data"]) {
+			$cells = $row["data"];
+			unset($row["data"]);
 			$attributes = $row;
 		} else {
 			$cells = $row;
-			$attributes = FALSE;
+			$attributes = false;
 		}
-		$attributes['class'] .= ($attributes['class'] ? ' ' : '') . ($i++ %2 ? 'even' : 'odd');
-		$out .= '<div' . theme_attributes($attributes) . '>';
+		$attributes["class"] .= ($attributes["class"] ? " " : "") . ($i++ %2 ? "even" : "odd");
+		$out .= "<div" . theme_attributes($attributes) . ">";
 		foreach ($cells as $cell) {
 			$out .= theme_table_cell($cell);
 		}
@@ -110,49 +113,51 @@ function theme_table_rows($rows)
 
 function theme_attributes($attributes)
 {
-	if (!$attributes) return;
+	if (!$attributes) {
+		return "";
+	}
+	$out = "";
 	foreach ($attributes as $name => $value) {
 		$out .= " $name=\"$value\"";
 	}
 	return $out;
 }
 
-function theme_table_cell($contents, $header = FALSE)
+function theme_table_cell($contents, $header = false)
 {
-	$celltype = $header ? 'th' : 'td';
 	if (is_array($contents)) {
-		$value = $contents['data'];
-		unset($contents['data']);
+		$value = $contents["data"];
+		unset($contents["data"]);
 		$attributes = $contents;
 	} else {
 		$value = $contents;
 		$attributes = false;
 	}
-	return "<span".theme_attributes($attributes).">$value</span>";
+	return "<span" . theme_attributes($attributes) . ">$value</span>";
 }
 
 
 function theme_error($message)
 {
-	theme_page('Error', $message);
+	theme_page("Error", $message);
 }
 
 function theme_page($title, $content)
 {
-	$body = theme('menu_top');
+	$body = theme("menu_top");
 	$body .= $content;
-	$body .= theme('menu_bottom');
-	//$body .= theme('google_analytics');
-	if (DEBUG_MODE == 'ON') {
+	$body .= theme("menu_bottom");
+	//$body .= theme("google_analytics");
+	if (DEBUG_MODE == "ON") {
 		global $dabr_start, $api_time, $services_time, $rate_limit;
 		$time = microtime(1) - $dabr_start;
-		$body .= '<p>Processed in ' . round($time, 4) . ' seconds (' . round(($time - $api_time - $services_time) / $time * 100) . '% Dabr, ' . round($api_time / $time * 100) . '% Twitter, ' . round($services_time / $time * 100) . '% other services). ' . $rate_limit .  '.</p>';
+		$body .= "<p>Processed in " . round($time, 4) . " seconds (" . round(($time - $api_time - $services_time) / $time * 100) . "% Dabr, " . round($api_time / $time * 100) . "% Twitter, " . round($services_time / $time * 100) . "% other services). " . $rate_limit .  ".</p>";
 	}
-	if ($title == 'Login') {
-		$title = APP_NAME . ' - mobile Twitter Login';
+	if ($title == "Login") {
+		$title = APP_NAME . " - mobile Twitter Login";
 	}
-	ob_start('ob_gzhandler');
-	header('Content-Type: text/html; charset=utf-8');
+	ob_start("ob_gzhandler");
+	header("Content-Type: text/html; charset=utf-8");
 	echo	'<!DOCTYPE html>
 			<html>
 				<head>
@@ -164,10 +169,9 @@ function theme_page($title, $content)
 				</head>
 				<body id="thepage">';
 	echo 			$body;
-	if (setting_fetch('colours') == null)
-	{
+	if (setting_fetch("colours") == null) {
 		// If the cookies haven't been set, remind the user that they can set how Dabr looks
-		echo		'<p>Think ', APP_NAME, ' looks ugly? <a href="settings">Change the colours!</a></p>';
+		echo		"<p>Think ", APP_NAME, ' looks ugly? <a href="settings">Change the colours!</a></p>';
 	}
 	echo '		</body>
 			</html>';
@@ -176,27 +180,27 @@ function theme_page($title, $content)
 
 function theme_colours()
 {
-	$info = $GLOBALS['colour_schemes'][setting_fetch('colours', 0)];
-	list($name, $bits) = explode('|', $info);
-	$colours = explode(',', $bits);
+	$info = $GLOBALS["colour_schemes"][setting_fetch("colours", 0)];
+	list($name, $bits) = explode("|", $info);
+	$colours = explode(",", $bits);
 	return (object) array(
-		'links'		=> $colours[0],
-		'bodybg'	=> $colours[1],
-		'bodyt'		=> $colours[2],
-		'small'		=> $colours[3],
-		'odd'		=> $colours[4],
-		'even'		=> $colours[5],
-		'replyodd'	=> $colours[6],
-		'replyeven'	=> $colours[7],
-		'menubg'	=> $colours[8],
-		'menut'		=> $colours[9],
-		'menua'		=> $colours[10],
+		"links"		=> $colours[0],
+		"bodybg"	=> $colours[1],
+		"bodyt"		=> $colours[2],
+		"small"		=> $colours[3],
+		"odd"		=> $colours[4],
+		"even"		=> $colours[5],
+		"replyodd"	=> $colours[6],
+		"replyeven"	=> $colours[7],
+		"menubg"	=> $colours[8],
+		"menut"		=> $colours[9],
+		"menua"		=> $colours[10],
 	);
 }
 
 function theme_css()
 {
-	$c = theme('colours');
+	$c = theme("colours");
 	return "<style type='text/css'>
 	a{color:#{$c->links}}
 	table{border-collapse:collapse}
@@ -227,7 +231,7 @@ function theme_google_analytics()
 {
 	global $GA_ACCOUNT;
 	if (!$GA_ACCOUNT) {
-		return '';
+		return "";
 	}
 	$googleAnalyticsImageUrl = googleAnalyticsGetImageUrl();
 	return "<img src='{$googleAnalyticsImageUrl}' />";

@@ -5,7 +5,7 @@ function desktop_theme_status_form($text = "", $in_reply_to_id = NULL)
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 		
-		//	adding ?status=foo will automaticall add "foo" to the text area.
+		// Adding ?status=foo will automatically add "foo" to the text area.
 		if ($_GET["status"]) {
 			$text = $_GET["status"];
 		}
@@ -54,6 +54,7 @@ function desktop_theme_status_form($text = "", $in_reply_to_id = NULL)
 		$output .= js_counter("status");
 		return $output;
 	}
+	return "";
 }
 
 function desktop_theme_search_form($query)
@@ -101,4 +102,4 @@ function desktop_theme_search_form($query)
 		</script>
 	</form>';
 }
-?>
+

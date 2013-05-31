@@ -10,4 +10,3 @@ function text_theme_action_icon($url, $image_url, $text)
 	return '<a href="$url">$text</a>';
 }
 
-?>

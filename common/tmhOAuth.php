@@ -509,6 +509,7 @@ class tmhOAuth {
       default:
         // GET, DELETE request so convert the parameters to a querystring
         if ( ! empty($this->request_params)) {
+          $params = array();
           foreach ($this->request_params as $k => $v) {
             // Multipart params haven't been encoded yet.
             // Not sure why you would do a multipart GET but anyway, here's the support for it
@@ -563,6 +564,7 @@ class tmhOAuth {
     if ( ! empty($this->request_params) ) {
       // if not doing multipart we need to implode the parameters
       if ( ! $this->config['multipart'] ) {
+        $ps = array();
         foreach ($this->request_params as $k => $v) {
           $ps[] = "{$k}={$v}";
         }
@@ -585,8 +587,9 @@ class tmhOAuth {
       curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
     }
 
-    if (isset($this->config['prevent_request']) && false == $this->config['prevent_request'])
-      return;
+    if (isset($this->config["prevent_request"]) && false == $this->config["prevent_request"]) {
+        return null;
+    }
 
     // do it!
     $response = curl_exec($c);
@@ -602,4 +605,3 @@ class tmhOAuth {
   }
 }
 
-?>

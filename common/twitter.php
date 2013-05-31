@@ -219,9 +219,9 @@ function twitter_profile_page()
 			//$content .= "<br /> response=<pre>";
 			//$content .= print_r($tmhOAuth->response['response'], TRUE);
 			$content .= "</pre><br /> info=<pre>";
-			$content .= print_r($tmhOAuth->response['info'], true);
+			$content .= print_r($tmhOAuth->response["info"], true);
 			$content .= "</pre><br /> code=<pre>";
-			$content .= print_r($tmhOAuth->response['code'], true) . "</pre>";
+			$content .= print_r($tmhOAuth->response["code"], true) . "</pre>";
 		}
 	}
 	
@@ -437,11 +437,11 @@ function twitter_media_page($query)
 				. "<br /> status=" . $status
 				. "<br /> image=" . $image
 				. "<br /> response=<pre>"
-				. print_r($tmhOAuth->response['response'], TRUE)
+				. print_r($tmhOAuth->response["response"], true)
 				. "</pre><br /> info=<pre>"
-				. print_r($tmhOAuth->response['info'], TRUE)
+				. print_r($tmhOAuth->response["info"], true)
 				. "</pre><br /> code=<pre>"
-				. print_r($tmhOAuth->response['code'], TRUE) . "</pre>";
+				. print_r($tmhOAuth->response["code"], true) . "</pre>";
 		}
 	}
 	
@@ -514,12 +514,12 @@ function twitter_process($url, $post_data = false)
 	}
 
 	// from http://github.com/abraham/twitteroauth/blob/master/twitteroauth/twitteroauth.php
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
 	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-	curl_setopt($ch, CURLOPT_HEADER, TRUE);
-	curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($ch, CURLOPT_VERBOSE, true);
 
 	$response = curl_exec($ch);
 	$response_info = curl_getinfo($ch);
@@ -536,17 +536,17 @@ function twitter_process($url, $post_data = false)
 	// Place the headers into an array
 	$headers = explode("\n", $headers);
 	foreach ($headers as $header) {
-		list($key, $value) = explode(':', $header, 2);
+		list($key, $value) = explode(":", $header, 2);
 		$headers_array[$key] = $value;
 	}
 
 	// Not every request is rate limited
-	if ($headers_array['x-rate-limit-limit']) {
+	if ($headers_array["x-rate-limit-limit"]) {
 		$current_time = time();
-		$ratelimit_time = $headers_array['x-rate-limit-reset'];
+		$ratelimit_time = $headers_array["x-rate-limit-reset"];
 		$time_until_reset = $ratelimit_time - $current_time;
 		$minutes_until_reset = round($time_until_reset / 60);
-		$rate_limit .= " Rate Limit: " . $headers_array['x-rate-limit-remaining'] . " out of " . $headers_array['x-rate-limit-limit'] . " calls remaining for the next {$minutes_until_reset} minutes";
+		$rate_limit .= " Rate Limit: " . $headers_array["x-rate-limit-remaining"] . " out of " . $headers_array["x-rate-limit-limit"] . " calls remaining for the next {$minutes_until_reset} minutes";
 	}
 
 	$api_time += microtime(1) - $api_start;
@@ -591,7 +591,7 @@ function twitter_process($url, $post_data = false)
 				theme('error', "<h2>An error occured while calling the Twitter API</h2><p>{$response_info['http_code']}: {$result}<br />{$url}</p><hr>");
 			}
 			else {
-				theme('error', "<h2>An error occured while calling the Twitter API</h2><p>{$response_info['http_code']}: {$result}</p><hr>");
+				theme("error", "<h2>An error occured while calling the Twitter API</h2><p>{$response_info["http_code"]}: {$result}</p><hr>");
 			}
 	}
 }
@@ -627,7 +627,7 @@ function twitter_get_media($status)
 		
 		foreach ($status->entities->media as $media) {
 	
-			if ($_SERVER['HTTPS'] == "on") {
+			if ($_SERVER["HTTPS"] == "on") {
 				$image = $media->media_url_https;
 			} else {
 				$image = $media->media_url;
@@ -640,7 +640,7 @@ function twitter_get_media($status)
 
 			$media_html .= '<a href="' . image_proxy($image) . '" target="' . get_target() . '">';
 			$media_html .= '<img src="' . $image . ':thumb" width="' . $width . '" height="' . $height . '" />';
-			$media_html .= '</a>';
+			$media_html .= "</a>";
 		}
 	
 		return $media_html . "<br />";
@@ -844,7 +844,7 @@ function twitter_status_page($query)
 function twitter_thread_timeline($threadID)
 {
 	$request = "https://search.twitter.com/search/thread/{$threadID}";
-	$tl = twitter_standard_timeline(twitter_fetch($request), 'thread');
+	$tl = twitter_standard_timeline(twitter_fetch($request), "thread");
 	return $tl;
 }
 
@@ -854,19 +854,19 @@ function twitter_retweet_page($query)
 	if (is_numeric($id)) {
 		$request = API_NEW . "statuses/show.json?id={$id}";
 		$tl = twitter_process($request);
-		$content = theme('retweet', $tl);
-		theme('page', 'Retweet', $content);
+		$content = theme("retweet", $tl);
+		theme("page", "Retweet", $content);
 	}
 }
 
-function twitter_refresh($page = NULL)
+function twitter_refresh($page = null)
 {
 	if (isset($page)) {
 		$page = BASE_URL . $page;
 	} else {
 		$page = $_SERVER['HTTP_REFERER'];
 	}
-	header('Location: ' . $page);
+	header("Location: " . $page);
 	exit();
 }
 
@@ -1244,15 +1244,15 @@ function theme_directs_form($to)
 }
 
 function twitter_search_page() {
-	$search_query = $_GET['query'];
+	$search_query = $_GET["query"];
 	
 	// Geolocation parameters
-	list($lat, $long) = explode(',', $_GET['location']);
-	$loc = $_GET['location'];
-	$radius = $_GET['radius'];
+	list($lat, $long) = explode(",", $_GET["location"]);
+	$loc = $_GET["location"];
+	$radius = $_GET["radius"];
 	//echo "the lat = $lat, and long = $long, and $loc";
-	$content = theme('search_form', $search_query);
-	if (isset($_POST['query'])) {
+	$content = theme("search_form", $search_query);
+	if (isset($_POST["query"])) {
 		$duration = time() + (3600 * 24 * 365);
 		setcookie('search_favourite', $_POST['query'], $duration, '/');
 		twitter_refresh('search');
@@ -1270,9 +1270,9 @@ function twitter_search_page() {
 	theme('page', 'Search', $content);
 }
 
-function twitter_search($searchQuery, $lat = NULL, $long = NULL, $radius = NULL)
+function twitter_search($searchQuery, $lat = null, $long = null, $radius = null)
 {
-	$perPage = setting_fetch('perPage', 20);
+	$perPage = setting_fetch("perPage", 20);
 	$request = API_NEW . "search/tweets.json?result_type=recent&q={$searchQuery}&rpp={$perPage}";
 	if ($_GET['max_id']) {
 		$request .= '&max_id=' . $_GET['max_id'];
@@ -1434,24 +1434,24 @@ function twitter_home_page()
 function twitter_hashtag_page($query)
 {
 	if (isset($query[1])) {
-		$hashtag = '#' . $query[1];
-		$content = theme('status_form', $hashtag . ' ');
+		$hashtag = "#" . $query[1];
+		$content = theme("status_form", $hashtag . " ");
 		$tl = twitter_search($hashtag);
-		$content .= theme('timeline', $tl);
-		theme('page', $hashtag, $content);
+		$content .= theme("timeline", $tl);
+		theme("page", $hashtag, $content);
 	} else {
-		theme('page', 'Hashtag', 'Hash hash!');
+		theme("page", "Hashtag", "Hash hash!");
 	}
 }
 
-function theme_status_form($text = '', $inReplyToID = NULL)
+function theme_status_form($text = "", $inReplyToID = null)
 {
 	if (user_is_authenticated()) {
 		$icon = "images/twitter-bird-16x16.png";
 
 		//	adding ?status=foo will automatically add "foo" to the text area.
-		if ($_GET['status']) {
-			$text = $_GET['status'];
+		if ($_GET["status"]) {
+			$text = $_GET["status"];
 		}
 		
 		return "<fieldset><legend><img src='{$icon}' width='16' height='16' /> What's Happening?</legend><form method='post' action='update'><input name='status' value='{$text}' maxlength='140' /> <input name='in_reply_to_id' value='{$inReplyToID}' type='hidden' /><input type='submit' value='Tweet' /></form></fieldset>";
@@ -1701,42 +1701,44 @@ function twitter_standard_timeline($feed, $source)
 			}
 			return $output;
 
-		case 'thread':
+		case "thread":
 			// First pass: extract tweet info from the HTML
-			$html_tweets = explode('</li>', $feed);
+			$html_tweets = explode("</li>", $feed);
 			foreach ($html_tweets as $tweet) {
 				$id = preg_match_one('#msgtxt(\d*)#', $tweet);
 				if (!$id) {
 					continue;
 				}
 				$output[$id] = (object) array(
-					'id' => $id,
-					'text' => strip_tags(preg_match_one('#</a>: (.*)</span>#', $tweet)),
-					'source' => preg_match_one('#>from (.*)</span>#', $tweet),
-					'from' => (object) array(
-						'id' => preg_match_one('#profile_images/(\d*)#', $tweet),
-						'screen_name' => preg_match_one('#twitter.com/([^"]+)#', $tweet),
-						'profile_image_url' => preg_match_one('#src="([^"]*)"#' , $tweet),
+					"id" => $id,
+					"text" => strip_tags(preg_match_one("#</a>: (.*)</span>#", $tweet)),
+					"source" => preg_match_one("#>from (.*)</span>#", $tweet),
+					"from" => (object) array(
+						"id" => preg_match_one("#profile_images/(\d*)#", $tweet),
+						"screen_name" => preg_match_one('#twitter.com/([^"]+)#', $tweet),
+						"profile_image_url" => preg_match_one('#src="([^"]*)"#' , $tweet),
 					),
-					'to' => (object) array(
-						'screen_name' => preg_match_one('#@([^<]+)#', $tweet),
+					"to" => (object) array(
+						"screen_name" => preg_match_one("#@([^<]+)#", $tweet),
 					),
-					'created_at' => str_replace('about', '', preg_match_one('#info">\s(.*)#', $tweet)),
+					"created_at" => str_replace("about", "", preg_match_one('#info">\s(.*)#', $tweet)),
 				);
 			}
 			// Second pass: OPTIONALLY attempt to reverse the order of tweets
-			if (setting_fetch('reverse') == 'yes') {
+			if (setting_fetch("reverse") == "yes") {
 				$first = false;
 				foreach ($output as $id => $tweet) {
-					$date_string = str_replace('later', '', $tweet->created_at);
+					$date_string = str_replace("later", "", $tweet->created_at);
 					if ($first) {
 						$attempt = strtotime("+$date_string");
-						if ($attempt == 0) $attempt = time();
+						if ($attempt == 0) {
+							$attempt = time();
+						}
 						$previous = $current = $attempt - time() + $previous;
 					} else {
 						$previous = $current = $first = strtotime($date_string);
 					}
-					$output[$id]->created_at = date('r', $current);
+					$output[$id]->created_at = date("r", $current);
 				}
 				$output = array_reverse($output);
 			}
@@ -1749,7 +1751,7 @@ function twitter_standard_timeline($feed, $source)
 	}
 }
 
-function preg_match_one($pattern, $subject, $flags = NULL)
+function preg_match_one($pattern, $subject, $flags = null)
 {
 	preg_match($pattern, $subject, $matches, $flags);
 	return trim($matches[1]);

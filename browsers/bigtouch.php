@@ -50,7 +50,7 @@ function bigtouch_theme_css()
 {
 	$out = theme_css();
 	$out .= '<link rel="stylesheet" href="browsers/bigtouch.css" />';
-	$out .= '<script type="text/javascript">'.file_get_contents('browsers/touch.js').'</script>';
+	$out .= '<script type="text/javascript">' . file_get_contents("browsers/touch.js") . "</script>";
 	return $out;
 }
 
