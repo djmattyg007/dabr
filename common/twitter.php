@@ -1212,7 +1212,7 @@ function twitter_directs_page($query)
 	$tl = twitter_standard_timeline($tl, "directs_" . $action);	
 	$content = theme_directs_menu();
 	$content .= theme("timeline", $tl);
-	theme("page", "DM " . strtoupper($action), $content);
+	theme("page", "DM " . ucfirst($action), $content);
 }
 
 function theme_directs_menu()
