@@ -10,8 +10,8 @@ define("API_URL", "http://api.twitter.com/1/");
 
 // Image Proxy URL
 // Use http://src.sencha.io/ for regular connections
-// Use https://tinysrc.appspot.com/ for SSL connections
-define("IMAGE_PROXY_URL", "https://tinysrc.appspot.com/");
+// Use https://tinysrc.appspot.com/ for SSL connections (no longer appears to work)
+define("IMAGE_PROXY_URL", "");
 
 // Cookie encryption key. Max 52 characters
 define("ENCRYPTION_KEY", "Example Key - Change Me!");
